@@ -2,9 +2,12 @@ package com.alelievangelista.dryft;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -51,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });
-
-        Log.d(LOG_TAG, "Starting activity");
-
 
         //Get current location when app is launched
 
@@ -149,6 +150,14 @@ public class MainActivity extends AppCompatActivity implements
                 .show();
     }
 
+    //Check network connectivity
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void getCurrentUserLocation() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -167,6 +176,13 @@ public class MainActivity extends AppCompatActivity implements
             String mLongitude = Double.toString(mLastLocation.getLongitude());
 
             Log.d(LOG_TAG, "User's current coordinates: Long:" + mLatitude + " - " + "Lat:" + mLongitude);
+
+            //Because you were able to grab the user's location
+            if(isNetworkAvailable()){
+                PlacesAsyncTask task = new PlacesAsyncTask(this);
+                task.execute();
+            }
+
         }
 
         if(mLastLocation == null){
@@ -186,9 +202,10 @@ public class MainActivity extends AppCompatActivity implements
                     getCurrentUserLocation();
 
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    //TODO - Disable the permission in question
+                    // Permission Denied
+                    Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT)
+                            .show();
                 }
                 return;
             }
