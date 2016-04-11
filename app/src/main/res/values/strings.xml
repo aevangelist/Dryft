@@ -4,4 +4,25 @@
     <string name="server_api_key">AIzaSyDU-yQUH2fC7Q7KEROEys-oDiCKRBRYuLA</string>
     <string name="android_api_key">AIzaSyDNaMHj_XpC5z5MfeKp5SeFoeKa2nbEl1E</string>
 
+    <!--Foursquare API-->
+    <string name="foursquare_url_base">https://api.foursquare.com/v2/venues/</string>
+    <string name="foursquare_search">search?</string>
+    <string name="foursquare_explore">explore?</string>
+
+    <string name="foursquare_client_id">client_id=</string>
+    <string name="foursquare_client_secret">&amp;client_secret=</string>
+
+    <string name="foursquare_id">F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2</string>
+    <string name="foursquare_secret">RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY</string>
+
+    <string name="nyc_attractions">&amp;v=20130815&amp;near=new+york+city&amp;query=tourist&amp;limit=1</string>
+
+
+    <string name="test_vals">&amp;v=20130815&amp;ll=43.6401961,-79.4222285&amp;query=breakfast&amp;radius=6000</string>
+
+    <!-- test value:
+    https://api.foursquare.com/v2/venues/search?client_id= F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2
+    &client_secret= RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY
+    &v=20130815&ll=43,-79&query=breakfast&radius=1000-->
+
 </resources>
