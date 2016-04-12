@@ -127,23 +127,25 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             //TODO Make getting the base URL better
             String restaurantBase = activity.getResources().getString(R.string.restaurant_url_base);
 
-
             if(p != null){
                 switch (i) {
                     case 0:
                         String m1URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
                                 "&query=breakfast" + "&radius=2000";
                         Log.d(LOG_TAG, "Breakfast: " + m1URL);
+                        suggestRestaurant(m1URL);
                         break;
                     case 1:
                         String m2URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
                                 "&query=lunch" + "&radius=2000";
                         Log.d(LOG_TAG, "Lunch: " + m2URL);
+                        suggestRestaurant(m2URL);
                         break;
                     case 2:
                         String m3URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
                                 "&query=dinner" + "&radius=2000";
                         Log.d(LOG_TAG, "Dinner: " + m3URL);
+                        suggestRestaurant(m3URL);
                         break;
                     default:
                         break;
@@ -151,6 +153,33 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             }
         }
     }
+
+    /**
+     *
+     * @param url
+     */
+    private void suggestRestaurant(String url){
+        int numResults = scopeAPICall(url);
+
+        //Generate tour
+        if(numResults > 0){
+
+            //Look for restaurant
+            int[] selected = selectPlace(numResults, NUM_RESTAURANT);
+            for (int i = 0; i < selected.length; i++) {
+
+                Place p = dataAPICall(url);
+
+                try {
+                    Thread.sleep(1000);
+                    //Log.d(LOG_TAG, "Restaurant: " + p.toString());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                }
+            }
+        }
 
     /**
      * The purpose of this API call is to scope out the result set so that we know how to query it to get what we need
