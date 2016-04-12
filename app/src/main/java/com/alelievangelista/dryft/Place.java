@@ -14,25 +14,33 @@ public class Place implements Parcelable {
     private String address;
     private String phone;
     private String website;
+    private String latitude;
+    private String longitude;
+    private String category;
 
-
-    public Place (String i, String n, String d, String a, String p, String w) {
+    public Place (String i, String n, String p,String a, String cat,
+    String lat, String lon) {
         this.id = i;
         this.name = n;
-        this.desc = d;
-        this.address = a;
         this.phone = p;
-        this.website = w;
+        this.address = a;
+        this.category = cat;
+        this.latitude = lat;
+        this.longitude = lon;
+    }
+
+    public Place() {
+
     }
 
     @Override
     public String toString() {
         return "Place ID: " + this.id + "\n" +
-                "Name: " + this.name  + "\n"
-                + "Desc: " + this.desc + "\n" +
+                "Name: " + this.name  + "\n" +
                 "Address: " + this.address + "\n" +
                 "Phone: " + this.phone + "\n" +
-                "Website: " + this.website;
+                "Coordinates: " + this.latitude + ", " + this.longitude + "\n" +
+                "Category: " + this.category;
 
 
     }
@@ -40,6 +48,14 @@ public class Place implements Parcelable {
     /**
      * Getters and Setters
      */
+
+    public String getLatitude(){
+        return this.latitude;
+    }
+
+    public String getLongitude(){
+        return this.longitude;
+    }
 
 
     /**
@@ -52,6 +68,10 @@ public class Place implements Parcelable {
         address = in.readString();
         phone = in.readString();
         website = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        category = in.readString();
+
     }
 
     @Override
@@ -67,6 +87,9 @@ public class Place implements Parcelable {
         p.writeString(address);
         p.writeString(phone);
         p.writeString(website);
+        p.writeString(latitude);
+        p.writeString(longitude);
+        p.writeString(category);
     }
 
     /**

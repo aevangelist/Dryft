@@ -17,6 +17,8 @@
 
     <string name="nyc_attractions">&amp;v=20130815&amp;near=new+york+city&amp;query=tourist&amp;limit=1</string>
 
+    <string name="restaurant_url_base">https://api.foursquare.com/v2/venues/explore?client_id=F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2&amp;client_secret=RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY&amp;v=20130815</string>
+
 
     <string name="test_vals">&amp;v=20130815&amp;ll=43.6401961,-79.4222285&amp;query=breakfast&amp;radius=6000</string>
 

@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  * Created by aevangelista on 16-04-04.
@@ -36,13 +38,15 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_LOCATION = "location";
     private static final String TAG_ADDRESS = "formattedAddress";
     private static final String TAG_CATEGORIES = "categories";
+    private static final String TAG_LATITUDE = "lat";
+    private static final String TAG_LONGITUDE = "lng";
+
 
     private static final String TAG_NUM_RESULTS = "totalResults";
 
 
     private JSONArray arr;
     private ArrayList<Place> result = new ArrayList<Place>();
-    private Place place;
     private JSONObject obj;
     private Activity activity;
 
@@ -79,6 +83,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         String TEST = activity.getResources().getString(R.string.test_vals);
         String NYC_ATTRACTIONS = activity.getResources().getString(R.string.nyc_attractions);
 
+        int numResults = 0;
 
         //Build URL
         String URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + NYC_ATTRACTIONS;
@@ -86,35 +91,64 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         //Scope out the potential results
         try {
-            scopeAPICall(URL);
+            numResults = scopeAPICall(URL);
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         //Generate tour
-        if(numPlacesInCity > 0){
-            createAttrTour(URL);
+        if(numResults > 0){
+            createAttrTour(URL, numResults);
         }
 
-        //Reconstruct API call
-        String urlWithOffset = URL;
-
-
-        return dataAPICall(urlWithOffset);
+        return null;
 
     }
 
     /**
      * This will generate an array of integers that represent key attractions to visit in a given city
      */
-    private void createAttrTour(String base){
+    private void createAttrTour(String base, int results){
 
-        int[] selected = selectPlace(numPlacesInCity, NUM_ATTRACTIONS);
+        int[] selected = selectPlace(results, NUM_ATTRACTIONS);
+        Log.d(LOG_TAG, "Number of selected places: " + selected.length);
         for (int i = 0; i < selected.length; i++) {
             //Reconstruct the API call
             String newURL = base + "&offset=" + selected[i];
-            dataAPICall(newURL);
+            Place p = dataAPICall(newURL);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //TODO Make getting the base URL better
+            String restaurantBase = activity.getResources().getString(R.string.restaurant_url_base);
+
+
+            if(p != null){
+                switch (i) {
+                    case 0:
+                        String m1URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
+                                "&query=breakfast" + "&radius=2000";
+                        Log.d(LOG_TAG, "Breakfast: " + m1URL);
+                        break;
+                    case 1:
+                        String m2URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
+                                "&query=lunch" + "&radius=2000";
+                        Log.d(LOG_TAG, "Lunch: " + m2URL);
+                        break;
+                    case 2:
+                        String m3URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
+                                "&query=dinner" + "&radius=2000";
+                        Log.d(LOG_TAG, "Dinner: " + m3URL);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 
@@ -123,33 +157,42 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * @param url
      * @return
      */
-    private void scopeAPICall(String url){
+    private int scopeAPICall(String url){
 
         JSONParser jParser = new JSONParser();
+        int numPlaces = 0;
 
         try {
             //Get JSON from URL
             obj = jParser.getJSONFromUrl(url);
 
-            activity.runOnUiThread(new Runnable() {
+            Callable<Integer> callable = new Callable<Integer>() {
 
                 @Override
-                public void run() {
-                    try {
+                public Integer call() {
 
+                    int finalCount = 0;
+
+                    try {
                         String numResults = obj.getJSONObject(TAG_RESPONSE).getString(TAG_NUM_RESULTS);
-                        int finalCount = Integer.parseInt(numResults);
+                        finalCount = Integer.parseInt(numResults);
                         numPlacesInCity = finalCount;
                         Log.d(LOG_TAG, "Number of places: " + numPlacesInCity);
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        } catch (JSONException e1) {
+                        e1.printStackTrace();
                     }
+                    return finalCount;
                 }
-            });
+            };
+
+            FutureTask<Integer> task = new FutureTask<>(callable);
+
+            activity.runOnUiThread(task);
+            numPlaces = task.get();
 
         }finally{
-            return;
+            return numPlaces;
         }
     }
 
@@ -159,36 +202,49 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * @param url
      * @return
      */
-    private ArrayList<Place> dataAPICall(String url){
+    private Place dataAPICall(String url){
 
         JSONParser jParser = new JSONParser();
+        Place selectedPlace = new Place();
 
         try {
             //Get JSON from URL
             obj = jParser.getJSONFromUrl(url);
 
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            Callable<Place> callable = new Callable<Place>() {
 
+                @Override
+                public Place call() {
+
+                    Place place = new Place();
+
+                    try {
                         arr = obj.getJSONObject(TAG_RESPONSE).getJSONArray(TAG_GROUPS)
                                 .getJSONObject(0).getJSONArray(TAG_ITEMS);
 
                         for (int i = 0; i < arr.length(); i++) {
                             JSONObject o = arr.getJSONObject(i);
                             JSONObject venueObj = o.getJSONObject(TAG_VENUE);
-                            Place place = convertPlace(venueObj);
-                            result.add(place);
+                            place = convertPlace(venueObj);
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
+                    return place;
                 }
-            });
+            };
+
+            FutureTask<Place> task = new FutureTask<>(callable);
+
+            activity.runOnUiThread(task);
+            selectedPlace = task.get();
+
 
         }finally{
-            return result;
+            return selectedPlace;
         }
     }
 
@@ -214,8 +270,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         String name = "";
         String phone = "";
         String address = "";
+        String latitude = "";
+        String longitude = "";
         String category = "";
-
 
 
         if(obj.has(TAG_ID)) {
@@ -238,9 +295,16 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             category = obj.getJSONArray(TAG_CATEGORIES).getJSONObject(0).getString(TAG_NAME);
         }
 
-        Log.d(LOG_TAG, id + " \n" + name + " \n" + phone + " \n" + address + " \n" + category);
+        if(obj.getJSONObject(TAG_LOCATION).has(TAG_LATITUDE) && obj.getJSONObject(TAG_LOCATION).has(TAG_LONGITUDE)){
+            latitude = obj.getJSONObject(TAG_LOCATION).getString(TAG_LATITUDE);
+            longitude = obj.getJSONObject(TAG_LOCATION).getString(TAG_LONGITUDE);
 
-        return null;
+        }
+
+
+        Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")"  + " \n" + address + " \n" + category);
+
+        return new Place(id, name, phone, address, category, latitude, longitude);
 
         //return new MovieElement(id, name, API_IMAGE_URL1 + poster, API_IMAGE_URL2 + backdrop, synopsis, rating, votes, releaseDate);
     }
