@@ -8,6 +8,14 @@
     <string name="foursquare_url_base">https://api.foursquare.com/v2/venues/</string>
     <string name="foursquare_search">search?</string>
     <string name="foursquare_explore">explore?</string>
+    <string name="foursquare_version">&amp;v=20130815</string>
+    <string name="foursquare_results_limit">&amp;limit=1</string>
+    <string name="foursquare_offset">&amp;offset=</string>
+    <string name="foursquare_lat_lng">&amp;ll=</string>
+    <string name="foursquare_breakfast">&amp;query=breakfast</string>
+    <string name="foursquare_lunch">&amp;query=lunch</string>
+    <string name="foursquare_dinner">&amp;query=dinner</string>
+    <string name="foursquare_radius_2000">&amp;radius=2000</string>
 
     <string name="foursquare_client_id">client_id=</string>
     <string name="foursquare_client_secret">&amp;client_secret=</string>
@@ -15,11 +23,12 @@
     <string name="foursquare_id">F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2</string>
     <string name="foursquare_secret">RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY</string>
 
-    <string name="nyc_attractions">&amp;v=20130815&amp;near=new+york+city&amp;query=tourist&amp;limit=1</string>
+    <string name="nyc_attractions">&amp;near=new+york+city&amp;query=tourist</string>
+    <string name="toronto_attractions">&amp;near=toronto&amp;query=tourist</string>
+    <string name="sf_attractions">&amp;near=san+francisco&amp;query=tourist</string>
 
+    <!-- test vals -->
     <string name="restaurant_url_base">https://api.foursquare.com/v2/venues/explore?client_id=F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2&amp;client_secret=RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY&amp;v=20130815&amp;limit=1</string>
-
-
     <string name="test_vals">&amp;v=20130815&amp;ll=43.6401961,-79.4222285&amp;query=breakfast&amp;radius=6000</string>
 
     <!-- test value:

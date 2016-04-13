@@ -20,9 +20,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
     private static final String LOG_TAG = "PlacesAsyncTask";
 
-    //Tour template
-    private static final int NUM_ATTRACTIONS = 3;
-    private static final int NUM_RESTAURANT = 1;
+    //Tour template - the number of attractions and restaurants to generate in between each
+    private static final int GENERATED_ATTR = 3;
+    private static final int GENERATED_RESTR = 1;
 
 
     //JSON node names
@@ -41,18 +41,38 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_LATITUDE = "lat";
     private static final String TAG_LONGITUDE = "lng";
 
-
     private static final String TAG_NUM_RESULTS = "totalResults";
+
+    //Pieces of the API
+    private String PREFIX_URL; //This is the base for the API call
+    private String URL_BASE;
+    private String URL_SETTING;
+    private String URL_CLIENT_ID;
+    private String ID;
+    private String URL_CLIENT_SECRET;
+    private String SECRET;
+    private String VERSION;
+    private String LIMIT;
+    private String OFFSET;
+    private String LAT_LONG;
+
+    private String BREAKFAST;
+    private String LUNCH;
+    private String DINNER;
+
+    private String RADIUS;
+
+
+    //Cities supported
+    private String NYC_ATTRACTIONS;
+    private String SF_ATTRACTIONS;
+    private String TO_ATTRACTIONS;
+
 
 
     private JSONArray arr;
-    private ArrayList<Place> result = new ArrayList<Place>();
     private JSONObject obj;
     private Activity activity;
-
-    //Chosen places
-    private int numPlacesInCity;
-    private int[] selectedAttractions;
 
     public PlacesAsyncTask(Activity activity) {
         this.activity = activity;
@@ -73,21 +93,34 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     @Override
     protected ArrayList<Place> doInBackground(Void... params) {
 
-        String URL_BASE = activity.getResources().getString(R.string.foursquare_url_base);
-        String URL_SETTING = activity.getResources().getString(R.string.foursquare_explore);
-        String URL_CLIENT_ID = activity.getResources().getString(R.string.foursquare_client_id);
-        String ID = activity.getResources().getString(R.string.foursquare_id);
-        String URL_CLIENT_SECRET = activity.getResources().getString(R.string.foursquare_client_secret);
-        String SECRET = activity.getResources().getString(R.string.foursquare_secret);
+        URL_BASE = activity.getResources().getString(R.string.foursquare_url_base);
+        URL_SETTING = activity.getResources().getString(R.string.foursquare_explore);
+        URL_CLIENT_ID = activity.getResources().getString(R.string.foursquare_client_id);
+        ID = activity.getResources().getString(R.string.foursquare_id);
+        URL_CLIENT_SECRET = activity.getResources().getString(R.string.foursquare_client_secret);
+        SECRET = activity.getResources().getString(R.string.foursquare_secret);
+        VERSION = activity.getResources().getString(R.string.foursquare_version);
+        LIMIT = activity.getResources().getString(R.string.foursquare_results_limit);
+        OFFSET = activity.getResources().getString(R.string.foursquare_offset);
+        LAT_LONG = activity.getResources().getString(R.string.foursquare_lat_lng);
 
-        String TEST = activity.getResources().getString(R.string.test_vals);
-        String NYC_ATTRACTIONS = activity.getResources().getString(R.string.nyc_attractions);
+        //Restaurant related
+        BREAKFAST = activity.getResources().getString(R.string.foursquare_breakfast);
+        LUNCH = activity.getResources().getString(R.string.foursquare_lunch);
+        DINNER = activity.getResources().getString(R.string.foursquare_dinner);
+        RADIUS = activity.getResources().getString(R.string.foursquare_radius_2000);
+
+
+        //Supported cities
+        NYC_ATTRACTIONS = activity.getResources().getString(R.string.nyc_attractions);
+        SF_ATTRACTIONS = activity.getResources().getString(R.string.sf_attractions);
+        TO_ATTRACTIONS = activity.getResources().getString(R.string.toronto_attractions);
 
         int numResults = 0;
 
         //Build URL
-        String URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + NYC_ATTRACTIONS;
-        Log.d(LOG_TAG, "API call URL: " + URL);
+        PREFIX_URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION + LIMIT;
+        String URL = PREFIX_URL + SF_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
 
         //Scope out the potential results
         try {
@@ -97,9 +130,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             e.printStackTrace();
         }
 
-        //Generate tour
+        //Generate tour if we got results against the city (which we should)
         if(numResults > 0){
-            createAttrTour(URL, numResults);
+            createTour(URL, numResults);
         }
 
         return null;
@@ -109,14 +142,16 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     /**
      * This will generate an array of integers that represent key attractions to visit in a given city
      */
-    private void createAttrTour(String base, int results){
+    private void createTour(String base, int results){
 
-        int[] selected = selectPlace(results, NUM_ATTRACTIONS);
-        Log.d(LOG_TAG, "Number of selected places: " + selected.length);
+        //Randomly select 3 attractions based on the result set
+        int[] selected = selectPlace(results, GENERATED_ATTR);
+
         for (int i = 0; i < selected.length; i++) {
+
             //Reconstruct the API call
-            String newURL = base + "&offset=" + selected[i];
-            Place p = dataAPICall(newURL);
+            String newURL = base + OFFSET + selected[i];
+            Place p = dataAPICall(newURL); //This will hold the actual data for the selected place
 
             try {
                 Thread.sleep(1000);
@@ -124,27 +159,21 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 e.printStackTrace();
             }
 
-            //TODO Make getting the base URL better
-            String restaurantBase = activity.getResources().getString(R.string.restaurant_url_base);
-
             if(p != null){
                 switch (i) {
                     case 0:
-                        String m1URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
-                                "&query=breakfast" + "&radius=2000";
-                        Log.d(LOG_TAG, "Breakfast: " + m1URL);
+                        String m1URL = PREFIX_URL + LAT_LONG + p.getLatitude() + "," + p.getLongitude() +
+                                BREAKFAST + RADIUS;
                         suggestRestaurant(m1URL);
                         break;
                     case 1:
-                        String m2URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
-                                "&query=lunch" + "&radius=2000";
-                        Log.d(LOG_TAG, "Lunch: " + m2URL);
+                        String m2URL = PREFIX_URL + LAT_LONG + p.getLatitude() + "," + p.getLongitude() +
+                                LUNCH + RADIUS;
                         suggestRestaurant(m2URL);
                         break;
                     case 2:
-                        String m3URL = restaurantBase + "&ll=" + p.getLatitude() + "," + p.getLongitude() +
-                                "&query=dinner" + "&radius=2000";
-                        Log.d(LOG_TAG, "Dinner: " + m3URL);
+                        String m3URL = PREFIX_URL + LAT_LONG + p.getLatitude() + "," + p.getLongitude() +
+                                DINNER + RADIUS;
                         suggestRestaurant(m3URL);
                         break;
                     default:
@@ -155,24 +184,25 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     }
 
     /**
-     *
+     * This will generate restaurants based on the choices available in the area
      * @param url
      */
     private void suggestRestaurant(String url){
+
+        //Scope out the restaurants in the area
         int numResults = scopeAPICall(url);
 
         //Generate tour
         if(numResults > 0){
 
             //Look for restaurant
-            int[] selected = selectPlace(numResults, NUM_RESTAURANT);
+            int[] selected = selectPlace(numResults, GENERATED_RESTR);
             for (int i = 0; i < selected.length; i++) {
 
-                Place p = dataAPICall(url);
+                Place p = dataAPICall(url); //Grab the info for selected restaurant
 
                 try {
                     Thread.sleep(1000);
-                    //Log.d(LOG_TAG, "Restaurant: " + p.toString());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -182,7 +212,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         }
 
     /**
-     * The purpose of this API call is to scope out the result set so that we know how to query it to get what we need
+     * The purpose of this API call is to scope out the result set so that we know how to query it
+     * to generate recommendations for a tour itinerary. This method will return a number of results
+     * matching our query against the city
      * @param url
      * @return
      */
@@ -205,8 +237,6 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                     try {
                         String numResults = obj.getJSONObject(TAG_RESPONSE).getString(TAG_NUM_RESULTS);
                         finalCount = Integer.parseInt(numResults);
-                        numPlacesInCity = finalCount;
-                        Log.d(LOG_TAG, "Number of places: " + numPlacesInCity);
 
                         } catch (JSONException e1) {
                         e1.printStackTrace();
@@ -277,6 +307,13 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         }
     }
 
+    /**
+     * This will randomly select 3 numbers within a certain range, which represents the
+     * attractions selected by the algorithm (sophisticated, huh) #AI
+     * @param numAttrs
+     * @param limit
+     * @return
+     */
     private int[] selectPlace(int numAttrs, int limit){
 
         int[] array = new int[limit];
@@ -286,7 +323,6 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             for(int i = 0; i < limit; i++) {
                 int answer = random.nextInt(numAttrs);
                 array[i] = answer;
-                Log.d(LOG_TAG, "Random number = " + answer);
             }
 
         return array;

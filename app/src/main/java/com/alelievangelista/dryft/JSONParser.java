@@ -71,7 +71,7 @@ public class JSONParser {
         }
 
         if (jObj != null){
-            Log.d("readJSONtoObj: ", "The JSON is: " + json);
+            //Log.d("readJSONtoObj: ", "The JSON is: " + json);
         }
 
         return jObj;
