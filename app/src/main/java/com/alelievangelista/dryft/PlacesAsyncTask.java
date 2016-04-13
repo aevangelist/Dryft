@@ -74,7 +74,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private Activity activity;
 
     //This is the container that will hold the Place objects of the tour
-    ArrayList<Place> tourList;
+    ArrayList<Place> tourList = new ArrayList<Place>();;
 
     public PlacesAsyncTask(Activity activity) {
         this.activity = activity;
@@ -83,7 +83,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
     @Override
     protected void onPostExecute(ArrayList<Place> result) {
-        super.onPostExecute(result);
+        super.onPostExecute(tourList);
         Log.d("PlacesAsyncTask", "Post Execute");
     }
 

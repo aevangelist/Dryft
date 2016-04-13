@@ -25,10 +25,15 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        OnMapReadyCallback {
 
     private final String LOG_TAG = "MainActivity";
     private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 200;
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        //Get current location when app is launched
-
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -68,8 +72,13 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         //Run the Asynctask
-        PlacesAsyncTask task = new PlacesAsyncTask(this);
-        task.execute();
+        /*PlacesAsyncTask task = new PlacesAsyncTask(this);
+        task.execute();*/
+
+        //Set up the map
+        /*SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);*/
     }
 
     protected void onStart() {
@@ -179,8 +188,13 @@ public class MainActivity extends AppCompatActivity implements
 
             //Because you were able to grab the user's location
             if(isNetworkAvailable()){
+                Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
                 PlacesAsyncTask task = new PlacesAsyncTask(this);
                 task.execute();
+            }
+
+            if(!isNetworkAvailable()){
+                Log.d(LOG_TAG, "Network is unavailable");
             }
 
         }
@@ -222,5 +236,10 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 }
