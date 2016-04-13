@@ -69,11 +69,12 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private String TO_ATTRACTIONS;
     private String LONDON_ATTRACTIONS;
 
-
-
     private JSONArray arr;
     private JSONObject obj;
     private Activity activity;
+
+    //This is the container that will hold the Place objects of the tour
+    ArrayList<Place> tourList;
 
     public PlacesAsyncTask(Activity activity) {
         this.activity = activity;
@@ -136,7 +137,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             createTour(URL, numResults);
         }
 
-        return null;
+        return tourList;
 
     }
 
@@ -154,6 +155,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             String newURL = base + OFFSET + selected[i];
             Log.d(LOG_TAG, "URL CALL: " + newURL);
             Place p = dataAPICall(newURL); //This will hold the actual data for the selected place
+
+            addToTour(p);
 
             try {
                 Thread.sleep(1000);
@@ -200,8 +203,11 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             //Look for restaurant
             int[] selected = selectPlace(numResults, GENERATED_RESTR);
             for (int i = 0; i < selected.length; i++) {
-                Log.d(LOG_TAG, "URL CALL: " + url);
-                Place p = dataAPICall(url + OFFSET + selected[i]); //Grab the info for selected restaurant
+                String newUrl = url + OFFSET + selected[i];
+                Log.d(LOG_TAG, "URL CALL: " + newUrl);
+                Place p = dataAPICall(newUrl); //Grab the info for selected restaurant
+
+                addToTour(p);
 
                 try {
                     Thread.sleep(1000);
@@ -212,6 +218,11 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 }
             }
         }
+
+    //This will add the place into the list of tours
+    private void addToTour(Place p){
+        tourList.add(p);
+    }
 
     /**
      * The purpose of this API call is to scope out the result set so that we know how to query it
