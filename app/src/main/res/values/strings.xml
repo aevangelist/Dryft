@@ -26,6 +26,7 @@
     <string name="nyc_attractions">&amp;near=new+york+city&amp;query=tourist</string>
     <string name="toronto_attractions">&amp;near=toronto&amp;query=tourist</string>
     <string name="sf_attractions">&amp;near=san+francisco&amp;query=tourist</string>
+    <string name="london_attractions">&amp;near=london+england&amp;query=tourist</string>
 
     <!-- test vals -->
     <string name="restaurant_url_base">https://api.foursquare.com/v2/venues/explore?client_id=F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2&amp;client_secret=RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY&amp;v=20130815&amp;limit=1</string>

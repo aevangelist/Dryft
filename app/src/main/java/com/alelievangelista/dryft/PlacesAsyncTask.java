@@ -67,6 +67,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private String NYC_ATTRACTIONS;
     private String SF_ATTRACTIONS;
     private String TO_ATTRACTIONS;
+    private String LONDON_ATTRACTIONS;
 
 
 
@@ -110,17 +111,17 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         DINNER = activity.getResources().getString(R.string.foursquare_dinner);
         RADIUS = activity.getResources().getString(R.string.foursquare_radius_2000);
 
-
         //Supported cities
         NYC_ATTRACTIONS = activity.getResources().getString(R.string.nyc_attractions);
         SF_ATTRACTIONS = activity.getResources().getString(R.string.sf_attractions);
         TO_ATTRACTIONS = activity.getResources().getString(R.string.toronto_attractions);
+        LONDON_ATTRACTIONS = activity.getResources().getString(R.string.london_attractions);
 
         int numResults = 0;
 
         //Build URL
         PREFIX_URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION + LIMIT;
-        String URL = PREFIX_URL + SF_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
+        String URL = PREFIX_URL + NYC_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
 
         //Scope out the potential results
         try {
@@ -151,6 +152,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
             //Reconstruct the API call
             String newURL = base + OFFSET + selected[i];
+            Log.d(LOG_TAG, "URL CALL: " + newURL);
             Place p = dataAPICall(newURL); //This will hold the actual data for the selected place
 
             try {
@@ -164,17 +166,17 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                     case 0:
                         String m1URL = PREFIX_URL + LAT_LONG + p.getLatitude() + "," + p.getLongitude() +
                                 BREAKFAST + RADIUS;
-                        suggestRestaurant(m1URL);
+                        selectRestaurant(m1URL);
                         break;
                     case 1:
                         String m2URL = PREFIX_URL + LAT_LONG + p.getLatitude() + "," + p.getLongitude() +
                                 LUNCH + RADIUS;
-                        suggestRestaurant(m2URL);
+                        selectRestaurant(m2URL);
                         break;
                     case 2:
                         String m3URL = PREFIX_URL + LAT_LONG + p.getLatitude() + "," + p.getLongitude() +
                                 DINNER + RADIUS;
-                        suggestRestaurant(m3URL);
+                        selectRestaurant(m3URL);
                         break;
                     default:
                         break;
@@ -187,7 +189,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * This will generate restaurants based on the choices available in the area
      * @param url
      */
-    private void suggestRestaurant(String url){
+    private void selectRestaurant(String url){
 
         //Scope out the restaurants in the area
         int numResults = scopeAPICall(url);
@@ -198,8 +200,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             //Look for restaurant
             int[] selected = selectPlace(numResults, GENERATED_RESTR);
             for (int i = 0; i < selected.length; i++) {
-
-                Place p = dataAPICall(url); //Grab the info for selected restaurant
+                Log.d(LOG_TAG, "URL CALL: " + url);
+                Place p = dataAPICall(url + OFFSET + selected[i]); //Grab the info for selected restaurant
 
                 try {
                     Thread.sleep(1000);
@@ -366,12 +368,10 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         }
 
-
         Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")"  + " \n" + address + " \n" + category);
 
         return new Place(id, name, phone, address, category, latitude, longitude);
 
-        //return new MovieElement(id, name, API_IMAGE_URL1 + poster, API_IMAGE_URL2 + backdrop, synopsis, rating, votes, releaseDate);
     }
 
 }
