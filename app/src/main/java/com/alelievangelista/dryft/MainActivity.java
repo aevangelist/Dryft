@@ -27,13 +27,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback,
+        PlacesAsyncTask.PlacesAsyncResponse{
 
     private final String LOG_TAG = "MainActivity";
     private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 200;
@@ -71,14 +75,19 @@ public class MainActivity extends AppCompatActivity implements
                     .build();
         }
 
-        //Run the Asynctask
-        /*PlacesAsyncTask task = new PlacesAsyncTask(this);
-        task.execute();*/
+        //Because you were able to grab the user's location
+        if(isNetworkAvailable()){
+            Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
+            PlacesAsyncTask task = new PlacesAsyncTask(this);
+            task.delegate = this; //this to set delegate/listener back to this class
+
+            task.execute();
+        }
 
         //Set up the map
-        /*SupportMapFragment mapFragment =
+        SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
+        //mapFragment.getMapAsync(this);
     }
 
     protected void onStart() {
@@ -171,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d(LOG_TAG, "For some reason you STILL dont have permission");
             return;
         }
 
@@ -185,17 +193,6 @@ public class MainActivity extends AppCompatActivity implements
             String mLongitude = Double.toString(mLastLocation.getLongitude());
 
             Log.d(LOG_TAG, "User's current coordinates: Long:" + mLatitude + " - " + "Lat:" + mLongitude);
-
-            //Because you were able to grab the user's location
-            if(isNetworkAvailable()){
-                Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
-                PlacesAsyncTask task = new PlacesAsyncTask(this);
-                task.execute();
-            }
-
-            if(!isNetworkAvailable()){
-                Log.d(LOG_TAG, "Network is unavailable");
-            }
 
         }
 
@@ -241,5 +238,15 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    }
+
+    public void createMapVisualization(ArrayList<Place> tourList){
+
+    }
+
+    @Override
+    public void processFinish(ArrayList<Place> output) {
+        Log.d(LOG_TAG, output.toString());
+        createMapVisualization(output);
     }
 }

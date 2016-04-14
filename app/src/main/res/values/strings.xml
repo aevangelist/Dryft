@@ -23,7 +23,7 @@
     <string name="foursquare_id">F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2</string>
     <string name="foursquare_secret">RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY</string>
 
-    <string name="nyc_attractions">&amp;near=new+york+city&amp;query=tourist</string>
+    <string name="nyc_attractions">&amp;near=new+york+city+new+york&amp;query=tourist</string>
     <string name="toronto_attractions">&amp;near=toronto&amp;query=tourist</string>
     <string name="sf_attractions">&amp;near=san+francisco&amp;query=tourist</string>
     <string name="london_attractions">&amp;near=london+england&amp;query=tourist</string>

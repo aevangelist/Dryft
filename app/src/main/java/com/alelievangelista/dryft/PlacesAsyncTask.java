@@ -20,6 +20,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
     private static final String LOG_TAG = "PlacesAsyncTask";
 
+    public PlacesAsyncResponse delegate = null;
+
     //Tour template - the number of attractions and restaurants to generate in between each
     private static final int GENERATED_ATTR = 3;
     private static final int GENERATED_RESTR = 1;
@@ -84,6 +86,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     @Override
     protected void onPostExecute(ArrayList<Place> result) {
         super.onPostExecute(tourList);
+        delegate.processFinish(tourList);
         Log.d("PlacesAsyncTask", "Post Execute");
     }
 
@@ -383,6 +386,10 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         return new Place(id, name, phone, address, category, latitude, longitude);
 
+    }
+
+    public interface PlacesAsyncResponse {
+        void processFinish(ArrayList<Place> output);
     }
 
 }
