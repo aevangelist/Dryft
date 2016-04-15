@@ -32,6 +32,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_GROUPS = "groups";
     private static final String TAG_ITEMS = "items";
     private static final String TAG_VENUE = "venue";
+    private static final String TAG_COUNT = "count";
 
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
@@ -40,6 +41,14 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_LOCATION = "location";
     private static final String TAG_ADDRESS = "formattedAddress";
     private static final String TAG_CATEGORIES = "categories";
+
+    private static final String TAG_PHOTOS = "featuredPhotos";
+    private static final String TAG_PREFIX = "prefix";
+    private static final String TAG_SUFFIX = "suffix";
+    private static final String TAG_WIDTH = "width";
+    private static final String TAG_HEIGHT = "height";
+
+
     private static final String TAG_LATITUDE = "lat";
     private static final String TAG_LONGITUDE = "lng";
 
@@ -57,6 +66,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private String LIMIT;
     private String OFFSET;
     private String LAT_LONG;
+    private String VENUE_PHOTOS;
 
     private String BREAKFAST;
     private String LUNCH;
@@ -108,6 +118,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         LIMIT = activity.getResources().getString(R.string.foursquare_results_limit);
         OFFSET = activity.getResources().getString(R.string.foursquare_offset);
         LAT_LONG = activity.getResources().getString(R.string.foursquare_lat_lng);
+        VENUE_PHOTOS = activity.getResources().getString(R.string.foursquare_venue_photos);
 
         //Restaurant related
         BREAKFAST = activity.getResources().getString(R.string.foursquare_breakfast);
@@ -155,7 +166,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         for (int i = 0; i < selected.length; i++) {
 
             //Reconstruct the API call
-            String newURL = base + OFFSET + selected[i];
+            String newURL = base + VENUE_PHOTOS + OFFSET + selected[i];
             Log.d(LOG_TAG, "URL CALL: " + newURL);
             Place p = dataAPICall(newURL); //This will hold the actual data for the selected place
 
@@ -206,7 +217,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             //Look for restaurant
             int[] selected = selectPlace(numResults, GENERATED_RESTR);
             for (int i = 0; i < selected.length; i++) {
-                String newUrl = url + OFFSET + selected[i];
+                String newUrl = url + VENUE_PHOTOS + OFFSET + selected[i];
                 Log.d(LOG_TAG, "URL CALL: " + newUrl);
                 Place p = dataAPICall(newUrl); //Grab the info for selected restaurant
 
@@ -354,7 +365,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         String latitude = "";
         String longitude = "";
         String category = "";
-
+        String photo = "";
 
         if(obj.has(TAG_ID)) {
             id = obj.getString(TAG_ID);
@@ -382,9 +393,18 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         }
 
-        Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")"  + " \n" + address + " \n" + category);
+        if(obj.getJSONObject(TAG_PHOTOS).getInt(TAG_COUNT) > 0) {
+            String a = obj.getJSONObject(TAG_PHOTOS).getJSONArray(TAG_ITEMS).getJSONObject(0).getString(TAG_PREFIX);
+            String b = obj.getJSONObject(TAG_PHOTOS).getJSONArray(TAG_ITEMS).getJSONObject(0).getString(TAG_SUFFIX);
+            String c = obj.getJSONObject(TAG_PHOTOS).getJSONArray(TAG_ITEMS).getJSONObject(0).getString(TAG_WIDTH);
+            String d = obj.getJSONObject(TAG_PHOTOS).getJSONArray(TAG_ITEMS).getJSONObject(0).getString(TAG_HEIGHT);
 
-        return new Place(id, name, phone, address, category, latitude, longitude);
+            photo = a + c + "x" + d + b;
+        }
+
+        Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")"  + " \n" + address + " \n" + category + " \n" + photo);
+
+        return new Place(id, name, phone, address, category, latitude, longitude, photo);
 
     }
 

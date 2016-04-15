@@ -25,10 +25,12 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback,
         PlacesAsyncTask.PlacesAsyncResponse{
+
+    private GoogleMap googleMap;
 
     private final String LOG_TAG = "MainActivity";
     private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 200;
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements
         //Set up the map
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
     }
 
     protected void onStart() {
@@ -236,17 +240,69 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
     public void createMapVisualization(ArrayList<Place> tourList){
+
+        //Bounds
+        double minLng = 0;
+        double minLat = 0;
+        double maxLng = 0;
+        double maxLat = 0;
+
+        // Create a LatLngBounds that includes Australia.
+        /*LatLngBounds AUSTRALIA = new LatLngBounds(
+                new LatLng(-44, 113), new LatLng(-10, 154));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(AUSTRALIA, 0));*/
+
+        for (int i = 0; i < tourList.size(); i++) {
+            Place p = tourList.get(i);
+            if (googleMap != null){
+                Log.d(LOG_TAG, "Place #" + i + ": " + p.getName());
+                double lat = Double.parseDouble(p.getLatitude());
+                double lng = Double.parseDouble(p.getLongitude());
+                String title = p.getName();
+                googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(title));
+
+                if(lat < minLat || minLat == 0){
+                    minLat = lat;
+                }
+                if(lng < minLng || minLng == 0){
+                    minLng = lng;
+                }
+                if(lat > maxLat || maxLat == 0){
+                    maxLat = lat;
+                }
+                if(lng > maxLng || maxLng == 0){
+                    maxLng = lng;
+                }
+            }
+        }
+
+        Log.d(LOG_TAG, "Min Lat : " + minLat);
+        Log.d(LOG_TAG, "Min Lng : " + minLng);
+        Log.d(LOG_TAG, "Max Lat : " + maxLat);
+        Log.d(LOG_TAG, "Max Lng : " + maxLng);
+
+
+        //Create bounds
+        LatLngBounds BOUNDED = new LatLngBounds(
+                new LatLng(minLat, minLng), new LatLng(maxLat, maxLng));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(BOUNDED, 40));
 
     }
 
     @Override
     public void processFinish(ArrayList<Place> output) {
-        Log.d(LOG_TAG, output.toString());
-        createMapVisualization(output);
+
+        //Build the map
+        //createMapVisualization(output);
+
+        //Build the welcome message
     }
 }

@@ -17,9 +17,10 @@ public class Place implements Parcelable {
     private String latitude;
     private String longitude;
     private String category;
+    private String photo;
 
     public Place (String i, String n, String p,String a, String cat,
-    String lat, String lon) {
+    String lat, String lon, String photo) {
         this.id = i;
         this.name = n;
         this.phone = p;
@@ -27,6 +28,7 @@ public class Place implements Parcelable {
         this.category = cat;
         this.latitude = lat;
         this.longitude = lon;
+        this.photo = photo;
     }
 
     public Place() {
@@ -40,7 +42,8 @@ public class Place implements Parcelable {
                 "Address: " + this.address + "\n" +
                 "Phone: " + this.phone + "\n" +
                 "Coordinates: " + this.latitude + ", " + this.longitude + "\n" +
-                "Category: " + this.category;
+                "Category: " + this.category + "\n" +
+                "Photo: " + this.photo;
 
 
     }
@@ -48,6 +51,22 @@ public class Place implements Parcelable {
     /**
      * Getters and Setters
      */
+
+    public String getId(){
+        return this.id;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getAddress(){
+        return this.address;
+    }
+
+    public String getPhone(){
+        return this.latitude;
+    }
 
     public String getLatitude(){
         return this.latitude;

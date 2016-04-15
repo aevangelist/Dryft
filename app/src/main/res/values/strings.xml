@@ -16,6 +16,8 @@
     <string name="foursquare_lunch">&amp;query=lunch</string>
     <string name="foursquare_dinner">&amp;query=dinner</string>
     <string name="foursquare_radius_2000">&amp;radius=2000</string>
+    <string name="foursquare_venue_photos">&amp;venuePhotos=1</string>
+
 
     <string name="foursquare_client_id">client_id=</string>
     <string name="foursquare_client_secret">&amp;client_secret=</string>
