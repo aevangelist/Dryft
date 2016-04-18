@@ -10,7 +10,6 @@ public class Place implements Parcelable {
 
     private String id;
     private String name;
-    private String desc;
     private String address;
     private String phone;
     private String website;
@@ -60,14 +59,6 @@ public class Place implements Parcelable {
         return this.name;
     }
 
-    public String getAddress(){
-        return this.address;
-    }
-
-    public String getPhone(){
-        return this.latitude;
-    }
-
     public String getLatitude(){
         return this.latitude;
     }
@@ -83,7 +74,7 @@ public class Place implements Parcelable {
     private Place(Parcel in){
         id = in.readString();
         name = in.readString();
-        desc = in.readString();
+        phone = in.readString();
         address = in.readString();
         phone = in.readString();
         website = in.readString();
@@ -102,7 +93,7 @@ public class Place implements Parcelable {
     public void writeToParcel(Parcel p, int flags) {
         p.writeString(id);
         p.writeString(name);
-        p.writeString(desc);
+        p.writeString(phone);
         p.writeString(address);
         p.writeString(phone);
         p.writeString(website);
