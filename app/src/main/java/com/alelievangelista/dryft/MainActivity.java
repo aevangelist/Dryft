@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //CollapsingToolbarLayout toolbar = (CollapsingToolbarLayout) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        /*android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new DummyFragment(), "WELCOME");
         adapter.addFrag(new DummyFragment(), "TOUR");
         adapter.addFrag(new DummyFragment(), "MAP");
         viewPager.setAdapter(adapter);
