@@ -1,8 +1,10 @@
-package com.alelievangelista.dryft;
+package com.alelievangelista.dryft.ui;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.alelievangelista.dryft.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -404,7 +406,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")"  + " \n" + address + " \n" + category + " \n" + photo);
 
-        return new Place(id, name, phone, address, category, latitude, longitude, photo);
+        Place place = new Place(id, name, phone, address, category, latitude, longitude, photo);
+
+        return place;
 
     }
 

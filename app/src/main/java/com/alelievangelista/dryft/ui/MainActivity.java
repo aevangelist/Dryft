@@ -1,4 +1,4 @@
-package com.alelievangelista.dryft;
+package com.alelievangelista.dryft.ui;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -10,19 +10,20 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
+import com.alelievangelista.dryft.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback,
-        PlacesAsyncTask.PlacesAsyncResponse{
+        PlacesAsyncTask.PlacesAsyncResponse,
+        LoaderManager.LoaderCallbacks{
 
     private GoogleMap googleMap;
 
@@ -53,22 +55,16 @@ public class MainActivity extends AppCompatActivity implements
     private String mLatitude;
     private String mLongitude;
 
+    private RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //Toolbar
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -95,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.htab_tabs);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.htab_viewpager);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         setupViewPager(viewPager); //Set up with adapter and tab names
         tabLayout.setupWithViewPager(viewPager);
@@ -344,4 +342,22 @@ public class MainActivity extends AppCompatActivity implements
 
         //Build the welcome message
     }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Object data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
+    }
+
+
+
 }

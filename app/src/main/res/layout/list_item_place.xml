@@ -41,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:text="Balthazar's Restaurant"
                     android:id="@+id/placeName"
-                    style="@style/PlaceTitleStyle"/>
+                    style="@style/PlaceTitleStyle"
+                    android:layout_marginTop="5dp" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -50,7 +51,7 @@
 
                     <ImageView
                         android:layout_width="20dp"
-                        android:src="@drawable/gps"
+                        android:src="@drawable/restaurant"
                         android:layout_height="30dp"
                         android:id="@+id/categoryIcon" />
 

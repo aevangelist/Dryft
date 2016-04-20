@@ -19,7 +19,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDNaMHj_XpC5z5MfeKp5SeFoeKa2nbEl1E"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -28,6 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.alelievangelista.dryft.data.PlacesProvider"
+            android:name=".data.PlacesProvider"/>
+
     </application>
 
 </manifest>
