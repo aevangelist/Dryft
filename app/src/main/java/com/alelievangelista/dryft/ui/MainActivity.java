@@ -25,7 +25,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,8 +33,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        OnMapReadyCallback{
+        GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleMap googleMap;
 
@@ -111,9 +109,8 @@ public class MainActivity extends AppCompatActivity implements
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new TourFragment(), "TOUR");
-        adapter.addFrag(new DummyFragment(), "MAP");
+        adapter.addFrag(new MapFragment(), "MAP");
         viewPager.setAdapter(adapter);
-
     }
 
 
@@ -253,12 +250,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-        googleMap = map;
-        //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
     public void createMapVisualization(ArrayList<Place> tourList){
