@@ -2,18 +2,13 @@ package com.alelievangelista.dryft.ui;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
+import com.alelievangelista.dryft.api.PlaceListAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -39,9 +35,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        OnMapReadyCallback,
-        PlacesAsyncTask.PlacesAsyncResponse,
-        LoaderManager.LoaderCallbacks{
+        OnMapReadyCallback{
 
     private GoogleMap googleMap;
 
@@ -55,7 +49,9 @@ public class MainActivity extends AppCompatActivity implements
     private String mLatitude;
     private String mLongitude;
 
+    private PlaceListAdapter placeListAdapter;
     private RecyclerView mRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +71,6 @@ public class MainActivity extends AppCompatActivity implements
                     .build();
         }
 
-        //Because you were able to grab the user's location
-        if(isNetworkAvailable()){
-            Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
-            PlacesAsyncTask task = new PlacesAsyncTask(this);
-            task.delegate = this; //this to set delegate/listener back to this class
-
-            task.execute();
-        }
-
         //Set up the map
         /*SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -92,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.htab_tabs);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.htab_viewpager);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         setupViewPager(viewPager); //Set up with adapter and tab names
         tabLayout.setupWithViewPager(viewPager);
@@ -124,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new DummyFragment(), "TOUR");
+        adapter.addFrag(new TourFragment(), "TOUR");
         adapter.addFrag(new DummyFragment(), "MAP");
         viewPager.setAdapter(adapter);
 
@@ -209,13 +195,6 @@ public class MainActivity extends AppCompatActivity implements
                 .show();
     }
 
-    //Check network connectivity
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     private void getCurrentUserLocation() {
 
@@ -334,29 +313,15 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    @Override
+    /*@Override
     public void processFinish(ArrayList<Place> output) {
 
         //Build the map
         //createMapVisualization(output);
 
         //Build the welcome message
-    }
+    }*/
 
-    @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader loader, Object data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-
-    }
 
 
 

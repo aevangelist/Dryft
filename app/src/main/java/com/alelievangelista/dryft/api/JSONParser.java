@@ -1,4 +1,4 @@
-package com.alelievangelista.dryft.ui;
+package com.alelievangelista.dryft.api;
 
 import android.util.Log;
 

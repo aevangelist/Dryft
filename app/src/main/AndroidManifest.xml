@@ -28,9 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <provider
-            android:authorities="com.alelievangelista.dryft.data.PlacesProvider"
+            android:authorities="com.alelievangelista.dryft"
             android:name=".data.PlacesProvider"/>
 
     </application>

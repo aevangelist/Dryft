@@ -1,6 +1,8 @@
 package com.alelievangelista.dryft.data;
 
+import android.content.ContentUris;
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 /**
  * Created by aevangelista on 16-04-18.
@@ -9,51 +11,30 @@ public class PlacesContract {
 
     public static final String CONTENT_AUTHORITY = "com.alelievangelista.dryft";
     public static final Uri BASE_URI = Uri.parse("content://com.alelievangelista.dryft");
+    public static final String PATH_PLACES = "places";
 
-    interface PlacesColumns{
-        /** Type: INTEGER PRIMARY KEY AUTOINCREMENT */
-        String _ID = "_id";
-        /** Type: TEXT */
-        String PLACE_ID = "place_id";
-        /** Type: TEXT NOT NULL */
-        String NAME = "name";
-        /** Type: TEXT NOT NULL */
-        String PHONE = "phone";
-        /** Type: TEXT NOT NULL */
-        String ADDRESS = "address";
-        /** Type: INTEGER NOT NULL DEFAULT 0 */
-        String CATEGORY = "category";
-        /** Type: TEXT NOT NULL */
-        String LATITUDE = "latitude";
-        /** Type: REAL NOT NULL DEFAULT 1.5 */
-        String LONGITUDE = "longitude";
-        /** Type: TEXT NOT NULL */
-        String MAIN_PHOTO = "main_photo";
-    }
+    public static final class Places implements BaseColumns {
+        public static final String PLACE_ID = "place_id";
+        public static final String NAME = "name";
+        public static final String PHONE = "phone";
+        public static final String ADDRESS = "address";
+        public static final String CATEGORY = "category";
+        public static final String LATITUDE = "latitude";
+        public static final String LONGITUDE = "longitude";
+        public static final String MAIN_PHOTO = "main_photo";
 
-    public static class Places implements PlacesColumns{
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.alelievangelista.dryft.places";
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.alelievangelista.dryft.places";
+        public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_PLACES).build();
 
-        //public static final String DEFAULT_SORT = PUBLISHED_DATE + " DESC";
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_PLACES;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_PLACES;
 
-        /** Matches: /places/ */
-        public static Uri buildDirUri() {
-            return BASE_URI.buildUpon().appendPath("places").build();
-        }
-
-        /** Matches: /items/[_id]/ */
         public static Uri buildPlaceUri(long _id) {
-            return BASE_URI.buildUpon().appendPath("places").appendPath(Long.toString(_id)).build();
+            return ContentUris.withAppendedId(CONTENT_URI, _id);
         }
 
-        /** Read item ID item detail URI. */
-        public static long getPlaceId(Uri itemUri) {
-            return Long.parseLong(itemUri.getPathSegments().get(1));
-        }
     }
 
-    private PlacesContract() {
-    }
 
 }

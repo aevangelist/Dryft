@@ -71,16 +71,25 @@ public class PlacesProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
+        Uri returnUri;
+
         switch (match) {
             case PLACES: {
-                final long _id = db.insertOrThrow(Tables.PLACES, null, values);
+                final long _id = db.insert(Tables.PLACES, null, values);
+                if ( _id > 0 ){
+                    returnUri = PlacesContract.Places.buildPlaceUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
                 getContext().getContentResolver().notifyChange(uri, null);
-                return PlacesContract.Places.buildPlaceUri(_id);
+                break;
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
         }
+
+        return returnUri;
     }
 
     @Override

@@ -1,10 +1,13 @@
-package com.alelievangelista.dryft.ui;
+package com.alelievangelista.dryft.api;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.alelievangelista.dryft.R;
+import com.alelievangelista.dryft.data.PlacesContract;
+import com.alelievangelista.dryft.ui.Place;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +78,6 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private String DINNER;
 
     private String RADIUS;
-
 
     //Cities supported
     private String NYC_ATTRACTIONS;
@@ -404,12 +406,28 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             photo = a + c + "x" + d + b;
         }
 
-        Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")"  + " \n" + address + " \n" + category + " \n" + photo);
+        Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")" + " \n" + address + " \n" + category + " \n" + photo);
 
         Place place = new Place(id, name, phone, address, category, latitude, longitude, photo);
 
+        //Send to content provider
+        writeBackTour(id, name, phone, address, category, latitude, longitude, photo);
+
         return place;
 
+    }
+
+    private void writeBackTour(String id, String name, String phone, String address, String category, String latitude, String longitude, String photo) {
+        ContentValues values= new ContentValues();
+        values.put(PlacesContract.Places.PLACE_ID, id);
+        values.put(PlacesContract.Places.NAME, name);
+        values.put(PlacesContract.Places.PHONE, phone);
+        values.put(PlacesContract.Places.ADDRESS, address);
+        values.put(PlacesContract.Places.CATEGORY, category);
+        values.put(PlacesContract.Places.LATITUDE, latitude);
+        values.put(PlacesContract.Places.LONGITUDE, longitude);
+        values.put(PlacesContract.Places.MAIN_PHOTO, photo);
+        activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI,values);
     }
 
     public interface PlacesAsyncResponse {
