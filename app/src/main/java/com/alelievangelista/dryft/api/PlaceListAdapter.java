@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by aevangelista on 16-04-19.
@@ -58,12 +59,18 @@ public class PlaceListAdapter extends CursorAdapter {
         viewHolder.name.setText(placeName);
 
         String placeAddress = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.ADDRESS));
-        viewHolder.address.setText(placeAddress);
+        //Format address
+        String strArray[] = placeAddress.split(",");
+        String s1 = strArray[0];
+        String s = s1.substring(2, s1.length() - 1);
+
+        viewHolder.address.setText(s);
 
         String placeCategory = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.CATEGORY));
         viewHolder.category.setText(placeCategory);
 
-        /*String imgUrl = cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        new DownloadImage(viewHolder.bookCover).execute(imgUrl);*/
+        String imgUrl = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.MAIN_PHOTO));
+        Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
+
     }
 }
