@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,6 +37,11 @@ public class TourFragment extends Fragment implements
     private final int LOADER_ID = 10;
     private int position = ListView.INVALID_POSITION;
 
+    private String mSelectionClauseDisplay =  PlacesContract.Places.IS_DISPLAY + " = ?";
+    private String mSelectionClauseSaved =  PlacesContract.Places.IS_SAVED + " = ?";
+    private String[] mArgsYes = new String[]{"1"};
+    private String[] mArgsNo = new String[]{"0"};
+
 
     private Activity activity;
     private ListView mListView;
@@ -56,28 +63,27 @@ public class TourFragment extends Fragment implements
 
         mListView = (ListView) view.findViewById(R.id.list_view);
 
+        //Floating Action Button behaviour
+        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab_reload);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                createNewTour();
+            }
+        });
+
         //Set up cursor
         Cursor cursor = getActivity().getContentResolver().query(
                 PlacesContract.Places.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
-                null, // cols for "where" clause
-                null, // values for "where" clause
+                mSelectionClauseDisplay, // cols for "where" clause
+                mArgsYes, // values for "where" clause
                 null  // sort order
         );
 
         //Set up custom adapter
         placeListAdapter = new PlaceListAdapter(getActivity(), cursor, 0);
         mListView.setAdapter(placeListAdapter);
-
-
-        //Because you were able to grab the user's location
-        if(isNetworkAvailable()){
-            Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
-            PlacesAsyncTask task = new PlacesAsyncTask(activity);
-            task.delegate = this; //this to set delegate/listener back to this class
-
-            task.execute();
-        }
+        TourFragment.this.restartLoader();
 
         return view;
 
@@ -89,6 +95,31 @@ public class TourFragment extends Fragment implements
                 = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    /**
+     * This is the handler for when the FAB is clicked
+     */
+    private void createNewTour(){
+
+        Snackbar snackbar = Snackbar
+                .make(mListView, "Sit tight. We're preparing a new tour...", Snackbar.LENGTH_LONG);
+
+        snackbar.show();
+
+        //First, delete items in content provider that have not been saved
+        activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseDisplay, mArgsYes);
+        activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseSaved, mArgsNo);
+
+        //Next, connect out to via API to generate a new tour
+        if(isNetworkAvailable()){
+            Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
+            PlacesAsyncTask task = new PlacesAsyncTask(activity);
+            task.delegate = this; //this to set delegate/listener back to this class
+
+            task.execute();
+        }
+
     }
 
     @Override

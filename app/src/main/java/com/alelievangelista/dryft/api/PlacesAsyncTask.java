@@ -427,6 +427,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         values.put(PlacesContract.Places.LATITUDE, latitude);
         values.put(PlacesContract.Places.LONGITUDE, longitude);
         values.put(PlacesContract.Places.MAIN_PHOTO, photo);
+        values.put(PlacesContract.Places.IS_SAVED, "0"); //You're just looking at the tour - not saving
+        values.put(PlacesContract.Places.IS_DISPLAY, "1"); //You're just looking at the tour - not saving
         activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI,values);
     }
 

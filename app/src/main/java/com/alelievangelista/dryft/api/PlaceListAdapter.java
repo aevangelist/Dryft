@@ -62,6 +62,7 @@ public class PlaceListAdapter extends CursorAdapter {
         //Format address
         String strArray[] = placeAddress.split(",");
         String s1 = strArray[0];
+        s1.trim();
         String s = s1.substring(2, s1.length() - 1);
 
         viewHolder.address.setText(s);

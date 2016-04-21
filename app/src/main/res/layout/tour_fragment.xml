@@ -2,30 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.alelievangelista.dryft.ui.TourFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+    <!--<android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent">-->
 
         <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:id="@+id/list_view" />
-
-        <!--<android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
-            android:paddingTop="@dimen/recycler_padding_top"
-            android:paddingLeft="@dimen/list_side_margin"
-            android:paddingRight="@dimen/list_side_margin"
-            android:paddingBottom="@dimen/recycler_padding_bottom" />-->
 
         <!-- TODO: Update blank fragment layout -->
         <TextView
@@ -33,7 +29,16 @@
             android:layout_height="match_parent"
             android:text="@string/hello_blank_fragment" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_reload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20dp"
+        android:src="@drawable/refresh"
+        app:layout_anchor="@id/list_view"
+        app:layout_anchorGravity="bottom|right|end" />
 
 </FrameLayout>

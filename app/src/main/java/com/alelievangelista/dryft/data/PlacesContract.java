@@ -22,6 +22,9 @@ public class PlacesContract {
         public static final String LATITUDE = "latitude";
         public static final String LONGITUDE = "longitude";
         public static final String MAIN_PHOTO = "main_photo";
+        public static final String IS_SAVED = "is_saved";
+        public static final String IS_DISPLAY = "is_display";
+
 
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_PLACES).build();
 
