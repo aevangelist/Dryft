@@ -1,16 +1,24 @@
 package com.alelievangelista.dryft.ui;
 
-import android.content.Context;
-import android.net.Uri;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alelievangelista.dryft.R;
+import com.alelievangelista.dryft.data.PlacesContract;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,24 +28,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback,
+        LoaderManager.LoaderCallbacks<Cursor>{
+
+    private final String LOG_TAG = "MapFragment";
+    private final int LOADER_ID = 10;
+
+    private String mSelectionClauseDisplay =  PlacesContract.Places.IS_DISPLAY + " = ?";
+    private String mSelectionClauseSaved =  PlacesContract.Places.IS_SAVED + " = ?";
+    private String[] mArgsYes = new String[]{"1"};
+    private String[] mArgsNo = new String[]{"0"};
+
+    private Cursor cursor;
 
     private GoogleMap googleMap;
-
-    private OnFragmentInteractionListener mListener;
 
     public MapFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static MapFragment newInstance(String param1, String param2) {
         MapFragment fragment = new MapFragment();
@@ -57,51 +66,112 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View view  = inflater.inflate(R.layout.fragment_map, container, false);
+
+        //Set up the map
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        MapFragment.this.restartLoader();
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    private void restartLoader(){
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
-        //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+        //Set up cursor
+        cursor = getActivity().getContentResolver().query(
+                PlacesContract.Places.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClauseDisplay, // cols for "where" clause
+                mArgsYes, // values for "where" clause
+                null  // sort order
+        );
+
+        //Determine locations
+        getPlaces(cursor);
+
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * This will extract the locations of the places generated for the tour
+     * @param c
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private void getPlaces(Cursor c){
+
+        //Bounds
+        double minLng = 0;
+        double minLat = 0;
+        double maxLng = 0;
+        double maxLat = 0;
+
+        while (c.moveToNext() && googleMap != null) {
+            String placeName = c.getString(c.getColumnIndex(PlacesContract.Places.NAME));
+            String latitude = c.getString(c.getColumnIndex(PlacesContract.Places.LATITUDE));
+            String longitude = c.getString(c.getColumnIndex(PlacesContract.Places.LONGITUDE));
+
+            double lat = Double.parseDouble(latitude);
+            double lng = Double.parseDouble(longitude);
+
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(placeName));
+
+            if(lat < minLat || minLat == 0){
+                minLat = lat;
+            }
+            if(lng < minLng || minLng == 0){
+                minLng = lng;
+            }
+            if(lat > maxLat || maxLat == 0){
+                maxLat = lat;
+            }
+            if(lng > maxLng || maxLng == 0){
+                maxLng = lng;
+            }
+
+        }
+
+        //Create bounds
+        LatLngBounds BOUNDED = new LatLngBounds(
+                new LatLng(minLat, minLng), new LatLng(maxLat, maxLng));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(BOUNDED, 80));
+
     }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        return new CursorLoader(
+                getActivity(),
+                PlacesContract.Places.CONTENT_URI,
+                null,
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        cursor = data;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        cursor = null;
+    }
+
 }

@@ -57,7 +57,7 @@ public class TourFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.tour_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_tour, container, false);
 
         activity = getActivity();
 
@@ -124,7 +124,7 @@ public class TourFragment extends Fragment implements
 
     @Override
     public void processFinish(ArrayList<Place> output) {
-
+        Log.e(LOG_TAG, "Asynctask has finished!!!");
     }
 
     private void restartLoader(){

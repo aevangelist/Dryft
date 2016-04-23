@@ -1,21 +1,47 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+    <!-- ToolBar -->
+    <style name="MVP_AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+            <!-- White arrow -->
+            <item name="colorControlNormal">@android:color/white</item>
+        </style>
+
+    <!--<style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">true</item>
+    <item name="windowNoTitle">true</item>
+</style>-->
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AboutTitleStyle">
+        <item name="android:id">@android:id/title</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:fontFamily">sans-serif-regular</item>
+    </style>
+
+    <style name="TitleStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="PlaceTitleStyle">
         <item name="android:layout_width">match_parent</item>

@@ -10,55 +10,49 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
-import com.alelievangelista.dryft.api.PlaceListAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
-    private GoogleMap googleMap;
+    private CharSequence title;
 
     private final String LOG_TAG = "MainActivity";
     private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 200;
 
     private int permissionLocationFine;
 
+    private Toolbar toolbar;
+
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private String mLatitude;
     private String mLongitude;
 
-    private PlaceListAdapter placeListAdapter;
-    private RecyclerView mRecyclerView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         //Toolbar
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("WHAHAKHSFKJSFH");
+        //setSupportActionBar(toolbar);
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -69,14 +63,9 @@ public class MainActivity extends AppCompatActivity implements
                     .build();
         }
 
-        //Set up the map
-        /*SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.htab_tabs);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.htab_viewpager);
-
 
         setupViewPager(viewPager); //Set up with adapter and tab names
         tabLayout.setupWithViewPager(viewPager);
@@ -127,8 +116,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
@@ -252,68 +244,19 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    public void createMapVisualization(ArrayList<Place> tourList){
-
-        //Bounds
-        double minLng = 0;
-        double minLat = 0;
-        double maxLng = 0;
-        double maxLat = 0;
-
-        // Create a LatLngBounds that includes Australia.
-        /*LatLngBounds AUSTRALIA = new LatLngBounds(
-                new LatLng(-44, 113), new LatLng(-10, 154));
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(AUSTRALIA, 0));*/
-
-        for (int i = 0; i < tourList.size(); i++) {
-            Place p = tourList.get(i);
-            if (googleMap != null){
-                Log.d(LOG_TAG, "Place #" + i + ": " + p.getName());
-                double lat = Double.parseDouble(p.getLatitude());
-                double lng = Double.parseDouble(p.getLongitude());
-                String title = p.getName();
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(title));
-
-                if(lat < minLat || minLat == 0){
-                    minLat = lat;
-                }
-                if(lng < minLng || minLng == 0){
-                    minLng = lng;
-                }
-                if(lat > maxLat || maxLat == 0){
-                    maxLat = lat;
-                }
-                if(lng > maxLng || maxLng == 0){
-                    maxLng = lng;
-                }
-            }
-        }
-
-        Log.d(LOG_TAG, "Min Lat : " + minLat);
-        Log.d(LOG_TAG, "Min Lng : " + minLng);
-        Log.d(LOG_TAG, "Max Lat : " + maxLat);
-        Log.d(LOG_TAG, "Max Lng : " + maxLng);
-
-
-        //Create bounds
-        LatLngBounds BOUNDED = new LatLngBounds(
-                new LatLng(minLat, minLng), new LatLng(maxLat, maxLng));
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(BOUNDED, 40));
-
-    }
-
     /*@Override
     public void processFinish(ArrayList<Place> output) {
 
         //Build the map
         //createMapVisualization(output);
 
-        //Build the welcome message
     }*/
 
 
-
+    public void restoreActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(title);
+    }
 
 }
