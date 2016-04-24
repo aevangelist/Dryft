@@ -19,6 +19,10 @@ import com.squareup.picasso.Picasso;
  */
 public class PlaceListAdapter extends CursorAdapter {
 
+    private static final String LOG_TAG = "PlaceListAdapter";
+
+    private Cursor cursor;
+
     public static class ViewHolder {
         public final TextView name;
         public final TextView address;
@@ -37,7 +41,12 @@ public class PlaceListAdapter extends CursorAdapter {
 
     public PlaceListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        this.cursor = c;
         Log.d("PlaceListAdapter", "Creating the adapter");
+    }
+
+    public Cursor getCursor() {
+        return cursor;
     }
 
     @Override
@@ -46,6 +55,19 @@ public class PlaceListAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
+
+        final String placeId = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
+        final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
+
+
+        //Set up on click
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(LOG_TAG, "Choosing item: " + placeName + ", " + placeId);
+            }
+        });
 
         return view;
     }
@@ -74,4 +96,6 @@ public class PlaceListAdapter extends CursorAdapter {
         Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
 
     }
+
+
 }

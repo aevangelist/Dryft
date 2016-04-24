@@ -9,6 +9,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--Messages-->
+    <string name="new_tour">Sit tight. We\'re preparing a new tour...</string>
+
     <!--Text-->
     <string name="about_title">About Dryft</string>
 
