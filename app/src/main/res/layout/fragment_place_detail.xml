@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/frag_place_detail"
+    android:clickable="true"
+    tools:context="com.alelievangelista.dryft.ui.PlaceDetailFragment"
+    android:weightSum="1"
+    android:background="#ffffffff">
+
+    <ImageView
+        android:id="@+id/collapse_toolbar_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:fitsSystemWindows="true"
+        app:layout_collapseMode="pin" />
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:id="@+id/app_bar"
+            android:fitsSystemWindows="true"
+            android:focusable="false">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapse_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:fitsSystemWindows="true"
+                app:contentScrim="#C62828"
+                app:collapsedTitleTextAppearance="@android:color/white"
+                app:expandedTitleTextAppearance="@android:color/transparent">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:layout_collapseMode="pin" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-32dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/airplane_white"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|right|end" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    tools:context="com.alelievangelista.dryft.ui.PlaceDetailFragment"
+                    android:weightSum="1"
+                    android:background="#ffffffff">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jack's Wife Freda"
+                            android:id="@+id/place_name"
+                            style="@style/PlaceDetailTitleStyle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Restaurant, Breakfast Spot"
+                            android:id="@+id/place_category"
+                            android:textAllCaps="true"
+                            style="@style/PlaceDetailCategoryStyle" />
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1">
+
+                                    <ImageView
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:id="@+id/star1"
+                                        android:src="@drawable/dollar"
+                                        android:visibility="visible"
+                                        android:layout_gravity="top"
+                                        android:contentDescription="dollar"
+                                        android:layout_margin="2dp" />
+                                    <ImageView
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:id="@+id/star2"
+                                        android:src="@drawable/dollar"
+                                        android:visibility="visible"
+                                        android:layout_gravity="top"
+                                        android:contentDescription="dollar"
+                                        android:layout_margin="2dp" />
+                                    <ImageView
+                                        android:layout_width="12dp"
+                                        android:layout_height="12dp"
+                                        android:id="@+id/star3"
+                                        android:src="@drawable/dollar"
+                                        android:visibility="visible"
+                                        android:layout_gravity="top"
+                                        android:contentDescription="dollar"
+                                        android:layout_margin="2dp" />
+                                </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View style="@style/ListDivider"/>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:layout_weight="0.45">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/place_detail_address"
+                            style="@style/PlaceDetailSubtitleStyle"
+                            android:singleLine="false"
+                            android:text="50 Carmine Street"
+                            android:layout_marginBottom="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/place_detail_phone"
+                            style="@style/PlaceDetailSubtitleStyle"
+                            android:singleLine="false"
+                            android:text="555-678-0934"
+                            android:layout_marginBottom="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/place_detail_website"
+                            style="@style/PlaceDetailSubtitleStyle"
+                            android:singleLine="false"
+                            android:text="www.jackswifefreda.com"
+                            android:layout_marginBottom="10dp" />
+
+                    </LinearLayout>
+
+                    <View style="@style/ListDivider"/>
+
+
+                </LinearLayout>
+            </ScrollView>
+
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

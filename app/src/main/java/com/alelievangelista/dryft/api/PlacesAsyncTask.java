@@ -140,7 +140,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         //Build URL
         PREFIX_URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION + LIMIT;
-        String URL = PREFIX_URL + NYC_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
+        String URL = PREFIX_URL + SF_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
 
         //Scope out the potential results
         try {

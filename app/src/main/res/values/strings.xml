@@ -6,7 +6,7 @@
 
     <!--Menu Items-->
     <string name="about">About</string>
-    <string name="navigation_drawer_open" >Open navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--Text-->
@@ -56,6 +56,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Navigation drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 
     <!-- test value:
     https://api.foursquare.com/v2/venues/search?client_id= F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2
