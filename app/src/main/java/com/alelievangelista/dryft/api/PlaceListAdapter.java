@@ -2,6 +2,8 @@ package com.alelievangelista.dryft.api;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
+import com.alelievangelista.dryft.ui.MainActivity;
+import com.alelievangelista.dryft.ui.PlaceDetailFragment;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -22,6 +26,7 @@ public class PlaceListAdapter extends CursorAdapter {
     private static final String LOG_TAG = "PlaceListAdapter";
 
     private Cursor cursor;
+    private MainActivity fragmentActivity;
 
     public static class ViewHolder {
         public final TextView name;
@@ -42,6 +47,7 @@ public class PlaceListAdapter extends CursorAdapter {
     public PlaceListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.cursor = c;
+        this.fragmentActivity = (MainActivity) context;
         Log.d("PlaceListAdapter", "Creating the adapter");
     }
 
@@ -59,15 +65,8 @@ public class PlaceListAdapter extends CursorAdapter {
         final String placeId = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
         final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
 
+        Log.d(LOG_TAG, "New view: " + placeName + ", " + placeId);
 
-        //Set up on click
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.d(LOG_TAG, "Choosing item: " + placeName + ", " + placeId);
-            }
-        });
 
         return view;
     }
@@ -77,7 +76,8 @@ public class PlaceListAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
+        final String placeId = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
+        final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
         viewHolder.name.setText(placeName);
 
         String placeAddress = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.ADDRESS));
@@ -94,6 +94,33 @@ public class PlaceListAdapter extends CursorAdapter {
 
         String imgUrl = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.MAIN_PHOTO));
         Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
+
+        //Set up onclick listener
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(LOG_TAG, "Choosing item: " + placeName + ", " + placeId);
+
+                Class fragmentClass = PlaceDetailFragment.class;
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+
+                    FragmentManager fragManager= fragmentActivity.getSupportFragmentManager();
+
+                    fragManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
     }
 
