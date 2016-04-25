@@ -39,16 +39,11 @@
                 android:layout_height="match_parent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 android:fitsSystemWindows="true"
-                app:contentScrim="#C62828"
+                app:contentScrim="@color/colorPrimary"
                 app:collapsedTitleTextAppearance="@android:color/white"
                 app:expandedTitleTextAppearance="@android:color/transparent">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:layout_collapseMode="pin" />
+                <include layout="@layout/toolbar" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>

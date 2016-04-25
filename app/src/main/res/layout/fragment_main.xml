@@ -1,3 +1,9 @@
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -33,6 +39,7 @@
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true" />
 <!--                    android:src="@drawable/sf_2"-->
+
                 <include layout="@layout/toolbar" />
 
             </RelativeLayout>
@@ -58,3 +65,14 @@
     <!--<include layout="@layout/content_main" />-->
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_view"/>
+
+    </android.support.v4.widget.DrawerLayout>

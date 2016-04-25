@@ -2,7 +2,11 @@ package com.alelievangelista.dryft.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +14,8 @@ import com.alelievangelista.dryft.R;
 
 public class PlaceDetailFragment extends Fragment {
 
+    private static final String LOG_TAG = "PlaceDetailFragment";
+    private Toolbar toolbar;
 
     public PlaceDetailFragment() {
         // Required empty public constructor
@@ -28,13 +34,35 @@ public class PlaceDetailFragment extends Fragment {
         if (getArguments() != null) {
 
         }
+
+    }
+
+    /**
+     * React to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+            default:
+                Log.d(LOG_TAG, "This is what you clicked: " + item.getItemId());
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_place_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_place_detail, container, false);
+
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        return view;
     }
 
 
