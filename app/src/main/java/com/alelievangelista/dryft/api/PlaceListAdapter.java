@@ -110,7 +110,8 @@ public class PlaceListAdapter extends CursorAdapter {
                     FragmentManager fragManager= fragmentActivity.getSupportFragmentManager();
 
                     fragManager.beginTransaction()
-                            .replace(R.id.container, fragment)
+                            .add(R.id.container, fragment)
+                            .addToBackStack(null)
                             .commit();
 
                 } catch (InstantiationException e) {

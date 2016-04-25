@@ -2,6 +2,7 @@ package com.alelievangelista.dryft.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -35,6 +36,8 @@ public class PlaceDetailFragment extends Fragment {
 
         }
 
+        setHasOptionsMenu(true);
+
     }
 
     /**
@@ -44,6 +47,8 @@ public class PlaceDetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Log.d(LOG_TAG, "I'm coming hommmmmeeee");
+
                 getActivity().onBackPressed();
                 return true;
             default:
@@ -59,8 +64,14 @@ public class PlaceDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_place_detail, container, false);
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(" ");
+
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
 
         return view;
     }

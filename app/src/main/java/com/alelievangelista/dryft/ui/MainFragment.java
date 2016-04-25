@@ -320,7 +320,7 @@ public class MainFragment extends Fragment implements
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        fragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack("").commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

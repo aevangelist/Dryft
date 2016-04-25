@@ -11,39 +11,43 @@
     android:weightSum="1"
     android:background="#ffffffff">
 
-    <ImageView
-        android:id="@+id/collapse_toolbar_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:fitsSystemWindows="true"
-        app:layout_collapseMode="pin" />
-
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="256dp"
+        <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
-            android:fitsSystemWindows="true"
-            android:focusable="false">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/collapse_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="280dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/colorPrimary"
-                app:collapsedTitleTextAppearance="@android:color/white"
-                app:expandedTitleTextAppearance="@android:color/transparent">
+                app:contentScrim="@color/colorPrimary">
 
-                <include layout="@layout/toolbar" />
+                <RelativeLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_collapseMode="parallax">
+
+                    <ImageView
+                        android:id="@+id/place_detail_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+
+                </RelativeLayout>
+
+                <include layout="@layout/toolbar"/>
+
 
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
@@ -183,5 +187,4 @@
 
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
-
-</LinearLayout>
+    </LinearLayout>
