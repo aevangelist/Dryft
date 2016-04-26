@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -30,6 +31,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     //Tour template - the number of attractions and restaurants to generate in between each
     private static final int GENERATED_ATTR = 3;
     private static final int GENERATED_RESTR = 1;
+    private static final int GENERATED_TIPS = 5;
+
 
 
     //JSON node names
@@ -41,18 +44,39 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
+    private static final String TAG_SHORT_NAME = "shortName";
+    private static final String TAG_DESCRIPTION = "description";
     private static final String TAG_CONTACT = "contact";
-    private static final String TAG_PHONE = "formattedPhone";
+    private static final String TAG_FORMATTED_PHONE = "formattedPhone";
+    private static final String TAG_TWITTER = "twitter";
     private static final String TAG_LOCATION = "location";
-    private static final String TAG_ADDRESS = "formattedAddress";
+    private static final String TAG_FORMATTED_ADDRESS = "formattedAddress";
+    private static final String TAG_ADDRESS = "address";
+    private static final String TAG_CROSS_STREET = "crossStreet";
+    private static final String TAG_CITY = "city";
     private static final String TAG_CATEGORIES = "categories";
+    private static final String TAG_HAS_MENU = "hasMenu";
+    private static final String TAG_MENU = "menu";
+    private static final String TAG_MOBILE_URL = "mobileUrl";
+    private static final String TAG_PRICE = "price";
+    private static final String TAG_TIER = "tier";
+
+    private static final String TAG_TIPS = "tips";
+    private static final String TAG_TEXT = "text";
+
+    private static final String TAG_HOURS = "hours";
+    private static final String TAG_STATUS = "status";
+    private static final String TAG_TIMEFRAMES = "timeframes";
+    private static final String TAG_DAYS = "days";
+    private static final String TAG_OPEN = "open";
+    private static final String TAG_RENDERED_TIME = "renderedTime";
 
     private static final String TAG_PHOTOS = "featuredPhotos";
     private static final String TAG_PREFIX = "prefix";
     private static final String TAG_SUFFIX = "suffix";
     private static final String TAG_WIDTH = "width";
     private static final String TAG_HEIGHT = "height";
-
+    private static final String TAG_BEST_PHOTO = "bestPhoto";
 
     private static final String TAG_LATITUDE = "lat";
     private static final String TAG_LONGITUDE = "lng";
@@ -61,6 +85,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
     //Pieces of the API
     private String PREFIX_URL; //This is the base for the API call
+    private String DETAILS_URL; //This is the base for detailed API call
     private String URL_BASE;
     private String URL_SETTING;
     private String URL_CLIENT_ID;
@@ -152,7 +177,13 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         //Generate tour if we got results against the city (which we should)
         if(numResults > 0){
-            createTour(URL, numResults);
+            try {
+                createTour(URL, numResults);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         return tourList;
@@ -162,7 +193,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     /**
      * This will generate an array of integers that represent key attractions to visit in a given city
      */
-    private void createTour(String base, int results){
+    private void createTour(String base, int results) throws ExecutionException, InterruptedException {
 
         //Randomly select 3 attractions based on the result set
         int[] selected = selectPlace(results, GENERATED_ATTR);
@@ -171,8 +202,10 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
             //Reconstruct the API call
             String newURL = base + VENUE_PHOTOS + OFFSET + selected[i];
+
             Log.d(LOG_TAG, "URL CALL: " + newURL);
             Place p = dataAPICall(newURL); //This will hold the actual data for the selected place
+            detailAPICall(p.getId());
 
             addToTour(p);
 
@@ -210,7 +243,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * This will generate restaurants based on the choices available in the area
      * @param url
      */
-    private void selectRestaurant(String url){
+    private void selectRestaurant(String url) throws ExecutionException, InterruptedException {
 
         //Scope out the restaurants in the area
         int numResults = scopeAPICall(url);
@@ -224,6 +257,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 String newUrl = url + VENUE_PHOTOS + OFFSET + selected[i];
                 Log.d(LOG_TAG, "URL CALL: " + newUrl);
                 Place p = dataAPICall(newUrl); //Grab the info for selected restaurant
+                detailAPICall(p.getId());
 
                 addToTour(p);
 
@@ -288,7 +322,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
 
     /**
-     *
+     * This will give us a temporary Place obj of the one selected place based on our algorithm process
      * @param url
      * @return
      */
@@ -338,6 +372,57 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         }
     }
 
+
+    /**
+     * This will give us enough preliminary information about the place
+     * @param url
+     * @return
+     */
+    private void detailAPICall(String placeId) throws ExecutionException, InterruptedException {
+
+        DETAILS_URL = URL_BASE + placeId + "?" + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION;
+        Log.d(LOG_TAG, "Details URL: " + DETAILS_URL);
+
+        JSONParser jParser = new JSONParser();
+        Place selectedPlace = new Place();
+
+        try {
+            //Get JSON from URL
+            obj = jParser.getJSONFromUrl(DETAILS_URL);
+
+            Callable<Place> callable = new Callable<Place>() {
+
+                @Override
+                public Place call() throws JSONException {
+
+                    Place place = new Place();
+
+                    try {
+                        JSONObject venueObj = obj.getJSONObject(TAG_RESPONSE).getJSONObject(TAG_VENUE);
+                        getPlaceDetails(venueObj);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    return place;
+                }
+            };
+
+            FutureTask<Place> task = new FutureTask<>(callable);
+
+            activity.runOnUiThread(task);
+            selectedPlace = task.get();
+
+
+        }finally{
+
+        }
+
+    }
+
+
     /**
      * This will randomly select 3 numbers within a certain range, which represents the
      * attractions selected by the algorithm (sophisticated, huh) #AI
@@ -357,6 +442,165 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             }
 
         return array;
+    }
+
+    private String getFromJSON(JSONObject o, String tag) throws JSONException {
+        if(o.has(tag)){
+            String result = o.getString(tag);
+            return result;
+        }
+
+        return "";
+    }
+
+    /**
+     * Get place details
+     * @param obj
+     * @throws JSONException
+     */
+    private void getPlaceDetails(JSONObject obj) throws JSONException {
+
+        String id = getFromJSON(obj, TAG_ID);
+        String name = getFromJSON(obj, TAG_NAME);
+        String description = getFromJSON(obj, TAG_DESCRIPTION);
+
+        String price, phone, twitter;
+        price = phone = twitter = "";
+
+        String address, crossStreet, latitude, longitude, city;
+        address = crossStreet = latitude = longitude = city = "";
+
+        String hasMenu, mobileUrl;
+        hasMenu = mobileUrl = "";
+
+        String prefix, suffix, width, height, photo;
+        prefix = suffix = width = height = photo = "";
+
+        if(obj.has(TAG_PRICE)){
+            price = getFromJSON(obj.getJSONObject(TAG_PRICE), TAG_TIER);
+        }
+
+        if(obj.has(TAG_CONTACT)){
+            JSONObject contactObj = obj.getJSONObject(TAG_CONTACT);
+            phone = getFromJSON(contactObj, TAG_FORMATTED_PHONE);
+            twitter = getFromJSON(contactObj, TAG_TWITTER);
+        }
+
+        if(obj.has(TAG_HAS_MENU)) {
+            hasMenu = obj.getString(TAG_HAS_MENU);
+            if (hasMenu.equals("true")){
+                JSONObject menuObj = obj.getJSONObject(TAG_MENU);
+                mobileUrl = getFromJSON(menuObj, TAG_MOBILE_URL);
+            }
+        }
+
+        if(obj.has(TAG_LOCATION)){
+            JSONObject locationObj = obj.getJSONObject(TAG_LOCATION);
+            latitude = getFromJSON(locationObj, TAG_LATITUDE);
+            longitude = getFromJSON(locationObj, TAG_LONGITUDE);
+            address = getFromJSON(locationObj, TAG_ADDRESS);
+            crossStreet = getFromJSON(locationObj, TAG_CROSS_STREET);
+            city = getFromJSON(locationObj, TAG_CITY);
+        }
+
+        if(obj.has(TAG_BEST_PHOTO)){
+            JSONObject photoObj = obj.getJSONObject(TAG_BEST_PHOTO);
+            prefix = getFromJSON(photoObj, TAG_PREFIX);
+            suffix = getFromJSON(photoObj, TAG_PREFIX);
+            width = getFromJSON(photoObj, TAG_WIDTH);
+            height = getFromJSON(photoObj, TAG_HEIGHT);
+
+            photo = prefix + width + "x" + height + suffix;
+
+        }
+
+        Log.d(LOG_TAG, "ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "Description: " + description + "\n" +
+                "Phone: " + phone + "\n" +
+                "Twitter: " + twitter + "\n" +
+                "Address: " + address + "\n" +
+                "Lat: " + latitude + "\n" +
+                "Long: " + longitude + "\n" +
+                "City: " + city + "\n" +
+                "Has menu: " + hasMenu + "\n" +
+                "Menu URL: " + mobileUrl + "\n" +
+                "Price: " + price);
+
+        //Write back to Place table
+        //writeBackPlace(id, name, phone, address, category, latitude, longitude, photo);
+
+        //Get all other more complex objects
+        getPlaceCategories(obj);
+        getPlaceTips(obj);
+        getPlaceHours(obj);
+
+    }
+
+    /**
+     * This will pull the categories that a place falls under
+     * @param obj
+     * @throws JSONException
+     */
+    private void getPlaceCategories(JSONObject obj) throws JSONException {
+        JSONArray categoriesArr = obj.getJSONArray(TAG_CATEGORIES);
+
+        for (int i = 0; i < categoriesArr.length(); i++) {
+            JSONObject o = categoriesArr.getJSONObject(i);
+            String categoryName = getFromJSON(o, TAG_SHORT_NAME);
+
+            Log.d(LOG_TAG, "Category: " + categoryName);
+
+            //Write back to Categories table
+
+        }
+
+    }
+
+    /**
+     * This will pull tips about a particular place
+     * @param obj
+     * @throws JSONException
+     */
+    private void getPlaceTips(JSONObject obj) throws JSONException {
+        JSONObject o = obj.getJSONObject(TAG_TIPS);
+        String strCount = o.getString(TAG_COUNT);
+        int intCount = Integer.parseInt(strCount);
+        int start = 1;
+
+        JSONArray tipsArr = o.getJSONArray(TAG_GROUPS).getJSONObject(0).getJSONArray(TAG_ITEMS);
+
+        while(intCount > start && start <= GENERATED_TIPS){ //Theres a tip
+            JSONObject tip = tipsArr.getJSONObject(start);
+            String tipText = getFromJSON(tip, TAG_TEXT);
+            Log.d(LOG_TAG, "Tip #" + start + ": " + tipText);
+            start++; //Increment starting point
+
+            //Write back to Tips table
+
+
+        }
+    }
+
+    /**
+     * This will get the operating hours of a particular place
+     * @param obj
+     * @throws JSONException
+     */
+    private void getPlaceHours(JSONObject obj) throws JSONException{
+
+        if(obj.has(TAG_HOURS)){
+            JSONObject o = obj.getJSONObject(TAG_HOURS);
+            JSONArray hoursArr = o.getJSONArray(TAG_TIMEFRAMES);
+            for (int i = 0; i < hoursArr.length(); i++) {
+                JSONObject timeObj = hoursArr.getJSONObject(i);
+                String day = timeObj.getString(TAG_DAYS);
+                String time = timeObj.getJSONArray(TAG_OPEN).getJSONObject(0).getString(TAG_RENDERED_TIME);
+                Log.d(LOG_TAG, "Day: " + day + " + Time: " + time);
+                //Write back to Hours table
+
+            }
+        }
     }
 
 
@@ -379,12 +623,12 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             name = obj.getString(TAG_NAME);
         }
 
-        if(obj.getJSONObject(TAG_CONTACT).has(TAG_PHONE)) {
-            phone = obj.getJSONObject(TAG_CONTACT).getString(TAG_PHONE);
+        if(obj.getJSONObject(TAG_CONTACT).has(TAG_FORMATTED_PHONE)) {
+            phone = obj.getJSONObject(TAG_CONTACT).getString(TAG_FORMATTED_PHONE);
         }
 
-        if(obj.getJSONObject(TAG_LOCATION).has(TAG_ADDRESS)) {
-            address = obj.getJSONObject(TAG_LOCATION).getString(TAG_ADDRESS);
+        if(obj.getJSONObject(TAG_LOCATION).has(TAG_FORMATTED_ADDRESS)) {
+            address = obj.getJSONObject(TAG_LOCATION).getString(TAG_FORMATTED_ADDRESS);
         }
 
         if(obj.getJSONArray(TAG_CATEGORIES).getJSONObject(0).has(TAG_NAME)) {
@@ -406,18 +650,18 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             photo = a + c + "x" + d + b;
         }
 
-        Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")" + " \n" + address + " \n" + category + " \n" + photo);
+        //Log.d(LOG_TAG, id + " \n" + name + " \n" + "(" + latitude + ", " + longitude + ")" + " \n" + address + " \n" + category + " \n" + photo);
 
         Place place = new Place(id, name, phone, address, category, latitude, longitude, photo);
 
         //Send to content provider
-        writeBackTour(id, name, phone, address, category, latitude, longitude, photo);
+        writeBackPlace(id, name, phone, address, category, latitude, longitude, photo);
 
         return place;
 
     }
 
-    private void writeBackTour(String id, String name, String phone, String address, String category, String latitude, String longitude, String photo) {
+    private void writeBackPlace(String id, String name, String phone, String address, String category, String latitude, String longitude, String photo) {
         ContentValues values= new ContentValues();
         values.put(PlacesContract.Places.PLACE_ID, id);
         values.put(PlacesContract.Places.NAME, name);

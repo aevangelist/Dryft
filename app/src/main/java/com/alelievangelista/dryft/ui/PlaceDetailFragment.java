@@ -47,8 +47,6 @@ public class PlaceDetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.d(LOG_TAG, "I'm coming hommmmmeeee");
-
                 getActivity().onBackPressed();
                 return true;
             default:

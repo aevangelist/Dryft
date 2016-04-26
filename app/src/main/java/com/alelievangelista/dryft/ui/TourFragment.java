@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.alelievangelista.dryft.R;
@@ -85,18 +84,6 @@ public class TourFragment extends Fragment implements
         placeListAdapter = new PlaceListAdapter(getActivity(), cursor, 0);
         mListView.setAdapter(placeListAdapter);
         mListView.setItemsCanFocus(false);
-
-        // Item Click Listener for the listview
-        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View container, int position, long id) {
-
-                Log.d("############", "Items " + "DLGHSKHGSHGHSGUH");
-
-            }
-        };
-
-        mListView.setOnItemClickListener(itemClickListener);
 
         TourFragment.this.restartLoader();
 

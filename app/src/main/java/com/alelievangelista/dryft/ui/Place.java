@@ -6,6 +6,10 @@ import android.os.Parcelable;
 /**
  * Created by aevangelista on 16-04-04.
  */
+
+/**
+ * This is a mini object that I will use so I can grab pertinent information about places
+ */
 public class Place implements Parcelable {
 
     private String id;
