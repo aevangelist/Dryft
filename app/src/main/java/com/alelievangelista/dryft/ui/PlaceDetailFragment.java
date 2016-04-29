@@ -55,6 +55,8 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
 
     //SQL
     private String mSelectionClause =  PlacesContract.Places.PLACE_ID + " = ?";
+    private String mSelectionClauseDetail =  PlacesContract.PlaceDetail.PLACE_ID + " = ?";
+
     private String[] mArgs = new String[1];
 
     public PlaceDetailFragment() {
@@ -127,26 +129,49 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
         mPlaceWebsite = (TextView) view.findViewById(R.id.place_detail_website);
 
         //Set up cursor
-        Cursor cursor = getActivity().getContentResolver().query(
-                PlacesContract.PlaceDetail.CONTENT_URI,
+        Cursor cursorPlace = getActivity().getContentResolver().query(
+                PlacesContract.Places.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
                 mSelectionClause, // cols for "where" clause
                 mArgs, // values for "where" clause
                 null  // sort order
         );
 
-        if( cursor != null && cursor.moveToFirst() ){
-            String a = cursor.getString(cursor.getColumnIndex(PlacesContract.PlaceDetail.PLACE_ID));
-            Log.d(LOG_TAG, "This is what I got from cursor: " + a);
+        //Set up cursor
+        Cursor cursorDetail = getActivity().getContentResolver().query(
+                PlacesContract.PlaceDetail.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClauseDetail, // cols for "where" clause
+                mArgs, // values for "where" clause
+                null  // sort order
+        );
 
-            imageUrl = cursor.getString(cursor.getColumnIndex(PlacesContract.PlaceDetail.BEST_PHOTO));
+        //Regular place information
+        if( cursorPlace != null && cursorPlace.moveToFirst() ){
+            String b = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.NAME));
+            String c = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.CATEGORY));
+
+            Log.d(LOG_TAG, "This is what I got from cursor: " + b + "\n" + c);
+        }
+
+
+        //Place detailed information 
+        if( cursorDetail != null && cursorDetail.moveToFirst() ){
+            String a = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.PLACE_ID));
+            String d = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.DESCRIPTION));
+
+
+            Log.d(LOG_TAG, "This is what I got from cursor: " + a + "\n" + d);
+
+            imageUrl = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.BEST_PHOTO));
             Log.d(LOG_TAG, "Best photo: " + imageUrl);
 
             if(!imageUrl.isEmpty()){
                 Picasso.with(getActivity()).load(imageUrl).into(mMainImage);
             }
 
-            cursor.close();
+            cursorPlace.close();
+            cursorDetail.close();
         }
 
 
