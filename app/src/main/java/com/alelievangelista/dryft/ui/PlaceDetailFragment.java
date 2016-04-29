@@ -16,15 +16,19 @@ import com.alelievangelista.dryft.R;
 public class PlaceDetailFragment extends Fragment {
 
     private static final String LOG_TAG = "PlaceDetailFragment";
+    private static final String PLACE_ID_TAG = "PlaceIdTag";
+
     private Toolbar toolbar;
+    private String placeId;
 
     public PlaceDetailFragment() {
         // Required empty public constructor
     }
 
-    public static PlaceDetailFragment newInstance(String param1, String param2) {
+    public static PlaceDetailFragment newInstance(String param) {
         PlaceDetailFragment fragment = new PlaceDetailFragment();
         Bundle args = new Bundle();
+        args.putString(PLACE_ID_TAG, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,7 +37,8 @@ public class PlaceDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            placeId = getArguments().getString(PLACE_ID_TAG, "");
+            Log.d(LOG_TAG, "PlaceDetailsFragment Got: " + placeId);
         }
 
         setHasOptionsMenu(true);

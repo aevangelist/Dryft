@@ -2,7 +2,6 @@ package com.alelievangelista.dryft.api;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import com.squareup.picasso.Picasso;
 public class PlaceListAdapter extends CursorAdapter {
 
     private static final String LOG_TAG = "PlaceListAdapter";
+    private static final String PLACE_ID_TAG = "PlaceIdTag";
 
     private Cursor cursor;
     private MainActivity fragmentActivity;
@@ -104,23 +104,14 @@ public class PlaceListAdapter extends CursorAdapter {
 
                 Log.d(LOG_TAG, "Choosing item: " + placeName + ", " + placeId);
 
-                Class fragmentClass = PlaceDetailFragment.class;
-                Fragment fragment = null;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
+                PlaceDetailFragment fragment = PlaceDetailFragment.newInstance(placeId);
 
-                    FragmentManager fragManager= fragmentActivity.getSupportFragmentManager();
+                FragmentManager fragManager= fragmentActivity.getSupportFragmentManager();
 
-                    fragManager.beginTransaction()
-                            .add(R.id.container, fragment)
-                            .addToBackStack(null)
-                            .commit();
-
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                fragManager.beginTransaction()
+                        .add(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit();
 
             }
         });
