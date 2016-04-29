@@ -93,7 +93,9 @@ public class PlaceListAdapter extends CursorAdapter {
         viewHolder.category.setText(placeCategory);
 
         String imgUrl = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.MAIN_PHOTO));
-        Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
+        if(!imgUrl.isEmpty()){
+            Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
+        }
 
         //Set up onclick listener
         view.setOnClickListener(new View.OnClickListener() {

@@ -22,18 +22,39 @@ public class PlacesProvider extends ContentProvider {
 
     interface Tables {
         String PLACES = "places";
+        String PLACE_DETAIL = "place_detail";
+        String TIPS = "tips";
+        String HOURS = "hours";
     }
 
     private static final int PLACES = 0;
     private static final int PLACES__ID = 1;
+
+    private static final int PLACE_DETAIL = 200;
+    private static final int PLACE_DETAIL___ID = 201;
+
+    private static final int TIPS = 400;
+    private static final int TIPS___ID = 401;
+
+    private static final int HOURS = 500;
+    private static final int HOURS___ID = 501;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PlacesContract.CONTENT_AUTHORITY;
-        matcher.addURI(authority, "places", PLACES);
-        matcher.addURI(authority, "places/#", PLACES__ID);
+
+        matcher.addURI(authority, PlacesContract.PATH_PLACES +"/#", PLACES__ID);
+        matcher.addURI(authority, PlacesContract.PATH_PLACES_DETAIL +"/#", PLACE_DETAIL___ID);
+        matcher.addURI(authority, PlacesContract.PATH_TIPS +"/#", TIPS___ID);
+        matcher.addURI(authority, PlacesContract.PATH_HOURS +"/#", HOURS___ID);
+
+        matcher.addURI(authority, PlacesContract.PATH_PLACES, PLACES);
+        matcher.addURI(authority, PlacesContract.PATH_PLACES_DETAIL, PLACE_DETAIL);
+        matcher.addURI(authority, PlacesContract.PATH_TIPS, TIPS);
+        matcher.addURI(authority, PlacesContract.PATH_HOURS, HOURS);
+
         return matcher;
     }
 
@@ -60,8 +81,20 @@ public class PlacesProvider extends ContentProvider {
         switch (match) {
             case PLACES:
                 return PlacesContract.Places.CONTENT_TYPE;
+            case PLACE_DETAIL:
+                return PlacesContract.PlaceDetail.CONTENT_TYPE;
+            case TIPS:
+                return PlacesContract.Tips.CONTENT_TYPE;
+            case HOURS:
+                return PlacesContract.Hours.CONTENT_TYPE;
             case PLACES__ID:
                 return PlacesContract.Places.CONTENT_ITEM_TYPE;
+            case PLACE_DETAIL___ID:
+                return PlacesContract.PlaceDetail.CONTENT_ITEM_TYPE;
+            case TIPS___ID:
+                return PlacesContract.Tips.CONTENT_ITEM_TYPE;
+            case HOURS___ID:
+                return PlacesContract.Hours.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -78,6 +111,36 @@ public class PlacesProvider extends ContentProvider {
                 final long _id = db.insert(Tables.PLACES, null, values);
                 if ( _id > 0 ){
                     returnUri = PlacesContract.Places.buildPlaceUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            }
+            case PLACE_DETAIL: {
+                final long _id = db.insert(Tables.PLACE_DETAIL, null, values);
+                if ( _id > 0 ){
+                    returnUri = PlacesContract.PlaceDetail.buildPlaceDetailUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            }
+            case TIPS: {
+                final long _id = db.insert(Tables.TIPS, null, values);
+                if ( _id > 0 ){
+                    returnUri = PlacesContract.Tips.buildTipsUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            }
+            case HOURS: {
+                final long _id = db.insert(Tables.HOURS, null, values);
+                if ( _id > 0 ){
+                    returnUri = PlacesContract.Hours.buildHoursUri(_id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -120,9 +183,30 @@ public class PlacesProvider extends ContentProvider {
             case PLACES: {
                 return builder.table(Tables.PLACES);
             }
+            case PLACE_DETAIL: {
+                return builder.table(Tables.PLACE_DETAIL);
+            }
+            case TIPS: {
+                return builder.table(Tables.TIPS);
+            }
+            case HOURS: {
+                return builder.table(Tables.HOURS);
+            }
             case PLACES__ID: {
                 final String _id = paths.get(1);
                 return builder.table(Tables.PLACES).where(PlacesContract.Places._ID + "=?", _id);
+            }
+            case PLACE_DETAIL___ID: {
+                final String _id = paths.get(1);
+                return builder.table(Tables.PLACE_DETAIL).where(PlacesContract.PlaceDetail._ID + "=?", _id);
+            }
+            case TIPS___ID: {
+                final String _id = paths.get(1);
+                return builder.table(Tables.TIPS).where(PlacesContract.Tips._ID + "=?", _id);
+            }
+            case HOURS___ID: {
+                final String _id = paths.get(1);
+                return builder.table(Tables.HOURS).where(PlacesContract.Hours._ID + "=?", _id);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

@@ -49,6 +49,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_CONTACT = "contact";
     private static final String TAG_FORMATTED_PHONE = "formattedPhone";
     private static final String TAG_TWITTER = "twitter";
+    private static final String TAG_URL = "url";
+
     private static final String TAG_LOCATION = "location";
     private static final String TAG_FORMATTED_ADDRESS = "formattedAddress";
     private static final String TAG_ADDRESS = "address";
@@ -463,6 +465,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         String id = getFromJSON(obj, TAG_ID);
         String name = getFromJSON(obj, TAG_NAME);
         String description = getFromJSON(obj, TAG_DESCRIPTION);
+        String website = getFromJSON(obj, TAG_URL);
 
         String price, phone, twitter;
         price = phone = twitter = "";
@@ -527,8 +530,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 "Menu URL: " + mobileUrl + "\n" +
                 "Price: " + price);
 
-        //Write back to Place table
-        //writeBackPlace(id, name, phone, address, category, latitude, longitude, photo);
+        //Write back to PlaceDetails table
+        writeBackPlaceDetail(id, description, twitter, website, photo, hasMenu, mobileUrl, price);
 
         //Get all other more complex objects
         getPlaceCategories(obj);
@@ -674,6 +677,20 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         values.put(PlacesContract.Places.IS_SAVED, "0"); //You're just looking at the tour - not saving
         values.put(PlacesContract.Places.IS_DISPLAY, "1"); //You're just looking at the tour - not saving
         activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI,values);
+    }
+
+    private void writeBackPlaceDetail(String id, String descr, String twitter, String url, String photo,
+                                      String hasMenu, String menuUrl, String price){
+        ContentValues values= new ContentValues();
+        values.put(PlacesContract.PlaceDetail.PLACE_ID, id);
+        values.put(PlacesContract.PlaceDetail.DESCRIPTION, descr);
+        values.put(PlacesContract.PlaceDetail.TWITTER, twitter);
+        values.put(PlacesContract.PlaceDetail.WEBSITE, url);
+        values.put(PlacesContract.PlaceDetail.BEST_PHOTO, photo);
+        values.put(PlacesContract.PlaceDetail.HAS_MENU, hasMenu);
+        values.put(PlacesContract.PlaceDetail.MENU_URL, menuUrl);
+        values.put(PlacesContract.PlaceDetail.PRICE, price);
+        activity.getContentResolver().insert(PlacesContract.PlaceDetail.CONTENT_URI,values);
     }
 
     public interface PlacesAsyncResponse {
