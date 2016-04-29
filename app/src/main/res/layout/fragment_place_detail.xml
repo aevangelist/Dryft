@@ -104,42 +104,76 @@
                             android:textAllCaps="true"
                             style="@style/PlaceDetailCategoryStyle" />
 
-                                <LinearLayout
-                                    android:orientation="horizontal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="10dp">
 
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:id="@+id/star1"
-                                        android:src="@drawable/dollar"
-                                        android:visibility="visible"
-                                        android:layout_gravity="top"
-                                        android:contentDescription="dollar"
-                                        android:layout_margin="2dp" />
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:id="@+id/star2"
-                                        android:src="@drawable/dollar"
-                                        android:visibility="visible"
-                                        android:layout_gravity="top"
-                                        android:contentDescription="dollar"
-                                        android:layout_margin="2dp" />
-                                    <ImageView
-                                        android:layout_width="12dp"
-                                        android:layout_height="12dp"
-                                        android:id="@+id/star3"
-                                        android:src="@drawable/dollar"
-                                        android:visibility="visible"
-                                        android:layout_gravity="top"
-                                        android:contentDescription="dollar"
-                                        android:layout_margin="2dp" />
-                                </LinearLayout>
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/imageView5"
+                                android:src="@drawable/price_label" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/place_detail_price"
+                                style="@style/PlaceDetailCategoryStyle"
+                                android:singleLine="false"
+                                android:text="MODERATE"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="10dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/imageView4"
+                                android:src="@drawable/hamburger" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/place_detail_menu"
+                                style="@style/PlaceDetailMenuStyle"
+                                android:singleLine="false"
+                                android:text="SEE MENU"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
+
+                    <View style="@style/ListDivider"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/place_detail_description"
+                        style="@style/PlaceDetailSubtitleStyle"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
 
                     <View style="@style/ListDivider"/>
 
@@ -147,17 +181,45 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:layout_weight="0.45">
+                        android:layout_weight="0.45"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/place_detail_address"
-                            style="@style/PlaceDetailSubtitleStyle"
-                            android:singleLine="false"
-                            android:text="50 Carmine Street"
-                            android:layout_marginBottom="10dp" />
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/imageView"
+                                android:src="@drawable/location" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/place_detail_address"
+                                style="@style/PlaceDetailSubtitleStyle"
+                                android:singleLine="false"
+                                android:text="50 Carmine Street"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="40dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/imageView2"
+                                android:src="@drawable/phone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -166,7 +228,33 @@
                             style="@style/PlaceDetailSubtitleStyle"
                             android:singleLine="false"
                             android:text="555-678-0934"
-                            android:layout_marginBottom="10dp" />
+                            android:layout_marginLeft="40dp" />
+
+                            </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/imageView3"
+                                android:src="@drawable/twitter" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/place_detail_twitter"
+                            style="@style/PlaceDetailSubtitleStyle"
+                            android:singleLine="false"
+                            android:text="tweet"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="40dp" />
+
+                            </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -175,11 +263,12 @@
                             style="@style/PlaceDetailSubtitleStyle"
                             android:singleLine="false"
                             android:text="www.jackswifefreda.com"
-                            android:layout_marginBottom="10dp" />
+                            android:layout_gravity="center" />
 
                     </LinearLayout>
 
                     <View style="@style/ListDivider"/>
+
 
 
                 </LinearLayout>

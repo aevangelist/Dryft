@@ -81,8 +81,8 @@
         <item name="android:background">@android:color/darker_gray</item>
         <item name="android:layout_marginLeft">30dp</item>
         <item name="android:layout_marginRight">30dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
     </style>
 
     <!--Place Detail Styles-->
@@ -106,14 +106,24 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="PlaceDetailMenuStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">#424242</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="PlaceDetailSubtitleStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">0dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/darkGray</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
 </resources>
