@@ -93,14 +93,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Jack's Wife Freda"
-                            android:id="@+id/place_name"
+                            android:id="@+id/place_detail_name"
                             style="@style/PlaceDetailTitleStyle" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Restaurant, Breakfast Spot"
-                            android:id="@+id/place_category"
+                            android:id="@+id/place_detail_category"
                             android:textAllCaps="true"
                             style="@style/PlaceDetailCategoryStyle" />
 

@@ -1,7 +1,11 @@
 package com.alelievangelista.dryft.ui;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,16 +14,48 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
+import com.alelievangelista.dryft.data.PlacesContract;
+import com.squareup.picasso.Picasso;
 
-public class PlaceDetailFragment extends Fragment {
+public class PlaceDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String LOG_TAG = "PlaceDetailFragment";
     private static final String PLACE_ID_TAG = "PlaceIdTag";
 
     private Toolbar toolbar;
     private String placeId;
+
+    //Element
+    private ImageView mMainImage;
+    private TextView mPlaceTitle;
+    private TextView mPlaceCategory;
+    private TextView mPlacePrice;
+    private TextView mPlaceDescription;
+
+    private TextView mPlaceAddress;
+    private TextView mPlacePhone;
+    private TextView mPlaceTwitter;
+    private TextView mPlaceWebsite;
+
+    //Values
+    private String imageUrl;
+    private String placeTitle;
+    private String placeCategory;
+    private String placePrice;
+
+    private String placeDescription;
+    private String placeAddress;
+    private String placePhone;
+    private String placeTwitter;
+    private String placeWebsite;
+
+    //SQL
+    private String mSelectionClause =  PlacesContract.Places.PLACE_ID + " = ?";
+    private String[] mArgs = new String[1];
 
     public PlaceDetailFragment() {
         // Required empty public constructor
@@ -38,6 +74,8 @@ public class PlaceDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             placeId = getArguments().getString(PLACE_ID_TAG, "");
+            //Set up SQL arguments
+            mArgs[0] = placeId;
             Log.d(LOG_TAG, "PlaceDetailsFragment Got: " + placeId);
         }
 
@@ -76,7 +114,66 @@ public class PlaceDetailFragment extends Fragment {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
+        //Get elements
+        mMainImage = (ImageView) view.findViewById(R.id.place_detail_image);
+
+        mPlaceTitle = (TextView) view.findViewById(R.id.place_detail_name);
+        mPlaceCategory = (TextView) view.findViewById(R.id.place_detail_category);
+        mPlacePrice = (TextView) view.findViewById(R.id.place_detail_price);
+        mPlaceDescription = (TextView) view.findViewById(R.id.place_detail_description);
+        mPlaceAddress = (TextView) view.findViewById(R.id.place_detail_address);
+        mPlacePhone = (TextView) view.findViewById(R.id.place_detail_phone);
+        mPlaceTwitter = (TextView) view.findViewById(R.id.place_detail_twitter);
+        mPlaceWebsite = (TextView) view.findViewById(R.id.place_detail_website);
+
+        //Set up cursor
+        Cursor cursor = getActivity().getContentResolver().query(
+                PlacesContract.PlaceDetail.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClause, // cols for "where" clause
+                mArgs, // values for "where" clause
+                null  // sort order
+        );
+
+        if( cursor != null && cursor.moveToFirst() ){
+            String a = cursor.getString(cursor.getColumnIndex(PlacesContract.PlaceDetail.PLACE_ID));
+            Log.d(LOG_TAG, "This is what I got from cursor: " + a);
+
+            imageUrl = cursor.getString(cursor.getColumnIndex(PlacesContract.PlaceDetail.BEST_PHOTO));
+            Log.d(LOG_TAG, "Best photo: " + imageUrl);
+
+            if(!imageUrl.isEmpty()){
+                Picasso.with(getActivity()).load(imageUrl).into(mMainImage);
+            }
+
+            cursor.close();
+        }
+
+
         return view;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        return new CursorLoader(
+                getActivity(),
+                PlacesContract.PlaceDetail.CONTENT_URI,
+                null,
+                mSelectionClause, // cols for "where" clause
+                mArgs, // values for "where" clause
+                null
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 
 

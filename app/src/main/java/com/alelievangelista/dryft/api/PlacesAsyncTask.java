@@ -509,7 +509,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         if(obj.has(TAG_BEST_PHOTO)){
             JSONObject photoObj = obj.getJSONObject(TAG_BEST_PHOTO);
             prefix = getFromJSON(photoObj, TAG_PREFIX);
-            suffix = getFromJSON(photoObj, TAG_PREFIX);
+            suffix = getFromJSON(photoObj, TAG_SUFFIX);
             width = getFromJSON(photoObj, TAG_WIDTH);
             height = getFromJSON(photoObj, TAG_HEIGHT);
 
