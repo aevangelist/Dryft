@@ -534,9 +534,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         writeBackPlaceDetail(id, description, twitter, website, photo, hasMenu, mobileUrl, price);
 
         //Get all other more complex objects
-        getPlaceCategories(obj);
-        getPlaceTips(obj);
-        getPlaceHours(obj);
+        getPlaceCategories(obj, id);
+        getPlaceTips(obj, id);
+        getPlaceHours(obj, id);
 
     }
 
@@ -545,7 +545,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * @param obj
      * @throws JSONException
      */
-    private void getPlaceCategories(JSONObject obj) throws JSONException {
+    private void getPlaceCategories(JSONObject obj, String id) throws JSONException {
         JSONArray categoriesArr = obj.getJSONArray(TAG_CATEGORIES);
 
         for (int i = 0; i < categoriesArr.length(); i++) {
@@ -565,7 +565,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * @param obj
      * @throws JSONException
      */
-    private void getPlaceTips(JSONObject obj) throws JSONException {
+    private void getPlaceTips(JSONObject obj, String id) throws JSONException {
         JSONObject o = obj.getJSONObject(TAG_TIPS);
         String strCount = o.getString(TAG_COUNT);
         int intCount = Integer.parseInt(strCount);
@@ -590,7 +590,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * @param obj
      * @throws JSONException
      */
-    private void getPlaceHours(JSONObject obj) throws JSONException{
+    private void getPlaceHours(JSONObject obj, String id) throws JSONException{
 
         if(obj.has(TAG_HOURS)){
             JSONObject o = obj.getJSONObject(TAG_HOURS);
@@ -600,7 +600,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 String day = timeObj.getString(TAG_DAYS);
                 String time = timeObj.getJSONArray(TAG_OPEN).getJSONObject(0).getString(TAG_RENDERED_TIME);
                 Log.d(LOG_TAG, "Day: " + day + " + Time: " + time);
+
                 //Write back to Hours table
+                writeBackHours(id, day, time, i);
 
             }
         }
@@ -676,7 +678,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         values.put(PlacesContract.Places.MAIN_PHOTO, photo);
         values.put(PlacesContract.Places.IS_SAVED, "0"); //You're just looking at the tour - not saving
         values.put(PlacesContract.Places.IS_DISPLAY, "1"); //You're just looking at the tour - not saving
-        activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI,values);
+        activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI, values);
     }
 
     private void writeBackPlaceDetail(String id, String descr, String twitter, String url, String photo,
@@ -691,6 +693,15 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         values.put(PlacesContract.PlaceDetail.MENU_URL, menuUrl);
         values.put(PlacesContract.PlaceDetail.PRICE, price);
         activity.getContentResolver().insert(PlacesContract.PlaceDetail.CONTENT_URI,values);
+    }
+
+    private void writeBackHours(String id, String day, String time, int order){
+        ContentValues values = new ContentValues();
+        values.put(PlacesContract.Hours.PLACE_ID, id);
+        values.put(PlacesContract.Hours.DAY, day);
+        values.put(PlacesContract.Hours.TIME, time);
+        values.put(PlacesContract.Hours.POSITION, order);
+        activity.getContentResolver().insert(PlacesContract.Hours.CONTENT_URI, values);
     }
 
     public interface PlacesAsyncResponse {

@@ -12,7 +12,7 @@ import static com.alelievangelista.dryft.data.PlacesProvider.Tables;
 public class PlacesDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "dryft.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 10;
 
     public PlacesDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +50,7 @@ public class PlacesDatabase extends SQLiteOpenHelper {
         final String SQL_CREATE_TIPS_TABLE = "CREATE TABLE " + Tables.TIPS + " ("
                 + PlacesContract.Tips._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + PlacesContract.Tips.PLACE_ID + " TEXT NOT NULL,"
-                + PlacesContract.Tips.TIP + " TEXT,"
+                + PlacesContract.Tips.TIP + " TEXT"
                 + ")";
 
         final String SQL_CREATE_HOURS_TABLE = "CREATE TABLE " + Tables.HOURS + " ("
@@ -58,13 +58,14 @@ public class PlacesDatabase extends SQLiteOpenHelper {
                 + PlacesContract.Hours.PLACE_ID + " TEXT NOT NULL,"
                 + PlacesContract.Hours.DAY + " TEXT,"
                 + PlacesContract.Hours.TIME + " TEXT,"
-                + PlacesContract.Hours.ORDER + " TEXT,"
+                + PlacesContract.Hours.POSITION + " INTEGER"
                 + ")";
 
 
         //Create database
         db.execSQL(SQL_CREATE_PLACE_TABLE);
         db.execSQL(SQL_CREATE_PLACE_DETAIL_TABLE);
+        db.execSQL(SQL_CREATE_HOURS_TABLE);
 
     }
 

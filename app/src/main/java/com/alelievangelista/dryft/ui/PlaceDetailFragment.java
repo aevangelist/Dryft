@@ -19,21 +19,34 @@ import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
-public class PlaceDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
+        LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String LOG_TAG = "PlaceDetailFragment";
     private static final String PLACE_ID_TAG = "PlaceIdTag";
+    private final int LOADER_ID = 10;
+
+    private GoogleMap googleMap;
+    private Cursor cursor;
 
     private Toolbar toolbar;
     private String placeId;
+    private String placeName;
+    private String latitude;
+    private String longitude;
 
     //Element
     private ImageView mMainImage;
     private TextView mPlaceTitle;
     private TextView mPlaceCategory;
-    private TextView mPlacePrice;
     private TextView mPlaceDescription;
 
     private TextView mPlaceAddress;
@@ -56,6 +69,7 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
     //SQL
     private String mSelectionClause =  PlacesContract.Places.PLACE_ID + " = ?";
     private String mSelectionClauseDetail =  PlacesContract.PlaceDetail.PLACE_ID + " = ?";
+    private String mSelectionClauseHours =  PlacesContract.Hours.PLACE_ID + " = ?";
 
     private String[] mArgs = new String[1];
 
@@ -106,6 +120,13 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_place_detail, container, false);
 
+        //Set up the map
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.place_map);
+        mapFragment.getMapAsync(this);
+
+        PlaceDetailFragment.this.restartLoader();
+
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(" ");
 
@@ -121,12 +142,13 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
 
         mPlaceTitle = (TextView) view.findViewById(R.id.place_detail_name);
         mPlaceCategory = (TextView) view.findViewById(R.id.place_detail_category);
-        mPlacePrice = (TextView) view.findViewById(R.id.place_detail_price);
         mPlaceDescription = (TextView) view.findViewById(R.id.place_detail_description);
-        mPlaceAddress = (TextView) view.findViewById(R.id.place_detail_address);
+
+        mPlaceAddress = (TextView) view.findViewById(R.id.place_detail_address1);
+
         mPlacePhone = (TextView) view.findViewById(R.id.place_detail_phone);
         mPlaceTwitter = (TextView) view.findViewById(R.id.place_detail_twitter);
-        mPlaceWebsite = (TextView) view.findViewById(R.id.place_detail_website);
+        //mPlaceWebsite = (TextView) view.findViewById(R.id.place_detail_website);
 
         //Set up cursor
         Cursor cursorPlace = getActivity().getContentResolver().query(
@@ -137,7 +159,7 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
                 null  // sort order
         );
 
-        //Set up cursor
+        //Set up cursor for details
         Cursor cursorDetail = getActivity().getContentResolver().query(
                 PlacesContract.PlaceDetail.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
@@ -146,34 +168,75 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
                 null  // sort order
         );
 
+        //Set up cursor for hours
+        Cursor cursorHours = getActivity().getContentResolver().query(
+                PlacesContract.Hours.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClauseHours, // cols for "where" clause
+                mArgs, // values for "where" clause
+                null  // sort order
+        );
+
         //Regular place information
         if( cursorPlace != null && cursorPlace.moveToFirst() ){
-            String b = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.NAME));
-            String c = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.CATEGORY));
+            String category = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.CATEGORY));
+            String address = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.ADDRESS));
+            String phone = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.PHONE));
 
-            Log.d(LOG_TAG, "This is what I got from cursor: " + b + "\n" + c);
+            placeName = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.NAME));
+            latitude = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.LATITUDE));
+            longitude = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.LONGITUDE));
+
+
+            //Format address
+            String strArray[] = address.split(",");
+            String s1 = strArray[0];
+            s1.trim();
+            String address1 = s1.substring(2, s1.length() - 1);
+
+            mPlaceTitle.setText(placeName);
+            mPlaceCategory.setText(category);
+
+            mPlaceAddress.setText(address1);
+
+            mPlacePhone.setText(phone);
+
         }
 
 
-        //Place detailed information 
+        //Place detailed information
         if( cursorDetail != null && cursorDetail.moveToFirst() ){
             String a = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.PLACE_ID));
-            String d = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.DESCRIPTION));
-
-
-            Log.d(LOG_TAG, "This is what I got from cursor: " + a + "\n" + d);
+            String description = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.DESCRIPTION));
+            String twitter = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.TWITTER));
 
             imageUrl = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.BEST_PHOTO));
-            Log.d(LOG_TAG, "Best photo: " + imageUrl);
+
+            mPlaceDescription.setText(description);
+            mPlaceTwitter.setText(twitter);
 
             if(!imageUrl.isEmpty()){
                 Picasso.with(getActivity()).load(imageUrl).into(mMainImage);
             }
 
-            cursorPlace.close();
-            cursorDetail.close();
         }
 
+        //Hours information
+        if( cursorHours != null ){
+
+            cursorHours.moveToFirst();
+            while(cursorHours.moveToNext()){
+                String x = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.DAY));
+                String y = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.TIME));
+
+                Log.d(LOG_TAG, "Hours cursor: " + x + " " + y);
+            }
+        }
+
+        //Close the cursors
+        cursorPlace.close();
+        cursorDetail.close();
+        cursorHours.close();
 
         return view;
     }
@@ -193,13 +256,46 @@ public class PlaceDetailFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        cursor = data;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        cursor = null;
+    }
 
+    private void restartLoader(){
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+
+        //Determine locations
+        getPlaces();
+    }
+
+    /**
+     * This will extract the locations of the places generated for the tour
+     * @param c
+     */
+    private void getPlaces(){
+
+        if (!latitude.isEmpty() && !longitude.isEmpty()){
+            double lat = Double.parseDouble(latitude);
+            double lng = Double.parseDouble(longitude);
+
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(placeName));
+
+            // Move the camera instantly to location with a zoom of 15.
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+
+            // Zoom in, animating the camera.
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+
+        }
+
+    }
 }

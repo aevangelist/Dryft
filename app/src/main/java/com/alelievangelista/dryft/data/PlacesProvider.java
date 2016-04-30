@@ -30,14 +30,14 @@ public class PlacesProvider extends ContentProvider {
     private static final int PLACES = 0;
     private static final int PLACES__ID = 1;
 
-    private static final int PLACE_DETAIL = 200;
-    private static final int PLACE_DETAIL___ID = 201;
+    private static final int PLACE_DETAIL = 2000;
+    private static final int PLACE_DETAIL___ID = 2001;
 
-    private static final int TIPS = 400;
-    private static final int TIPS___ID = 401;
+    private static final int TIPS = 4000;
+    private static final int TIPS___ID = 4001;
 
-    private static final int HOURS = 500;
-    private static final int HOURS___ID = 501;
+    private static final int HOURS = 5000;
+    private static final int HOURS___ID = 5001;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 

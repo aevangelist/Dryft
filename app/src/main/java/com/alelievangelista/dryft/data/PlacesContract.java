@@ -87,9 +87,9 @@ public class PlacesContract {
         public static final String PLACE_ID = "place_id";
         public static final String DAY = "day";
         public static final String TIME = "time";
-        public static final String ORDER = "order";
+        public static final String POSITION = "position";
 
-        public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_PLACES).build();
+        public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_HOURS).build();
 
         public static final String CONTENT_TYPE =
                 "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_HOURS;
