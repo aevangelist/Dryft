@@ -4,16 +4,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:id="@+id/tip"
         style="@style/PlaceDetailSubtitleStyle"
-        android:text="You should go here ljdljdfjh
-        dflhjdlkfjhlksdjflhkjdlfkhjldfjlskjh" />
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:text="This is the best restaurant in the world. Make sure to order dessert because
+        it is absolutely phenomenal. Sometimes I dream about eating at this restaurant after
+        a long day at work. It's really not to be missed. This is the best restaurant in the world. Make sure to order dessert because
+        it is absolutely phenomenal." />
 
 </LinearLayout>
 

@@ -10,6 +10,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="go_to_website">Go to website</string>
+    <string name="go_to_tips">See more tips</string>
+
     <string name="hours">Hours</string>
     <string name="price">Price</string>
     <string name="tips">Tips</string>

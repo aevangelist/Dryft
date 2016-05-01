@@ -368,27 +368,46 @@
                         android:layout_height="250dp"
                         class="com.google.android.gms.maps.SupportMapFragment" />
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/place_detail_tips"
+                        style="@style/PlaceDetailBoldStyle"
+                        android:textAllCaps="true"
+                        android:singleLine="false"
+                        android:text="@string/tips" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/place_tips"
-                            style="@style/PlaceDetailBoldStyle"
-                            android:singleLine="false"
-                            android:text="@string/tips"
-                            android:textAllCaps="true"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="10dp" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginBottom="25dp"
+                        android:gravity="center">
 
                         <ListView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/tips_listview"/>
+                            android:id="@+id/tips_listview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:divider="@null"
+                            android:dividerHeight="0dp">
+                        </ListView>
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/place_detail_tips_link"
+                            style="@style/PlaceDetailLinkStyle"
+                            android:textAllCaps="true"
+                            android:singleLine="false"
+                            android:text="@string/go_to_tips" />
 
                     </LinearLayout>
 

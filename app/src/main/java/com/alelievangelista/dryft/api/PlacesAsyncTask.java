@@ -31,8 +31,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     //Tour template - the number of attractions and restaurants to generate in between each
     private static final int GENERATED_ATTR = 3;
     private static final int GENERATED_RESTR = 1;
-    private static final int GENERATED_TIPS = 5;
-
+    private static final int GENERATED_TIPS = 6;
 
 
     //JSON node names

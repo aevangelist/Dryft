@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -279,6 +280,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
 
             TipsListAdapter tipsAdapter = new TipsListAdapter(this.getActivity(), tipArrayList);
             mTipsListView.setAdapter(tipsAdapter);
+            setListViewHeightBasedOnItems(mTipsListView);
         }
 
         //Close the cursors
@@ -288,6 +290,54 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         cursorTips.close();
 
         return view;
+    }
+
+    /**
+     * Sets ListView height dynamically based on the height of the items.
+     *
+     * @param listView to be resized
+     * @return true if the listView is successfully resized, false otherwise
+     */
+    public static boolean setListViewHeightBasedOnItems(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter != null) {
+
+            int numberOfItems = listAdapter.getCount();
+            Log.d(LOG_TAG, "Number of items: " + numberOfItems);
+
+            // Get total height of all items.
+            int totalItemsHeight = 0;
+            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+                View item = listAdapter.getView(itemPos, null, listView);
+                //item.measure(0, 0);
+                item.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                totalItemsHeight += item.getMeasuredHeight() + 10;
+                Log.d(LOG_TAG, "Item height: " + totalItemsHeight);
+            }
+
+            // Get total height of all item dividers.
+            int totalDividersHeight = listView.getDividerHeight() *
+                    (numberOfItems);
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalItemsHeight + totalDividersHeight;
+            //params.height = 500;
+            Log.d(LOG_TAG, "Params: " + params.height);
+
+            //int total = totalItemsHeight + totalDividersHeight;
+            //listView.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, total));
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+
+            return true;
+
+        } else {
+            return false;
+        }
+
     }
 
     @Override
