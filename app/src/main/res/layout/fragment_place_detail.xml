@@ -115,25 +115,25 @@
                     android:weightSum="1"
                     android:background="#ffffffff">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginTop="30dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Simple spot serving American fare with Middle Eastern influences plus classic cocktails."
-                        android:id="@+id/place_detail_description"
-                        style="@style/PlaceDetailSubtitleStyle"
-                        android:layout_gravity="center" />
+                        android:layout_weight="1"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="30dp"
+                        android:gravity="center">
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Simple spot serving American fare with Middle Eastern influences plus classic cocktails."
+                            android:id="@+id/place_detail_description"
+                            style="@style/PlaceDetailSubtitleStyle"
+                            android:layout_gravity="center" />
+
+                    </LinearLayout>
 
                     <View style="@style/ListDivider"/>
 
@@ -193,16 +193,16 @@
                                 android:singleLine="false"
                                 android:text="Phone" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/place_detail_phone"
-                            style="@style/PlaceDetailSubtitleStyle"
-                            android:singleLine="false"
-                            android:text="555-678-0934"
-                            android:layout_marginLeft="40dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/place_detail_phone"
+                                style="@style/PlaceDetailSubtitleStyle"
+                                android:singleLine="false"
+                                android:text="555-678-0934"
+                                android:layout_marginLeft="40dp" />
 
-                            </LinearLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:orientation="horizontal"
@@ -219,17 +219,17 @@
                                 android:singleLine="false"
                                 android:text="Twitter" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/place_detail_twitter"
-                            style="@style/PlaceDetailSubtitleStyle"
-                            android:singleLine="false"
-                            android:text="tweet"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="40dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/place_detail_twitter"
+                                style="@style/PlaceDetailSubtitleStyle"
+                                android:singleLine="false"
+                                android:text="tweet"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="40dp" />
 
-                            </LinearLayout>
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -273,22 +273,10 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <ListView
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:id="@+id/place_day"
-                                    style="@style/PlaceDetailSubtitle2Style"
-                                    android:singleLine="false"
-                                    android:text="Mon-Thurs" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/place_hours"
-                                    style="@style/PlaceDetailSubtitle2Style"
-                                    android:singleLine="false"
-                                    android:text="10:00am - 11:00pm"
-                                    android:layout_marginLeft="10dp" />
+                                    android:id="@+id/hours_listview"/>
 
                             </LinearLayout>
 
@@ -381,12 +369,10 @@
                         class="com.google.android.gms.maps.SupportMapFragment" />
 
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp">
+                        android:layout_marginTop="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -399,6 +385,11 @@
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp" />
 
+                        <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/tips_listview"/>
+
                     </LinearLayout>
 
 
@@ -407,4 +398,4 @@
 
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
-    </LinearLayout>
+</LinearLayout>

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
@@ -26,6 +27,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         LoaderManager.LoaderCallbacks<Cursor>{
@@ -54,6 +57,14 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
     private TextView mPlaceTwitter;
     private TextView mPlaceWebsite;
 
+    //ListViews
+    private ListView mHoursListView;
+    private ArrayList<Hour> hourArrayList = new ArrayList<Hour>();
+
+    private ListView mTipsListView;
+    private ArrayList<String> tipArrayList = new ArrayList<String>();
+
+
     //Values
     private String imageUrl;
     private String placeTitle;
@@ -70,6 +81,8 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
     private String mSelectionClause =  PlacesContract.Places.PLACE_ID + " = ?";
     private String mSelectionClauseDetail =  PlacesContract.PlaceDetail.PLACE_ID + " = ?";
     private String mSelectionClauseHours =  PlacesContract.Hours.PLACE_ID + " = ?";
+    private String mSelectionClauseTips =  PlacesContract.Tips.PLACE_ID + " = ?";
+
 
     private String[] mArgs = new String[1];
 
@@ -145,10 +158,10 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         mPlaceDescription = (TextView) view.findViewById(R.id.place_detail_description);
 
         mPlaceAddress = (TextView) view.findViewById(R.id.place_detail_address1);
-
         mPlacePhone = (TextView) view.findViewById(R.id.place_detail_phone);
         mPlaceTwitter = (TextView) view.findViewById(R.id.place_detail_twitter);
         //mPlaceWebsite = (TextView) view.findViewById(R.id.place_detail_website);
+
 
         //Set up cursor
         Cursor cursorPlace = getActivity().getContentResolver().query(
@@ -173,6 +186,15 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
                 PlacesContract.Hours.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
                 mSelectionClauseHours, // cols for "where" clause
+                mArgs, // values for "where" clause
+                null  // sort order
+        );
+
+        //Set up cursor for tips
+        Cursor cursorTips = getActivity().getContentResolver().query(
+                PlacesContract.Tips.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClauseTips, // cols for "where" clause
                 mArgs, // values for "where" clause
                 null  // sort order
         );
@@ -224,19 +246,46 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         //Hours information
         if( cursorHours != null ){
 
+            //Get list views
+            mHoursListView = (ListView) view.findViewById(R.id.hours_listview);
+
             cursorHours.moveToFirst();
             while(cursorHours.moveToNext()){
-                String x = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.DAY));
-                String y = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.TIME));
-
-                Log.d(LOG_TAG, "Hours cursor: " + x + " " + y);
+                String day = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.DAY));
+                String time = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.TIME));
+                Log.d(LOG_TAG, "Cursor Hours: " + day + " Time: " + time);
+                hourArrayList.add(new Hour(placeId, day, time));
             }
+
+            HoursListAdapter hoursListAdapter = new HoursListAdapter(this.getActivity(), hourArrayList);
+            mHoursListView.setAdapter(hoursListAdapter);
+        }
+
+        //Tips information
+        if( cursorTips != null ){
+
+            //Get list views
+            mTipsListView = (ListView) view.findViewById(R.id.tips_listview);
+
+            int i = 0;
+
+            cursorTips.moveToFirst();
+            while(cursorTips.moveToNext()){
+                String tip = cursorTips.getString(cursorTips.getColumnIndex(PlacesContract.Tips.TIP));
+                tipArrayList.add(tip);
+                Log.d(LOG_TAG, "Cursor Tip: " + tipArrayList.get(i));
+                i++;
+            }
+
+            TipsListAdapter tipsAdapter = new TipsListAdapter(this.getActivity(), tipArrayList);
+            mTipsListView.setAdapter(tipsAdapter);
         }
 
         //Close the cursors
         cursorPlace.close();
         cursorDetail.close();
         cursorHours.close();
+        cursorTips.close();
 
         return view;
     }

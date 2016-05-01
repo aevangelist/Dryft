@@ -580,7 +580,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             start++; //Increment starting point
 
             //Write back to Tips table
-
+            writeBackTips(id, tipText);
 
         }
     }
@@ -702,6 +702,13 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         values.put(PlacesContract.Hours.TIME, time);
         values.put(PlacesContract.Hours.POSITION, order);
         activity.getContentResolver().insert(PlacesContract.Hours.CONTENT_URI, values);
+    }
+
+    private void writeBackTips(String id, String tip){
+        ContentValues values = new ContentValues();
+        values.put(PlacesContract.Tips.PLACE_ID, id);
+        values.put(PlacesContract.Tips.TIP, tip);
+        activity.getContentResolver().insert(PlacesContract.Tips.CONTENT_URI, values);
     }
 
     public interface PlacesAsyncResponse {
