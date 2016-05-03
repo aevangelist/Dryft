@@ -171,6 +171,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         PREFIX_URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION + LIMIT;
         String URL = PREFIX_URL + SF_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
 
+        Log.d(LOG_TAG, "CITY SITES: " + URL);
+
         //Scope out the potential results
         try {
             numResults = scopeAPICall(URL);
@@ -499,6 +501,11 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             }
         }
 
+        if(obj.has(TAG_CONTACT)){
+            JSONObject contactObj = obj.getJSONObject(TAG_CONTACT);
+            phone = getFromJSON(contactObj, TAG_FORMATTED_PHONE);
+        }
+
         if(obj.has(TAG_LOCATION)){
             JSONObject locationObj = obj.getJSONObject(TAG_LOCATION);
             latitude = getFromJSON(locationObj, TAG_LATITUDE);
@@ -536,7 +543,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 "Price: " + price);
 
         //Write back to PlaceDetails table
-        writeBackPlaceDetail(id, address, crossStreet,
+        writeBackPlaceDetail(id, phone, address, crossStreet,
                 city, state, postalCode, description, twitter, website, photo, hasMenu, mobileUrl, price,
                 "0", "0", "0");
 
@@ -689,12 +696,13 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI, values);
     }
 
-    private void writeBackPlaceDetail(String id, String address, String crossStreet, String city,
+    private void writeBackPlaceDetail(String id, String phone, String address, String crossStreet, String city,
                                       String state, String postalCode, String descr, String twitter,
                                       String url, String photo, String hasMenu, String menuUrl, String price,
                                       String rating, String visits, String likes){
         ContentValues values= new ContentValues();
         values.put(PlacesContract.PlaceDetail.PLACE_ID, id);
+        values.put(PlacesContract.PlaceDetail.PHONE, phone);
         values.put(PlacesContract.PlaceDetail.ADDRESS, address);
         values.put(PlacesContract.PlaceDetail.CROSS_STREET, crossStreet);
         values.put(PlacesContract.PlaceDetail.CITY, city);

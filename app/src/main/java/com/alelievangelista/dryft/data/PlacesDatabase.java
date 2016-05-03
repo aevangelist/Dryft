@@ -12,7 +12,7 @@ import static com.alelievangelista.dryft.data.PlacesProvider.Tables;
 public class PlacesDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "dryft.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     public PlacesDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +38,7 @@ public class PlacesDatabase extends SQLiteOpenHelper {
         final String SQL_CREATE_PLACE_DETAIL_TABLE = "CREATE TABLE " + Tables.PLACE_DETAIL + " ("
                 + PlacesContract.PlaceDetail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + PlacesContract.PlaceDetail.PLACE_ID + " TEXT NOT NULL,"
+                + PlacesContract.PlaceDetail.PHONE + " TEXT,"
                 + PlacesContract.PlaceDetail.ADDRESS + " TEXT,"
                 + PlacesContract.PlaceDetail.CROSS_STREET + " TEXT,"
                 + PlacesContract.PlaceDetail.CITY + " TEXT,"

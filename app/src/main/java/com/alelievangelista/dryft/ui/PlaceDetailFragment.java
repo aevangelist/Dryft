@@ -9,12 +9,14 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,10 +55,10 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
     private TextView mPlaceCategory;
     private TextView mPlaceDescription;
 
-    private TextView mPlaceAddress;
-    private TextView mPlacePhone;
-    private TextView mPlaceTwitter;
     private TextView mPlaceWebsite;
+
+    //Containers
+    private LinearLayout mContactSection;
 
     //ListViews
     private ListView mHoursListView;
@@ -158,10 +160,11 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         mPlaceCategory = (TextView) view.findViewById(R.id.place_detail_category);
         mPlaceDescription = (TextView) view.findViewById(R.id.place_detail_description);
 
-        mPlaceAddress = (TextView) view.findViewById(R.id.place_detail_address1);
-        mPlacePhone = (TextView) view.findViewById(R.id.place_detail_phone);
-        mPlaceTwitter = (TextView) view.findViewById(R.id.place_detail_twitter);
         //mPlaceWebsite = (TextView) view.findViewById(R.id.place_detail_website);
+
+        //Get containers
+        mContactSection = (LinearLayout) view.findViewById(R.id.contact_section);
+
 
 
         //Set up cursor
@@ -219,10 +222,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             mPlaceTitle.setText(placeName);
             mPlaceCategory.setText(category);
 
-            mPlaceAddress.setText(address1);
-
-            mPlacePhone.setText(phone);
-
         }
 
 
@@ -230,12 +229,88 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         if( cursorDetail != null && cursorDetail.moveToFirst() ){
             String a = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.PLACE_ID));
             String description = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.DESCRIPTION));
+
+            //Setting up address
+            String a1 = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.ADDRESS));
+            String a2 = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.CROSS_STREET));
+            String a3 = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.CITY));
+            String a4 = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.STATE));
+            String a5 = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.POSTAL_CODE));
+
+            String address = "";
+            String[] addressParts = {a1, a2, a3, a4, a5};
+            for (String s : addressParts){
+                if(!s.isEmpty()){
+                    address += s + "\n";
+                }
+            }
+
+            //String address = a1 + "\n" + a2 + "\n" + a3 + "\n" + a4 + "\n" + a5;
+
+            if(!address.isEmpty()){
+
+                View addressView = inflater.inflate(R.layout.contact_item, container, false);
+
+                TextView addressLabel = (TextView)
+                        addressView.findViewById(R.id.contact_label);
+                TextView addressValue = (TextView)
+                        addressView.findViewById(R.id.contact_value);
+
+                addressLabel.setText("Address");
+                addressValue.setText(address);
+                mContactSection.addView(addressView);
+            }
+
+            //Setting up phone number
+            String phone = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.PHONE));
+
+            if(!phone.isEmpty()){
+
+                View phoneView = inflater.inflate(R.layout.contact_item, container, false);
+
+                TextView phoneLabel = (TextView)
+                        phoneView.findViewById(R.id.contact_label);
+                TextView phoneValue = (TextView)
+                        phoneView.findViewById(R.id.contact_value);
+
+                phoneLabel.setText("Phone");
+                phoneValue.setText(phone);
+                mContactSection.addView(phoneView);
+            }
+
+            //Setting up Twitter
             String twitter = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.TWITTER));
+
+            if(!twitter.isEmpty()){
+                View twitterView = inflater.inflate(R.layout.contact_item, container, false);
+
+                TextView twitterLabel = (TextView)
+                        twitterView.findViewById(R.id.contact_label);
+                TextView twitterValue = (TextView)
+                        twitterView.findViewById(R.id.contact_value);
+
+                twitterLabel.setText("Twitter");
+                twitterValue.setText(twitter);
+                mContactSection.addView(twitterView);
+            }
+
+            //Setting up website
+            String website = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.WEBSITE));
+
+            if(!website.isEmpty()){
+                View websiteView = inflater.inflate(R.layout.website_item, container, false);
+
+                TextView websiteLink = (TextView)
+                        websiteView.findViewById(R.id.place_detail_website_link);
+                websiteLink.setText(Html.fromHtml("<a href=\"" + website + "\"> VISIT WEBSITE</a>"));
+                websiteLink.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
+
+                mContactSection.addView(websiteView);
+            }
 
             imageUrl = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.BEST_PHOTO));
 
             mPlaceDescription.setText(description);
-            mPlaceTwitter.setText(twitter);
 
             if(!imageUrl.isEmpty()){
                 Picasso.with(getActivity()).load(imageUrl).into(mMainImage);
