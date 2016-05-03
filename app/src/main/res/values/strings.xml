@@ -47,7 +47,7 @@
     <string name="foursquare_breakfast">&amp;query=breakfast</string>
     <string name="foursquare_lunch">&amp;query=lunch</string>
     <string name="foursquare_dinner">&amp;query=dinner</string>
-    <string name="foursquare_radius_2000">&amp;radius=2000</string>
+    <string name="foursquare_radius_2000">&amp;radius=5000</string>
     <string name="foursquare_venue_photos">&amp;venuePhotos=1</string>
 
 

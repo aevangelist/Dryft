@@ -14,7 +14,6 @@ public class PlacesContract {
 
     public static final String PATH_PLACES = "places";
     public static final String PATH_PLACES_DETAIL = "places_detail";
-    public static final String PATH_CATEGORIES = "categories";
     public static final String PATH_TIPS = "tips";
     public static final String PATH_HOURS = "houts";
 
@@ -46,6 +45,11 @@ public class PlacesContract {
 
     public static final class PlaceDetail implements BaseColumns {
         public static final String PLACE_ID = "place_id";
+        public static final String ADDRESS = "address";
+        public static final String CROSS_STREET = "cross_street";
+        public static final String CITY = "city";
+        public static final String STATE = "state";
+        public static final String POSTAL_CODE = "postal_code";
         public static final String DESCRIPTION = "description";
         public static final String TWITTER = "twitter";
         public static final String WEBSITE = "website";
@@ -53,6 +57,10 @@ public class PlacesContract {
         public static final String HAS_MENU = "has_menu";
         public static final String MENU_URL = "menu_url";
         public static final String PRICE = "price";
+        public static final String RATING = "rating";
+        public static final String VISITS = "visits";
+        public static final String LIKES = "likes";
+
 
 
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_PLACES_DETAIL).build();

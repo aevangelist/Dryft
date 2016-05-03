@@ -55,6 +55,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_ADDRESS = "address";
     private static final String TAG_CROSS_STREET = "crossStreet";
     private static final String TAG_CITY = "city";
+    private static final String TAG_STATE = "state";
+    private static final String TAG_POSTAL_CODE = "postalCode";
+
     private static final String TAG_CATEGORIES = "categories";
     private static final String TAG_HAS_MENU = "hasMenu";
     private static final String TAG_MENU = "menu";
@@ -469,8 +472,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         String price, phone, twitter;
         price = phone = twitter = "";
 
-        String address, crossStreet, latitude, longitude, city;
-        address = crossStreet = latitude = longitude = city = "";
+        String address, crossStreet, latitude, longitude, city, state, postalCode;
+        address = crossStreet = latitude = longitude = city = state = postalCode = "";
 
         String hasMenu, mobileUrl;
         hasMenu = mobileUrl = "";
@@ -503,6 +506,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
             address = getFromJSON(locationObj, TAG_ADDRESS);
             crossStreet = getFromJSON(locationObj, TAG_CROSS_STREET);
             city = getFromJSON(locationObj, TAG_CITY);
+            state = getFromJSON(locationObj, TAG_STATE);
+            postalCode = getFromJSON(locationObj, TAG_POSTAL_CODE);
+
         }
 
         if(obj.has(TAG_BEST_PHOTO)){
@@ -530,7 +536,10 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 "Price: " + price);
 
         //Write back to PlaceDetails table
-        writeBackPlaceDetail(id, description, twitter, website, photo, hasMenu, mobileUrl, price);
+        writeBackPlaceDetail(id, address, crossStreet,
+                city, state, postalCode, description, twitter, website, photo, hasMenu, mobileUrl, price,
+                "0", "0", "0");
+
 
         //Get all other more complex objects
         getPlaceCategories(obj, id);
@@ -680,10 +689,17 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         activity.getContentResolver().insert(PlacesContract.Places.CONTENT_URI, values);
     }
 
-    private void writeBackPlaceDetail(String id, String descr, String twitter, String url, String photo,
-                                      String hasMenu, String menuUrl, String price){
+    private void writeBackPlaceDetail(String id, String address, String crossStreet, String city,
+                                      String state, String postalCode, String descr, String twitter,
+                                      String url, String photo, String hasMenu, String menuUrl, String price,
+                                      String rating, String visits, String likes){
         ContentValues values= new ContentValues();
         values.put(PlacesContract.PlaceDetail.PLACE_ID, id);
+        values.put(PlacesContract.PlaceDetail.ADDRESS, address);
+        values.put(PlacesContract.PlaceDetail.CROSS_STREET, crossStreet);
+        values.put(PlacesContract.PlaceDetail.CITY, city);
+        values.put(PlacesContract.PlaceDetail.STATE, state);
+        values.put(PlacesContract.PlaceDetail.POSTAL_CODE, postalCode);
         values.put(PlacesContract.PlaceDetail.DESCRIPTION, descr);
         values.put(PlacesContract.PlaceDetail.TWITTER, twitter);
         values.put(PlacesContract.PlaceDetail.WEBSITE, url);
@@ -691,6 +707,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         values.put(PlacesContract.PlaceDetail.HAS_MENU, hasMenu);
         values.put(PlacesContract.PlaceDetail.MENU_URL, menuUrl);
         values.put(PlacesContract.PlaceDetail.PRICE, price);
+        //values.put(PlacesContract.PlaceDetail.RATING, rating);
+        //values.put(PlacesContract.PlaceDetail.VISITS, visits);
+        //values.put(PlacesContract.PlaceDetail.LIKES, likes);
         activity.getContentResolver().insert(PlacesContract.PlaceDetail.CONTENT_URI,values);
     }
 

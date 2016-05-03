@@ -12,7 +12,7 @@ import static com.alelievangelista.dryft.data.PlacesProvider.Tables;
 public class PlacesDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "dryft.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     public PlacesDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,6 +38,11 @@ public class PlacesDatabase extends SQLiteOpenHelper {
         final String SQL_CREATE_PLACE_DETAIL_TABLE = "CREATE TABLE " + Tables.PLACE_DETAIL + " ("
                 + PlacesContract.PlaceDetail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + PlacesContract.PlaceDetail.PLACE_ID + " TEXT NOT NULL,"
+                + PlacesContract.PlaceDetail.ADDRESS + " TEXT,"
+                + PlacesContract.PlaceDetail.CROSS_STREET + " TEXT,"
+                + PlacesContract.PlaceDetail.CITY + " TEXT,"
+                + PlacesContract.PlaceDetail.STATE + " TEXT,"
+                + PlacesContract.PlaceDetail.POSTAL_CODE + " TEXT,"
                 + PlacesContract.PlaceDetail.DESCRIPTION + " TEXT,"
                 + PlacesContract.PlaceDetail.TWITTER + " TEXT,"
                 + PlacesContract.PlaceDetail.WEBSITE + " TEXT,"
@@ -45,6 +50,10 @@ public class PlacesDatabase extends SQLiteOpenHelper {
                 + PlacesContract.PlaceDetail.HAS_MENU + " TEXT,"
                 + PlacesContract.PlaceDetail.MENU_URL + " TEXT,"
                 + PlacesContract.PlaceDetail.PRICE + " TEXT"
+                + PlacesContract.PlaceDetail.RATING + " TEXT,"
+                + PlacesContract.PlaceDetail.VISITS + " TEXT,"
+                + PlacesContract.PlaceDetail.LIKES + " TEXT"
+
                 + ")";
 
         final String SQL_CREATE_TIPS_TABLE = "CREATE TABLE " + Tables.TIPS + " ("

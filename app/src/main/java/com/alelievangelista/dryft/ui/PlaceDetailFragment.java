@@ -210,7 +210,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             latitude = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.LATITUDE));
             longitude = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.LONGITUDE));
 
-
             //Format address
             String strArray[] = address.split(",");
             String s1 = strArray[0];
@@ -304,7 +303,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         if (listAdapter != null) {
 
             int numberOfItems = listAdapter.getCount();
-            Log.d(LOG_TAG, "Number of items: " + numberOfItems);
+            //Log.d(LOG_TAG, "Number of items: " + numberOfItems);
 
             // Get total height of all items.
             int totalItemsHeight = 0;
@@ -314,7 +313,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
                 item.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
                 totalItemsHeight += item.getMeasuredHeight() + 10;
-                Log.d(LOG_TAG, "Item height: " + totalItemsHeight);
+                //Log.d(LOG_TAG, "Item height: " + totalItemsHeight);
             }
 
             // Get total height of all item dividers.
@@ -325,7 +324,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             ViewGroup.LayoutParams params = listView.getLayoutParams();
             params.height = totalItemsHeight + totalDividersHeight;
             //params.height = 500;
-            Log.d(LOG_TAG, "Params: " + params.height);
+            //  Log.d(LOG_TAG, "Params: " + params.height);
 
             //int total = totalItemsHeight + totalDividersHeight;
             //listView.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, total));
