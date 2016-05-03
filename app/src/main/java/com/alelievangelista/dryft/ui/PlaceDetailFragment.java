@@ -57,8 +57,14 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
 
     private TextView mPlaceWebsite;
 
+    private ImageView coin1;
+    private ImageView coin2;
+    private ImageView coin3;
+    private ImageView coin4;
+
     //Containers
     private LinearLayout mContactSection;
+    private LinearLayout mRestaurantSection;
 
     //ListViews
     private ListView mHoursListView;
@@ -164,8 +170,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
 
         //Get containers
         mContactSection = (LinearLayout) view.findViewById(R.id.contact_section);
-
-
+        mRestaurantSection = (LinearLayout) view.findViewById(R.id.restaurant_section);
 
         //Set up cursor
         Cursor cursorPlace = getActivity().getContentResolver().query(
@@ -249,7 +254,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
 
             if(!address.isEmpty()){
 
-                View addressView = inflater.inflate(R.layout.contact_item, container, false);
+                View addressView = inflater.inflate(R.layout.item_contact, container, false);
 
                 TextView addressLabel = (TextView)
                         addressView.findViewById(R.id.contact_label);
@@ -266,7 +271,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
 
             if(!phone.isEmpty()){
 
-                View phoneView = inflater.inflate(R.layout.contact_item, container, false);
+                View phoneView = inflater.inflate(R.layout.item_contact, container, false);
 
                 TextView phoneLabel = (TextView)
                         phoneView.findViewById(R.id.contact_label);
@@ -282,7 +287,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             String twitter = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.TWITTER));
 
             if(!twitter.isEmpty()){
-                View twitterView = inflater.inflate(R.layout.contact_item, container, false);
+                View twitterView = inflater.inflate(R.layout.item_contact, container, false);
 
                 TextView twitterLabel = (TextView)
                         twitterView.findViewById(R.id.contact_label);
@@ -298,7 +303,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             String website = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.WEBSITE));
 
             if(!website.isEmpty()){
-                View websiteView = inflater.inflate(R.layout.website_item, container, false);
+                View websiteView = inflater.inflate(R.layout.item_website, container, false);
 
                 TextView websiteLink = (TextView)
                         websiteView.findViewById(R.id.place_detail_website_link);
@@ -306,6 +311,60 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
                 websiteLink.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
 
                 mContactSection.addView(websiteView);
+            }
+
+            //Setting up price
+            String price = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.PRICE));
+
+            if(!price.isEmpty()){
+                View priceView = inflater.inflate(R.layout.item_price, container, false);
+
+                //Coins
+                coin1 = (ImageView) priceView.findViewById(R.id.coin1);
+                coin2 = (ImageView) priceView.findViewById(R.id.coin2);
+                coin3 = (ImageView) priceView.findViewById(R.id.coin3);
+                coin4 = (ImageView) priceView.findViewById(R.id.coin4);
+
+                switch (price) {
+                    case "1":
+                        coin1.setVisibility(View.VISIBLE);
+                        break;
+                    case "2":
+                        coin1.setVisibility(View.VISIBLE);
+                        coin2.setVisibility(View.VISIBLE);
+                        break;
+                    case "3":
+                        coin1.setVisibility(View.VISIBLE);
+                        coin2.setVisibility(View.VISIBLE);
+                        coin3.setVisibility(View.VISIBLE);
+                        break;
+                    case "4":
+                        coin1.setVisibility(View.VISIBLE);
+                        coin2.setVisibility(View.VISIBLE);
+                        coin3.setVisibility(View.VISIBLE);
+                        coin4.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        break;
+                }
+
+                mRestaurantSection.addView(priceView);
+
+            }
+
+            //Setting up menu
+            String menuUrl = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.MENU_URL));
+            if(!menuUrl.isEmpty()){
+                Log.d(LOG_TAG, "Cursor Menu URL: " + menuUrl);
+                View menuView = inflater.inflate(R.layout.item_menu, container, false);
+
+                TextView menuLink = (TextView)
+                        menuView.findViewById(R.id.place_detail_menu_link);
+                menuLink.setText(Html.fromHtml("<a href=\"" + menuUrl + "\"> SEE MENU </a>"));
+                menuLink.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
+
+                mRestaurantSection.addView(menuView);
+
             }
 
             imageUrl = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.BEST_PHOTO));

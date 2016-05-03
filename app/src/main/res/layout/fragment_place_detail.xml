@@ -191,78 +191,9 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginRight="25dp"
-                            android:layout_marginLeft="10dp">
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/restaurant_section"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/price_label"
-                                style="@style/PlaceDetailBoldStyle"
-                                android:textAllCaps="true"
-                                android:singleLine="false"
-                                android:text="@string/price" />
-
-                            <LinearLayout
-                                android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp">
-
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:id="@+id/dollar1"
-                                    android:src="@drawable/dollar" />
-
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:id="@+id/dollar2"
-                                    android:layout_marginLeft="2dp"
-                                    android:src="@drawable/dollar" />
-
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:id="@+id/dollar3"
-                                    android:layout_marginLeft="2dp"
-                                    android:src="@drawable/dollar" />
-
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:id="@+id/dollar4"
-                                    android:layout_marginLeft="2dp"
-                                    android:src="@drawable/dollar" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp">
-
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:id="@+id/imageView4"
-                                    android:src="@drawable/hamburger" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/place_detail_menu"
-                                    style="@style/PlaceDetailLinkStyle"
-                                    android:singleLine="false"
-                                    android:text="@string/menu"
-                                    android:textAllCaps="true"
-                                    android:layout_marginLeft="6dp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
                     </LinearLayout>
 
                     <fragment xmlns:android="http://schemas.android.com/apk/res/android"

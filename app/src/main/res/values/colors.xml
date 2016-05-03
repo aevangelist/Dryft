@@ -7,6 +7,8 @@
 
     <color name="colorBackground">#e5eaee</color>
 
+    <color name="colorLight">#8b96bc</color>
+
     <color name="colorAccent3">#d8d8d8</color>
     <color name="colorAccent4">#25d9ec</color>
 

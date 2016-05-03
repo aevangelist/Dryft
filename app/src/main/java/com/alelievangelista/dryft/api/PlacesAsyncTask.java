@@ -622,7 +622,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 writeBackHours(id, day, time, i);
 
             }
-        } 
+        }
     }
 
     private Place convertPlace(JSONObject obj) throws JSONException {
