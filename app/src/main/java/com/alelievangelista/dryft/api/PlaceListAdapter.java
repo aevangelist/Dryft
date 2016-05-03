@@ -31,14 +31,14 @@ public class PlaceListAdapter extends CursorAdapter {
     public static class ViewHolder {
         public final TextView name;
         //public final TextView address;
-        //public final TextView category;
+        public final TextView category;
         public final ImageView mainPhoto;
 
 
         public ViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.placeName);
             //address = (TextView) view.findViewById(R.id.placeAddress);
-            //category = (TextView) view.findViewById(R.id.placeCategory);
+            category = (TextView) view.findViewById(R.id.placeCategory);
             mainPhoto = (ImageView) view.findViewById(R.id.placePic);
 
         }
@@ -57,7 +57,7 @@ public class PlaceListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_place, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_place_2, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
@@ -90,7 +90,7 @@ public class PlaceListAdapter extends CursorAdapter {
         //viewHolder.address.setText(s);
 
         String placeCategory = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.CATEGORY));
-        //viewHolder.category.setText(placeCategory);
+        viewHolder.category.setText(placeCategory);
 
         String imgUrl = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.MAIN_PHOTO));
         if(!imgUrl.isEmpty()){

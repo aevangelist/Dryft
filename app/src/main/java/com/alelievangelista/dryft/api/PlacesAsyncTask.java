@@ -69,6 +69,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final String TAG_TEXT = "text";
 
     private static final String TAG_HOURS = "hours";
+    private static final String TAG_POPULAR = "popular";
+
     private static final String TAG_STATUS = "status";
     private static final String TAG_TIMEFRAMES = "timeframes";
     private static final String TAG_DAYS = "days";
@@ -605,9 +607,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
      * @param obj
      * @throws JSONException
      */
-    private void getPlaceHours(JSONObject obj, String id) throws JSONException{
+    private void getPlaceHours(JSONObject obj, String id) throws JSONException {
 
-        if(obj.has(TAG_HOURS)){
+        if (obj.has(TAG_HOURS)) {
             JSONObject o = obj.getJSONObject(TAG_HOURS);
             JSONArray hoursArr = o.getJSONArray(TAG_TIMEFRAMES);
             for (int i = 0; i < hoursArr.length(); i++) {
@@ -620,9 +622,8 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
                 writeBackHours(id, day, time, i);
 
             }
-        }
+        } 
     }
-
 
     private Place convertPlace(JSONObject obj) throws JSONException {
 

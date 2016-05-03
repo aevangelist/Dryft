@@ -86,13 +86,23 @@
     </style>
 
     <style name="ListDivider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">1dp</item>
+    <item name="android:background">@android:color/darker_gray</item>
+    <item name="android:layout_marginLeft">30dp</item>
+    <item name="android:layout_marginRight">30dp</item>
+    <item name="android:layout_marginTop">20dp</item>
+    <item name="android:layout_marginBottom">20dp</item>
+</style>
+
+    <style name="ListDividerSmall">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@android:color/darker_gray</item>
         <item name="android:layout_marginLeft">30dp</item>
         <item name="android:layout_marginRight">30dp</item>
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <!--Place Detail Styles-->

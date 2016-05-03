@@ -324,7 +324,8 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             //Get list views
             mHoursListView = (ListView) view.findViewById(R.id.hours_listview);
 
-            cursorHours.moveToFirst();
+            //cursorHours.moveToFirst();
+
             while(cursorHours.moveToNext()){
                 String day = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.DAY));
                 String time = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.TIME));
@@ -348,7 +349,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
             while(cursorTips.moveToNext()){
                 String tip = cursorTips.getString(cursorTips.getColumnIndex(PlacesContract.Tips.TIP));
                 tipArrayList.add(tip);
-                Log.d(LOG_TAG, "Cursor Tip: " + tipArrayList.get(i));
+                //Log.d(LOG_TAG, "Cursor Tip: " + tipArrayList.get(i));
                 i++;
             }
 
