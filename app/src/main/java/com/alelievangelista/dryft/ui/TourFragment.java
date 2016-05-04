@@ -3,10 +3,12 @@ package com.alelievangelista.dryft.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -47,9 +49,26 @@ public class TourFragment extends Fragment implements
     private ListView mListView;
     private PlaceListAdapter placeListAdapter;
 
+    private PreferenceChangeListener listener;
+    private SharedPreferences settingsPref;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences preferences;
+    public static final String PREFS = "PREF_FAVOURITES";
+
 
     public TourFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Setting up preferences listener
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        listener = new PreferenceChangeListener();
+        settingsPref.registerOnSharedPreferenceChangeListener(listener);
+
     }
 
 
@@ -123,6 +142,19 @@ public class TourFragment extends Fragment implements
             task.execute();
         }
 
+    }
+
+    // Handle preferences changes
+    private class PreferenceChangeListener implements
+            SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs,
+                                              String key) {
+            if(isNetworkAvailable()){
+                PlacesAsyncTask task = new PlacesAsyncTask(activity);
+                task.execute();
+            }
+        }
     }
 
     @Override

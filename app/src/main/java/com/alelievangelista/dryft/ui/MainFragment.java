@@ -3,6 +3,7 @@ package com.alelievangelista.dryft.ui;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
@@ -12,7 +13,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,6 +30,8 @@ import com.alelievangelista.dryft.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.prefs.PreferenceChangeListener;
 
 public class MainFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
@@ -51,6 +53,8 @@ public class MainFragment extends Fragment implements
     private Location mLastLocation;
     private String mLatitude;
     private String mLongitude;
+
+    private PreferenceChangeListener listener;
 
 
     public MainFragment() {
@@ -306,21 +310,22 @@ public class MainFragment extends Fragment implements
                 fragmentClass = AboutFragment.class;
                 break;
             case R.id.nav_third_fragment:
-                fragmentClass = AboutFragment.class;
+                //fragmentClass = PrefActivity.class;
+                startActivity(new Intent(getActivity(), PrefActivity.class));
                 break;
             default:
                 fragmentClass = AboutFragment.class;
         }
 
-        try {
+        /*try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack("").commit();
+        //FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        //fragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack("").commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

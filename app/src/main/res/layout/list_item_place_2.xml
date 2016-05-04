@@ -35,7 +35,8 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:gravity="center|center_horizontal"
-            android:background="@color/colorLight">
+            android:background="#dfdfdf"
+            android:baselineAligned="true">
 
             <ImageView
                 android:layout_width="20dp"

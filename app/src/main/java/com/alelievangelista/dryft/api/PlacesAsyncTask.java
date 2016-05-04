@@ -2,7 +2,9 @@ package com.alelievangelista.dryft.api;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.alelievangelista.dryft.R;
@@ -32,7 +34,6 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private static final int GENERATED_ATTR = 3;
     private static final int GENERATED_RESTR = 1;
     private static final int GENERATED_TIPS = 6;
-
 
     //JSON node names
     private static final String TAG_RESPONSE = "response";
@@ -116,6 +117,11 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private String TO_ATTRACTIONS;
     private String LONDON_ATTRACTIONS;
 
+    //Preferences
+    public static final String PREF_CITY = "PREF_CITY";
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
+
     private JSONArray arr;
     private JSONObject obj;
     private Activity activity;
@@ -172,6 +178,31 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         //Build URL
         PREFIX_URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION + LIMIT;
         String URL = PREFIX_URL + SF_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
+
+        //Determine city
+        SharedPreferences sharedPref;
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+        String cityPreference = sharedPref.getString(PREF_CITY, "1");
+
+        //City
+        switch (cityPreference) {
+            case "1":
+                Log.d(LOG_TAG, "Selected: " + cityPreference);
+                break;
+            case "2":
+                Log.d(LOG_TAG, "Selected: " + cityPreference);
+                break;
+            case "3":
+                Log.d(LOG_TAG, "Selected: " + cityPreference);
+                break;
+            case "4":
+                Log.d(LOG_TAG, "Selected: " + cityPreference);
+                break;
+            default:
+                Log.d(LOG_TAG, "Default Selected: " + cityPreference);
+                break;
+        }
 
         Log.d(LOG_TAG, "CITY SITES: " + URL);
 

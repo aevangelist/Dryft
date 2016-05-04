@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -13,9 +14,9 @@
 
     <!-- ToolBar -->
     <style name="MVP_AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-            <!-- White arrow -->
-            <item name="colorControlNormal">@android:color/white</item>
-        </style>
+        <!-- White arrow -->
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
 
     <!--<style name="AppTheme.NoActionBar">
         <item name="windowActionBar">true</item>
@@ -87,14 +88,14 @@
     </style>
 
     <style name="ListDivider">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">1dp</item>
-    <item name="android:background">@android:color/darker_gray</item>
-    <item name="android:layout_marginLeft">30dp</item>
-    <item name="android:layout_marginRight">30dp</item>
-    <item name="android:layout_marginTop">20dp</item>
-    <item name="android:layout_marginBottom">20dp</item>
-</style>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
 
     <style name="ListDividerSmall">
         <item name="android:layout_width">match_parent</item>

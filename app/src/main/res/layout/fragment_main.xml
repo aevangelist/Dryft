@@ -42,11 +42,6 @@
                     android:src="@drawable/nyc_01"
                     android:fitsSystemWindows="true" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient" />
-
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"

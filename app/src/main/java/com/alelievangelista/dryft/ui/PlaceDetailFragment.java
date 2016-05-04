@@ -64,6 +64,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
 
     //Containers
     private LinearLayout mContactSection;
+    private LinearLayout mHoursSection;
     private LinearLayout mRestaurantSection;
 
     //ListViews
@@ -171,6 +172,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         //Get containers
         mContactSection = (LinearLayout) view.findViewById(R.id.contact_section);
         mRestaurantSection = (LinearLayout) view.findViewById(R.id.restaurant_section);
+        mHoursSection = (LinearLayout) view.findViewById(R.id.hours_section);
 
         //Set up cursor
         Cursor cursorPlace = getActivity().getContentResolver().query(
@@ -380,11 +382,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
         //Hours information
         if( cursorHours != null ){
 
-            //Get list views
-            mHoursListView = (ListView) view.findViewById(R.id.hours_listview);
-
-            //cursorHours.moveToFirst();
-
             while(cursorHours.moveToNext()){
                 String day = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.DAY));
                 String time = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.TIME));
@@ -392,8 +389,15 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
                 hourArrayList.add(new Hour(placeId, day, time));
             }
 
-            HoursListAdapter hoursListAdapter = new HoursListAdapter(this.getActivity(), hourArrayList);
-            mHoursListView.setAdapter(hoursListAdapter);
+            if(!hourArrayList.isEmpty()){
+                View hoursView = inflater.inflate(R.layout.item_hours, container, false);
+                //Get list views
+                mHoursListView = (ListView) hoursView.findViewById(R.id.hours_listview);
+                HoursListAdapter hoursListAdapter = new HoursListAdapter(this.getActivity(), hourArrayList);
+                mHoursListView.setAdapter(hoursListAdapter);
+                mHoursSection.addView(hoursView);
+            }
+
         }
 
         //Tips information
