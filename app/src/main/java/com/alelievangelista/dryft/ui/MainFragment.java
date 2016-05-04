@@ -292,29 +292,56 @@ public class MainFragment extends Fragment implements
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                        try {
+                            selectDrawerItem(menuItem);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (java.lang.InstantiationException e) {
+                            e.printStackTrace();
+                        }
                         return true;
                     }
                 });
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    public void selectDrawerItem(MenuItem menuItem) throws IllegalAccessException, java.lang.InstantiationException {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
+
         switch(menuItem.getItemId()) {
             case R.id.nav_first_fragment:
                 fragmentClass = MainFragment.class;
                 break;
             case R.id.nav_second_fragment:
-                fragmentClass = AboutFragment.class;
+
+                /*fragmentClass = AboutFragment.class;
+                fragment = (Fragment) fragmentClass.newInstance();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack("").commit();*/
+
                 break;
             case R.id.nav_third_fragment:
-                //fragmentClass = PrefActivity.class;
                 startActivity(new Intent(getActivity(), PrefActivity.class));
                 break;
+            case R.id.nav_fourth_fragment:
+                String title = getActivity().getResources().getString(R.string.about_title);
+                String message = getActivity().getResources().getString(R.string.about_text);
+
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle(title);
+
+                alertDialog.setMessage(message);
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "GOT IT",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+                break;
             default:
-                fragmentClass = AboutFragment.class;
+                //fragmentClass = AboutFragment.class;
         }
 
         /*try {

@@ -25,15 +25,13 @@
     <string name="about_title">About Dryft</string>
 
         <string name="about_text">Dryft is a mobile app for avid travellers, inspired by the idea
-            that managing your time (whether for business or pleasure) in a new city
-            should be simple and enjoyable. Destinations selected are curated from
-            fellow travellers who are passionate about history, culture, and most importantly: food!
+            that managing your time in a new city should be simple and enjoyable.
+            Destinations selected are curated from fellow travellers who are passionate about history,
+            culture, and most importantly: food.
             \n\n
 
-            Love, \n
-            A.\n\n
-
-            Dryft | April 2016 | Version 1.0b
+            Got an idea for the app?\n
+            Email hello@alelievangelista.com
     </string>
 
     <!--Foursquare API-->

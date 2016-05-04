@@ -19,11 +19,6 @@ public class MainActivity extends AppCompatActivity{
 
     public static AppCompatActivity activity;
 
-    private ActionBarDrawerToggle drawerToggle;
-    private DrawerLayout mDrawer;
-    private NavigationView mNavView;
-    private Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
