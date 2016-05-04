@@ -149,6 +149,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     @Override
     protected ArrayList<Place> doInBackground(Void... params) {
 
+        //Get URL parts
         URL_BASE = activity.getResources().getString(R.string.foursquare_url_base);
         URL_SETTING = activity.getResources().getString(R.string.foursquare_explore);
         URL_CLIENT_ID = activity.getResources().getString(R.string.foursquare_client_id);
@@ -167,48 +168,17 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         DINNER = activity.getResources().getString(R.string.foursquare_dinner);
         RADIUS = activity.getResources().getString(R.string.foursquare_radius_2000);
 
-        //Supported cities
-        NYC_ATTRACTIONS = activity.getResources().getString(R.string.nyc_attractions);
-        SF_ATTRACTIONS = activity.getResources().getString(R.string.sf_attractions);
-        TO_ATTRACTIONS = activity.getResources().getString(R.string.toronto_attractions);
-        LONDON_ATTRACTIONS = activity.getResources().getString(R.string.london_attractions);
-
         int numResults = 0;
 
         //Build URL
         PREFIX_URL = URL_BASE + URL_SETTING + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION + LIMIT;
-        String URL = PREFIX_URL + SF_ATTRACTIONS; //CHANGE YOUR CITY HERE!!!
 
-        //Determine city
-        SharedPreferences sharedPref;
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
-        String cityPreference = sharedPref.getString(PREF_CITY, "1");
+        String getCityURL = getCityPreference();
 
-        //City
-        switch (cityPreference) {
-            case "1":
-                Log.d(LOG_TAG, "Selected: " + cityPreference);
-                break;
-            case "2":
-                Log.d(LOG_TAG, "Selected: " + cityPreference);
-                break;
-            case "3":
-                Log.d(LOG_TAG, "Selected: " + cityPreference);
-                break;
-            case "4":
-                Log.d(LOG_TAG, "Selected: " + cityPreference);
-                break;
-            default:
-                Log.d(LOG_TAG, "Default Selected: " + cityPreference);
-                break;
-        }
-
-        Log.d(LOG_TAG, "CITY SITES: " + URL);
-
-        //Scope out the potential results
+        //Scope out the potential results for the city chosen
         try {
-            numResults = scopeAPICall(URL);
+            numResults = scopeAPICall(getCityURL);
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -217,7 +187,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         //Generate tour if we got results against the city (which we should)
         if(numResults > 0){
             try {
-                createTour(URL, numResults);
+                createTour(getCityURL, numResults);
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -226,6 +196,45 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         }
 
         return tourList;
+
+    }
+
+    private String getCityPreference(){
+
+        //Supported cities
+        LONDON_ATTRACTIONS = activity.getResources().getString(R.string.london_attractions);
+        NYC_ATTRACTIONS = activity.getResources().getString(R.string.nyc_attractions);
+        SF_ATTRACTIONS = activity.getResources().getString(R.string.sf_attractions);
+        TO_ATTRACTIONS = activity.getResources().getString(R.string.toronto_attractions);
+
+        //Determine city
+        SharedPreferences sharedPref;
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+        String cityPreference = sharedPref.getString(PREF_CITY, "1");
+
+        String URL = PREFIX_URL;
+
+        //City
+        switch (cityPreference) {
+            case "1":
+                URL += LONDON_ATTRACTIONS;
+                break;
+            case "2":
+                URL += NYC_ATTRACTIONS;
+                break;
+            case "3":
+                URL += SF_ATTRACTIONS;
+                break;
+            case "4":
+                URL += TO_ATTRACTIONS;
+                break;
+            default:
+                URL += NYC_ATTRACTIONS;
+                break;
+        }
+
+        return URL;
 
     }
 
