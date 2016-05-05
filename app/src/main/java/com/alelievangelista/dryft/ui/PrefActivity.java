@@ -22,7 +22,6 @@ public class PrefActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_pref2);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefFragment()).commit();
     }
 
@@ -31,6 +30,7 @@ public class PrefActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
 
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
+
         Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar, root, false);
         root.addView(bar, 0); // insert at top
 
@@ -61,6 +61,8 @@ public class PrefActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.preferences);
             ListPreference sortingPref = (ListPreference) findPreference ("PREF_CITY");
             sortingPref.setDefaultValue("1");
+
+
 
         }
     }

@@ -28,7 +28,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
     private static final String LOG_TAG = "PlacesAsyncTask";
 
-    public PlacesAsyncResponse delegate = null;
+    public PlacesAsyncResponse delegate;
 
     //Tour template - the number of attractions and restaurants to generate in between each
     private static final int GENERATED_ATTR = 3;
