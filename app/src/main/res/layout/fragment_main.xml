@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -83,7 +83,9 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             app:layout_collapseMode="pin"
-            app:tabIndicatorColor="@android:color/white"/>
+            app:tabIndicatorColor="@android:color/white"
+            app:tabTextColor="@android:color/white"
+            app:tabSelectedTextColor="@android:color/white"/>
 
     </android.support.design.widget.AppBarLayout>
 

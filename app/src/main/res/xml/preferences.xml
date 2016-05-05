@@ -9,6 +9,8 @@
             android:key="PREF_CITY"
             android:entries="@array/listArray"
             android:entryValues="@array/listValues"
-            android:defaultValue="1"/>
+            android:defaultValue="1"
+            android:paddingTop="10dip"
+            android:paddingBottom="10dip"/>
     </PreferenceCategory>
 </PreferenceScreen>

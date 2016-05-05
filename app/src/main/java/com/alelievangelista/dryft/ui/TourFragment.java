@@ -69,6 +69,7 @@ public class TourFragment extends Fragment implements
         listener = new PreferenceChangeListener();
         settingsPref.registerOnSharedPreferenceChangeListener(listener);
 
+
     }
 
 
@@ -110,7 +111,6 @@ public class TourFragment extends Fragment implements
 
     }
 
-
     //Check network connectivity
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -150,7 +150,18 @@ public class TourFragment extends Fragment implements
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs,
                                               String key) {
+            Snackbar snackbar = Snackbar
+                    .make(mListView, "We've detected a change in your trip...", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+
+            //First, delete items in content provider that have not been saved
+            activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseDisplay, mArgsYes);
+            activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseSaved, mArgsNo);
+
+            //Next, connect out to via API to generate a new tour
             if(isNetworkAvailable()){
+                Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
                 PlacesAsyncTask task = new PlacesAsyncTask(activity);
                 task.execute();
             }

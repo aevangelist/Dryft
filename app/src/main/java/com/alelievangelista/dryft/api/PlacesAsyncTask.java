@@ -133,11 +133,10 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         this.activity = activity;
     }
 
-
     @Override
     protected void onPostExecute(ArrayList<Place> result) {
         super.onPostExecute(tourList);
-        delegate.processFinish(tourList);
+        //delegate.processFinish(tourList);
         Log.d("PlacesAsyncTask", "Post Execute");
     }
 
