@@ -204,4 +204,10 @@ public class TourFragment extends Fragment implements
     }
 
 
+    @Override
+    public void onDestroyView() {
+        ViewGroup mContainer = (ViewGroup) getActivity().findViewById(R.id.container);
+        mContainer.removeAllViews();
+        super.onDestroyView();
+    }
 }

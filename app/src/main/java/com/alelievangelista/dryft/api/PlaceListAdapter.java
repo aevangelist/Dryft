@@ -106,7 +106,7 @@ public class PlaceListAdapter extends CursorAdapter {
 
                 PlaceDetailFragment fragment = PlaceDetailFragment.newInstance(placeId);
 
-                FragmentManager fragManager= fragmentActivity.getSupportFragmentManager();
+                FragmentManager fragManager = fragmentActivity.getSupportFragmentManager();
 
                 fragManager.beginTransaction()
                         .add(R.id.container, fragment)

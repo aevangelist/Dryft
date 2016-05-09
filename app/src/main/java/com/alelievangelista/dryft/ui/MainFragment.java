@@ -77,8 +77,11 @@ public class MainFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.app_name));
+
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setupNavDrawer(toolbar, view);
+
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -312,27 +315,15 @@ public class MainFragment extends Fragment implements
 
         switch(menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                fragmentClass = MainFragment.class;
                 break;
             case R.id.nav_second_fragment:
-
                 // Create new fragment and transaction
                 Fragment newFragment = new MyTourFragment();
-                // consider using Java coding conventions (upper first char class names!!!)
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.replace(R.id.container, newFragment);
+                transaction.add(R.id.container, newFragment);
                 transaction.addToBackStack(null);
-
-                // Commit the transaction
                 transaction.commit();
-
-                /*fragmentClass = AboutFragment.class;
-                fragment = (Fragment) fragmentClass.newInstance();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack("").commit();*/
 
                 break;
             case R.id.nav_third_fragment:
@@ -357,23 +348,19 @@ public class MainFragment extends Fragment implements
             default:
                 //fragmentClass = AboutFragment.class;
         }
-
-        /*try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        // Insert the fragment by replacing any existing fragment
-        //FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        //fragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack("").commit();
-
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
         getActivity().setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
+    }
+
+    @Override
+    public void onDestroyView() {
+        ViewGroup mContainer = (ViewGroup) getActivity().findViewById(R.id.container);
+        mContainer.removeAllViews();
+        super.onDestroyView();
     }
 
 
