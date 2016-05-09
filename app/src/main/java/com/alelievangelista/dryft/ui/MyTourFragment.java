@@ -28,18 +28,9 @@ public class MyTourFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MyTourFragment newInstance(String param1, String param2) {
-        MyTourFragment fragment = new MyTourFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -65,7 +56,6 @@ public class MyTourFragment extends Fragment {
         //Set up custom adapter
         placeListAdapter = new PlaceListAdapter(getActivity(), cursor, 0);
         mListView.setAdapter(placeListAdapter);
-        mListView.setItemsCanFocus(false);
 
         return view;
 

@@ -33,7 +33,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback,
+public class PlaceDetailFragment extends Fragment
+        implements OnMapReadyCallback,
         LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String LOG_TAG = "PlaceDetailFragment";
