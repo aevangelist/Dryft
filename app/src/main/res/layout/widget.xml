@@ -3,12 +3,12 @@
     android:orientation="vertical" android:layout_width="250dp"
     android:layout_height="180dp"
     android:elevation="6dp"
-    android:background="@color/colorAccent"
+    android:background="@color/widgetTransparent"
     android:id="@+id/widget_main"
     android:padding="5dp">
 
     <ViewFlipper
-        android:id="@+id/viewflipper"
+        android:id="@+id/view_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -19,12 +19,12 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/image"
+                    android:id="@+id/widget_image"
                     android:src="@drawable/nyc_01"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"/>
 
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/gradient" />
@@ -38,7 +38,8 @@
                     android:layout_marginEnd="10dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:contentDescription="refresh_icon"/>
+                    android:contentDescription="refresh_button"
+                    android:cropToPadding="false" />
 
                 <ImageView
                     android:layout_width="16dp"
@@ -46,10 +47,9 @@
                     android:id="@+id/next_button"
                     android:src="@drawable/right_arrow"
                     android:contentDescription="right_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="false"
-                    android:layout_marginRight="6dp" />
+                    android:layout_marginRight="6dp"
+                    android:layout_alignTop="@+id/previous_button"
+                    android:layout_alignParentEnd="true" />
 
                 <ImageView
                     android:layout_width="16dp"
@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
-                        android:id="@+id/textView"
+                        android:id="@+id/widget_name"
                         style="@style/WidgetTitleStyle"
                         android:maxLines="1"
                         android:ellipsize="end"/>
@@ -84,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
-                        android:id="@+id/textView2"
+                        android:id="@+id/widget_category"
                         style="@style/WidgetSubtitleStyle"
                         android:layout_marginBottom="5dp" />
 
@@ -92,14 +92,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
-                        android:id="@+id/textView3"
+                        android:id="@+id/widget_address"
                         style="@style/WidgetSubtitleStyle2" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
-                        android:id="@+id/textView4"
+                        android:id="@+id/widget_phone"
                         style="@style/WidgetSubtitleStyle2" />
                 </LinearLayout>
 
