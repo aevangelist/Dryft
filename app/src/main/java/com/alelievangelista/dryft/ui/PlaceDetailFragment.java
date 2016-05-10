@@ -2,6 +2,7 @@ package com.alelievangelista.dryft.ui;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
@@ -160,6 +162,16 @@ public class PlaceDetailFragment extends Fragment
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+
+        //Floating Action Button
+        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab_add);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //display in long period of time
+                Toast.makeText(getContext(), "Clickety click", Toast.LENGTH_LONG).show();
+                //Add the place to saved tour
+            }
+        });
 
         //Get elements
         mMainImage = (ImageView) view.findViewById(R.id.place_detail_image);
