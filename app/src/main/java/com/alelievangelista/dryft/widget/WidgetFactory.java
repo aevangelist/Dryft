@@ -51,19 +51,25 @@ public class WidgetFactory implements RemoteViewsFactory {
                 null  // sort order
         );
 
-        //Set up cursor
-        /*Cursor cursor = provider.query(
-                PlacesContract.Places.CONTENT_URI,
-                null, // leaving "columns" null just returns all the columns.
-                mSelectionClause, // cols for "where" clause
-                mArgsYes, // values for "where" clause
-                null  // sort order
-        );*/
-
         if (cursor != null) {
-            if (cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
+                WidgetPlaceItem listItem = new WidgetPlaceItem();
+
                 String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
-                Log.d(LOG_TAG, "suuppp!!!!" + placeName);
+                String placeAddress = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.ADDRESS));
+                String placeCategory = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.CATEGORY));
+                String placePhone = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PHONE));
+
+                listItem.setPlaceName(placeName);
+                listItem.setPlaceAddress(placeAddress);
+                listItem.setPlaceCategory(placeCategory);
+                listItem.setPlacePhone(placePhone);
+
+                Log.d(LOG_TAG, "Widget: " + placeName + "\n" + placeAddress);
+
+                listItemList.add(listItem);
+
+                cursor.moveToNext();
             }
             cursor.close();
         }
@@ -107,7 +113,8 @@ public class WidgetFactory implements RemoteViewsFactory {
         WidgetPlaceItem listItem = listItemList.get(position);
 
         //Set up UI on list item
-        //remoteView.setTextViewText(R.id.homeTeamName, listItem.getHomeTeam());
+        remoteView.setTextViewText(R.id.widget_name, listItem.getPlaceName());
+        remoteView.setTextViewText(R.id.widget_address, listItem.getPlaceAddress());
 
         return remoteView;
     }
