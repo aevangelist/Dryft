@@ -54,6 +54,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         remoteViews.setOnClickPendingIntent(R.id.refresh_icon, getPendingSelfIntent(context, SYNC_CLICKED));
 
+
         //RemoteViews Service needed to provide adapter for ListView
         Intent svcIntent = new Intent(context, WidgetService.class);
         //passing app widget id to that RemoteViews Service
@@ -62,8 +63,8 @@ public class WidgetProvider extends AppWidgetProvider {
                 svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         //setting adapter to listview of the widget
-        //remoteViews.setRemoteAdapter(R.id.widgetListView, svcIntent);
-        //remoteViews.setEmptyView(R.id.widgetListView, R.id.emptyView);
+        remoteViews.setRemoteAdapter(R.id.widget_listview, svcIntent);
+        remoteViews.setEmptyView(R.id.widget_listview, R.id.emptyView);
 
         return remoteViews;
     }

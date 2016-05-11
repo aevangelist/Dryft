@@ -5,9 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
+import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
 import com.alelievangelista.dryft.data.PlacesProvider;
 
@@ -16,10 +18,13 @@ import java.util.ArrayList;
 /**
  * Created by aevangelista on 15-12-02.
  */
-public class WidgetListProvider implements RemoteViewsFactory {
+public class WidgetFactory implements RemoteViewsFactory {
+
+    private final String LOG_TAG = "WidgetListProvider";
 
     private PlacesProvider provider;
-    private ArrayList<WidgetListItem> listItemList = new ArrayList();
+
+    private ArrayList<WidgetPlaceItem> listItemList = new ArrayList();
     private Context context = null;
     private int appWidgetId;
 
@@ -27,7 +32,7 @@ public class WidgetListProvider implements RemoteViewsFactory {
     private String mSelectionClause =  PlacesContract.Places.IS_DISPLAY + " = ?";
     private String[] mArgsYes = new String[]{"1"};
 
-    public WidgetListProvider(Context context, Intent intent) {
+    public WidgetFactory(Context context, Intent intent) {
         this.context = context;
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -38,8 +43,7 @@ public class WidgetListProvider implements RemoteViewsFactory {
 
         provider = new PlacesProvider();
 
-        //Set up cursor
-        Cursor cursor = provider.query(
+        Cursor cursor = context.getContentResolver().query(
                 PlacesContract.Places.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
                 mSelectionClause, // cols for "where" clause
@@ -47,25 +51,19 @@ public class WidgetListProvider implements RemoteViewsFactory {
                 null  // sort order
         );
 
+        //Set up cursor
+        /*Cursor cursor = provider.query(
+                PlacesContract.Places.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClause, // cols for "where" clause
+                mArgsYes, // values for "where" clause
+                null  // sort order
+        );*/
+
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    /*WidgetListItem listItem = new WidgetListItem();
-
-                    listItem.setHomeTeam(cursor.getString(adapter.COL_HOME));
-                    listItem.setAwayTeam(cursor.getString(adapter.COL_AWAY));
-                    listItem.setHomeScore(Utilies.getScore(cursor.getInt(adapter.COL_HOME_GOALS)));
-                    listItem.setAwayScore(Utilies.getScore(cursor.getInt(adapter.COL_AWAY_GOALS)));
-
-                    listItem.setHomeLogo(Utilies.getTeamCrestByTeamName(
-                            cursor.getString(adapter.COL_HOME)));
-                    listItem.setAwayLogo(Utilies.getTeamCrestByTeamName(
-                            cursor.getString(adapter.COL_AWAY)));
-
-                    listItemList.add(listItem);*/
-
-                    cursor.moveToNext();
-                }
+            if (cursor.moveToNext()) {
+                String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
+                Log.d(LOG_TAG, "suuppp!!!!" + placeName);
             }
             cursor.close();
         }
@@ -103,22 +101,15 @@ public class WidgetListProvider implements RemoteViewsFactory {
     */
     @Override
     public RemoteViews getViewAt(int position) {
-        /*final RemoteViews remoteView = new RemoteViews(
+        final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.widget_list_item);
 
-        WidgetListItem listItem = listItemList.get(position);
+        WidgetPlaceItem listItem = listItemList.get(position);
 
         //Set up UI on list item
-        remoteView.setTextViewText(R.id.homeTeamName, listItem.getHomeTeam());
-        remoteView.setTextViewText(R.id.awayTeamName, listItem.getAwayTeam());
-        remoteView.setTextViewText(R.id.homeTeamScore, listItem.getHomeScore());
-        remoteView.setTextViewText(R.id.awayTeamScore, listItem.getAwayScore());
+        //remoteView.setTextViewText(R.id.homeTeamName, listItem.getHomeTeam());
 
-        remoteView.setImageViewResource(R.id.homeTeamLogo, listItem.getHomeLogo());
-        remoteView.setImageViewResource(R.id.awayTeamLogo, listItem.getAwayLogo());
-
-        return remoteView;*/
-        return null;
+        return remoteView;
     }
 
     @Override

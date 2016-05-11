@@ -15,6 +15,6 @@ public class WidgetService extends RemoteViewsService {
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        return (new WidgetListProvider(this.getApplicationContext(), intent));
+        return (new WidgetFactory(this.getApplicationContext(), intent));
     }
 }

@@ -20,6 +20,9 @@
     <string name="price">Price</string>
     <string name="tips">Tips</string>
 
+    <!--Widget Items-->
+    <string name="widget_empty_text">No Tour Available</string>
+
 
     <!--Messages-->
     <string name="new_tour">Sit tight. We\'re preparing a new tour...</string>
