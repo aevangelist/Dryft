@@ -3,7 +3,6 @@ package com.alelievangelista.dryft.ui;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -111,13 +110,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.map);
+        /*Fragment fragment = getChildFragmentManager().findFragmentById(R.id.map);
 
         if(fragment != null){
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.remove(fragment);
             ft.commit();
-        }
+        }*/
     }
 
     /**

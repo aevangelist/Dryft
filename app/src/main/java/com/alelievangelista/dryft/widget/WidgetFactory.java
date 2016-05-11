@@ -5,14 +5,16 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
+import android.graphics.Bitmap;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
 import com.alelievangelista.dryft.data.PlacesProvider;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -46,32 +48,37 @@ public class WidgetFactory implements RemoteViewsFactory {
         Cursor cursor = context.getContentResolver().query(
                 PlacesContract.Places.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
-                mSelectionClause, // cols for "where" clause
-                mArgsYes, // values for "where" clause
+                null, // cols for "where" clause
+                null, // values for "where" clause
                 null  // sort order
         );
 
+
         if (cursor != null) {
-            while (cursor.moveToNext()) {
-                WidgetPlaceItem listItem = new WidgetPlaceItem();
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    WidgetPlaceItem listItem = new WidgetPlaceItem();
 
-                String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
-                String placeAddress = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.ADDRESS));
-                String placeCategory = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.CATEGORY));
-                String placePhone = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PHONE));
+                    String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
+                    String placeAddress = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.ADDRESS));
+                    String placeCategory = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.CATEGORY));
+                    String placePhone = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PHONE));
+                    String placePhoto = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.MAIN_PHOTO));
 
-                listItem.setPlaceName(placeName);
-                listItem.setPlaceAddress(placeAddress);
-                listItem.setPlaceCategory(placeCategory);
-                listItem.setPlacePhone(placePhone);
 
-                Log.d(LOG_TAG, "Widget: " + placeName + "\n" + placeAddress);
+                    listItem.setPlaceName(placeName);
+                    listItem.setPlaceAddress(placeAddress);
+                    listItem.setPlaceCategory(placeCategory);
+                    listItem.setPlacePhone(placePhone);
+                    listItem.setPlacePhoto(placePhoto);
 
-                listItemList.add(listItem);
 
-                cursor.moveToNext();
+                    listItemList.add(listItem);
+
+                    cursor.moveToNext();
+                }
+                cursor.close();
             }
-            cursor.close();
         }
 
     }
@@ -110,11 +117,18 @@ public class WidgetFactory implements RemoteViewsFactory {
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.widget_list_item);
 
-        WidgetPlaceItem listItem = listItemList.get(position);
+        WidgetPlaceItem item = listItemList.get(position);
 
-        //Set up UI on list item
-        remoteView.setTextViewText(R.id.widget_name, listItem.getPlaceName());
-        remoteView.setTextViewText(R.id.widget_address, listItem.getPlaceAddress());
+        remoteView.setTextViewText(R.id.widget_place_name, item.getPlaceName());
+        remoteView.setTextViewText(R.id.widget_place_address, item.getPlaceCategory());
+
+        try {
+            Bitmap b = Picasso.with(context).load(item.getPlacePhoto()).get();
+            remoteView.setImageViewBitmap(R.id.widget_image, b);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return remoteView;
     }

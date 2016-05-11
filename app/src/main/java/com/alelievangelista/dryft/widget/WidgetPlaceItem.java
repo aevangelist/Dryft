@@ -8,15 +8,17 @@ public class WidgetPlaceItem {
     private String placeCategory;
     private String placeAddress;
     private String placePhone;
+    private String placePhoto;
 
     public WidgetPlaceItem(){
     }
 
-    public WidgetPlaceItem(String name, String category, String address, String phone){
+    public WidgetPlaceItem(String name, String category, String address, String phone, String photo){
         this.placeName = name;
         this.placeCategory = category;
         this.placeAddress = address;
         this.placePhone = phone;
+        this.placePhoto = photo;
     }
 
     public String getPlaceName(){
@@ -35,8 +37,12 @@ public class WidgetPlaceItem {
         return placePhone;
     }
 
+    public String getPlacePhoto(){
+        return placePhoto;
+    }
+
     public void setPlaceName(String s){
-        this.placePhone = s;
+        this.placeName = s;
     }
 
     public void setPlaceCategory(String s){
@@ -50,5 +56,10 @@ public class WidgetPlaceItem {
     public void setPlacePhone(String s){
         this.placePhone = s;
     }
+
+    public void setPlacePhoto(String s){
+        this.placePhoto = s;
+    }
+
 
 }

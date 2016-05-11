@@ -6,7 +6,9 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/widget_image" />
+        android:id="@+id/widget_image"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,14 +19,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            style="@style/WidgetTitleStyle"
             android:text="Small Text"
             android:id="@+id/widget_place_name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            style="@style/WidgetSubtitleStyle"
             android:text="Small Text"
             android:id="@+id/widget_place_address" />
     </LinearLayout>

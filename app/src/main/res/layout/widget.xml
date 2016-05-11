@@ -21,7 +21,8 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/widget_listview" />
+        android:id="@+id/widget_listview"
+        android:background="@color/white" />
 
     <!--<ViewFlipper
         android:id="@+id/view_flipper"
@@ -32,7 +33,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:id="@+id/refresh_icon"
-        android:src="@drawable/refresh"
+        android:src="@drawable/widget_refresh"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_alignParentTop="true"
