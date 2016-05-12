@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -75,6 +77,14 @@ public class MainFragment extends Fragment implements
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        //Set up ads
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (mAdView != null) {
+            mAdView.loadAd(adRequest);
+        }
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));

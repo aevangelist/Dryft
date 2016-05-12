@@ -7,7 +7,7 @@ import android.view.Menu;
 
 import com.alelievangelista.dryft.R;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private CharSequence title;
 

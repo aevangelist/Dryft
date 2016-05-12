@@ -48,8 +48,8 @@ public class WidgetFactory implements RemoteViewsFactory {
         Cursor cursor = context.getContentResolver().query(
                 PlacesContract.Places.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
-                null, // cols for "where" clause
-                null, // values for "where" clause
+                mSelectionClause, // cols for "where" clause
+                mArgsYes, // values for "where" clause
                 null  // sort order
         );
 
