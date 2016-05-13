@@ -3,6 +3,7 @@ package com.alelievangelista.dryft.ui;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 
 import com.alelievangelista.dryft.R;
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static AppCompatActivity activity;
 
+    public boolean isTwoPane;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = MainActivity.this;
+
+        if (findViewById(R.id.details_container) != null) {
+            Log.d(LOG_TAG, "DETERMINED TO BE TWO-PANE");
+            isTwoPane = true;
+        }
+
+        Log.d(LOG_TAG, "I DONT KNOOOOW");
+
 
         //Put in the main fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
