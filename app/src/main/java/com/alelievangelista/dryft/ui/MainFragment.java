@@ -37,8 +37,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.util.prefs.PreferenceChangeListener;
-
 public class MainFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
@@ -64,6 +62,7 @@ public class MainFragment extends Fragment implements
     private String mLongitude;
 
     private PreferenceChangeListener listener;
+    private SharedPreferences settingsPref;
 
 
     public MainFragment() {
@@ -75,6 +74,18 @@ public class MainFragment extends Fragment implements
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Setting up preferences listener
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        listener = new PreferenceChangeListener();
+        settingsPref.registerOnSharedPreferenceChangeListener(listener);
+
     }
 
     @Override
@@ -408,6 +419,16 @@ public class MainFragment extends Fragment implements
         ViewGroup mContainer = (ViewGroup) getActivity().findViewById(R.id.container);
         mContainer.removeAllViews();
         super.onDestroyView();
+    }
+
+    // Handle preferences changes
+    private class PreferenceChangeListener implements
+            SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs,
+                                              String key) {
+            getCityPreference();
+        }
     }
 
 

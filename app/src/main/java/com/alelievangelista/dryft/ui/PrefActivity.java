@@ -63,7 +63,6 @@ public class PrefActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.preferences);
             ListPreference sortingPref = (ListPreference) findPreference ("PREF_CITY");
             sortingPref.setDefaultValue("1");
-
         }
     }
 

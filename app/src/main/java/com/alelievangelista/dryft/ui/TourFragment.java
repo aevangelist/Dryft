@@ -53,8 +53,6 @@ public class TourFragment extends Fragment implements
     private SharedPreferences settingsPref;
     private SharedPreferences.Editor editor;
     private SharedPreferences preferences;
-    public static final String PREFS = "PREF_FAVOURITES";
-
 
     public TourFragment() {
         // Required empty public constructor
