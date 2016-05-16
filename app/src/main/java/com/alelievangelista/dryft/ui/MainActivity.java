@@ -1,5 +1,6 @@
 package com.alelievangelista.dryft.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,17 +24,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-
         activity = MainActivity.this;
+
+        Configuration config = getResources().getConfiguration();
+        int i = config.smallestScreenWidthDp;
+        Log.d(LOG_TAG, "SMALLEST WIDTHL " + i);
+
+        int a = this.getResources().getConfiguration().orientation;
+        if (a == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d(LOG_TAG, "LANDSCAPE");
+        }
+
+        if (a == Configuration.ORIENTATION_PORTRAIT) {
+            Log.d(LOG_TAG, "PORTRAIT");
+        }
+
+        setContentView(R.layout.activity_main);
 
         if (findViewById(R.id.details_container) != null) {
             Log.d(LOG_TAG, "DETERMINED TO BE TWO-PANE");
             isTwoPane = true;
         }
 
-        Log.d(LOG_TAG, "I DONT KNOOOOW");
-
+        if (findViewById(R.id.details_container) == null){
+            Log.d(LOG_TAG, "I DONT KNOOOOW");
+        }
 
         //Put in the main fragment
         FragmentManager fragmentManager = getSupportFragmentManager();

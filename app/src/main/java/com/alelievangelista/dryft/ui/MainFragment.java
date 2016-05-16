@@ -164,6 +164,7 @@ public class MainFragment extends Fragment implements
         if (permissionLocationFine != PackageManager.PERMISSION_GRANTED) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     showMessageOKCancel("You need to allow access to Contacts",
                             new DialogInterface.OnClickListener() {
@@ -273,6 +274,7 @@ public class MainFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
+
         drawerToggle.syncState();
     }
 
