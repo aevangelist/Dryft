@@ -123,9 +123,9 @@ public class TourFragment extends Fragment implements
      * This is the handler for when the FAB is clicked
      */
     private void createNewTour(){
-
         Snackbar snackbar = Snackbar
-                .make(mListView, "Sit tight. We're preparing a new tour...", Snackbar.LENGTH_LONG);
+                .make(mListView, getResources().getString(R.string.new_tour)
+                        , Snackbar.LENGTH_LONG);
 
         snackbar.show();
 
@@ -151,8 +151,7 @@ public class TourFragment extends Fragment implements
         public void onSharedPreferenceChanged(SharedPreferences prefs,
                                               String key) {
             Snackbar snackbar = Snackbar
-                    .make(mListView, "We've detected a change in your trip...", Snackbar.LENGTH_LONG);
-
+                    .make(mListView, getResources().getString(R.string.change_tour), Snackbar.LENGTH_LONG);
             snackbar.show();
 
             //First, delete items in content provider that have not been saved

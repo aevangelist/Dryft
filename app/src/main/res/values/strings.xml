@@ -25,9 +25,11 @@
 
 
     <!--Messages-->
-    <string name="new_tour">Sit tight. We\'re preparing a new tour...</string>
 
     <!--Text-->
+    <string name="new_tour">Sit tight. We\'re preparing a new tour...</string>
+    <string name="change_tour">Hold on. We\'ve detected a change in your trip...</string>
+
     <string name="about_title">About Dryft</string>
 
         <string name="about_text">Dryft is a mobile app for avid travellers, inspired by the idea

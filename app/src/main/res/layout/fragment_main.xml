@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.MainActivity"
-            android:background="@color/colorBackground">
+            android:background="@color/colorBackground"
+            xmlns:ads="http://schemas.android.com/apk/res-auto">
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
@@ -49,36 +50,21 @@
                             android:src="@drawable/nyc_01"
                             android:fitsSystemWindows="true" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="20dp"
-                            android:paddingTop="20dp"
-                            android:layout_alignParentEnd="false"
-                            android:gravity="bottom"
-                            android:layout_marginBottom="20dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Welcome to"
-                                android:id="@+id/welcome"
-                                style="@style/PlaceDetailTitleStyle" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="New York"
-                                android:id="@+id/city_name"
-                                android:textAllCaps="true"
-                                style="@style/PlaceDetailCategoryStyle" />
-
-
-                        </LinearLayout>
-
 
                         <include layout="@layout/toolbar" />
+
+                        <com.google.android.gms.ads.AdView
+                            android:id="@+id/adView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            ads:adSize="BANNER"
+                            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                            android:layout_alignParentEnd="false"
+                            android:layout_alignParentStart="false"
+                            android:layout_alignParentTop="false"
+                            android:layout_alignParentRight="false"
+                            android:layout_centerHorizontal="true" />
 
                     </RelativeLayout>
 
@@ -100,7 +86,10 @@
                 android:id="@+id/htab_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+                </android.support.v4.view.ViewPager>
 
             <!--<include layout="@layout/content_main" />-->
 
@@ -117,13 +106,5 @@
 
     </android.support.v4.widget.DrawerLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-    </com.google.android.gms.ads.AdView>
+
 </RelativeLayout>

@@ -27,7 +27,7 @@ public class MyTourFragment extends Fragment {
 
     private ListView mListView;
     private String mSelectionClauseSaved =  PlacesContract.Places.IS_SAVED + " = ?";
-    private String[] mArgsYes = new String[]{"0"};
+    private String[] mArgsYes = new String[]{"1"};
 
     public MyTourFragment() {
         // Required empty public constructor

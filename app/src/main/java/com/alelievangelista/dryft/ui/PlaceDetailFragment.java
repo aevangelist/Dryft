@@ -1,5 +1,6 @@
 package com.alelievangelista.dryft.ui;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
@@ -167,9 +167,12 @@ public class PlaceDetailFragment extends Fragment
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab_add);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //display in long period of time
-                Toast.makeText(getContext(), "Clickety click", Toast.LENGTH_LONG).show();
-                //Add the place to saved tour
+                if(!placeId.isEmpty()){
+                    ContentValues values = new ContentValues();
+                    values.put(PlacesContract.Places.IS_SAVED, "1");
+                    getActivity().getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClause, mArgs);
+                    Log.d(LOG_TAG, "Setting IS SAVED as 1 for " + placeId);
+                }
             }
         });
 
@@ -229,6 +232,7 @@ public class PlaceDetailFragment extends Fragment
             String address = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.ADDRESS));
             String phone = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.PHONE));
 
+            placeId = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.PLACE_ID));
             placeName = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.NAME));
             latitude = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.LATITUDE));
             longitude = cursorPlace.getString(cursorPlace.getColumnIndex(PlacesContract.Places.LONGITUDE));
