@@ -4,11 +4,13 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
@@ -43,6 +46,8 @@ public class MainFragment extends Fragment implements
     private CharSequence title;
 
     private final String LOG_TAG = "MainActivity";
+    public static final String PREF_CITY = "PREF_CITY";
+
     private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 200;
 
     private int permissionLocationFine;
@@ -50,6 +55,7 @@ public class MainFragment extends Fragment implements
     private DrawerLayout mDrawer;
     private NavigationView mNavView;
     private Toolbar toolbar;
+    private ImageView placeBackground;
     private ActionBarDrawerToggle drawerToggle;
 
     private GoogleApiClient mGoogleApiClient;
@@ -92,6 +98,9 @@ public class MainFragment extends Fragment implements
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setupNavDrawer(toolbar, view);
 
+        placeBackground = (ImageView) view.findViewById(R.id.imageViewPlaces);
+        getCityPreference();
+
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -132,6 +141,32 @@ public class MainFragment extends Fragment implements
         });
 
         return  view;
+    }
+
+    private void getCityPreference(){
+        //Determine city
+        SharedPreferences sharedPref;
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        String cityPreference = sharedPref.getString(PREF_CITY, "1");
+
+        //City
+        switch (cityPreference) {
+            case "1":
+                placeBackground.setImageResource(R.drawable.bg_london);
+                break;
+            case "2":
+                placeBackground.setImageResource(R.drawable.bg_nyc);
+                break;
+            case "3":
+                placeBackground.setImageResource(R.drawable.bg_sf);
+                break;
+            case "4":
+                placeBackground.setImageResource(R.drawable.bg_toronto);
+                break;
+            default:
+                placeBackground.setImageResource(R.drawable.bg_nyc);
+                break;
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
