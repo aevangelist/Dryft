@@ -1,19 +1,14 @@
 package com.alelievangelista.dryft.ui;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -22,13 +17,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.alelievangelista.dryft.R;
 import com.google.android.gms.ads.AdRequest;
@@ -198,7 +191,7 @@ public class MainFragment extends Fragment implements
         super.onStop();
     }
 
-    @Override
+    /*@Override
     public void onConnected(Bundle bundle) {
 
         Log.d(LOG_TAG, "Connected to Google API");
@@ -228,6 +221,7 @@ public class MainFragment extends Fragment implements
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION_FINE);
+
             return;
         }
 
@@ -292,6 +286,11 @@ public class MainFragment extends Fragment implements
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }*/
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
     }
 
     @Override
