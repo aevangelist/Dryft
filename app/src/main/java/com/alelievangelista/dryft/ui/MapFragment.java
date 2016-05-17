@@ -1,7 +1,9 @@
 package com.alelievangelista.dryft.ui;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,9 +37,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private final int LOADER_ID = 10;
 
     private String mSelectionClauseDisplay =  PlacesContract.Places.IS_DISPLAY + " = ?";
-    private String mSelectionClauseSaved =  PlacesContract.Places.IS_SAVED + " = ?";
     private String[] mArgsYes = new String[]{"1"};
-    private String[] mArgsNo = new String[]{"0"};
+
+    private PreferenceChangeListener listener;
+    private SharedPreferences settingsPref;
 
     private Cursor cursor;
 
@@ -60,6 +63,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+
+        //Setting up preferences listener
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        listener = new PreferenceChangeListener();
+        settingsPref.registerOnSharedPreferenceChangeListener(listener);
     }
 
     @Override
@@ -75,6 +83,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
 
         MapFragment.this.restartLoader();
+
+        //Set up cursor
+        cursor = getActivity().getContentResolver().query(
+                PlacesContract.Places.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClauseDisplay, // cols for "where" clause
+                mArgsYes, // values for "where" clause
+                null  // sort order
+        );
 
         return view;
     }
@@ -93,15 +110,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap map) {
         googleMap = map;
 
-        //Set up cursor
-        cursor = getActivity().getContentResolver().query(
-                PlacesContract.Places.CONTENT_URI,
-                null, // leaving "columns" null just returns all the columns.
-                mSelectionClauseDisplay, // cols for "where" clause
-                mArgsYes, // values for "where" clause
-                null  // sort order
-        );
-
         //Determine locations
         getPlaces(cursor);
 
@@ -110,13 +118,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        /*Fragment fragment = getChildFragmentManager().findFragmentById(R.id.map);
-
-        if(fragment != null){
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
-        }*/
     }
 
     /**
@@ -187,5 +188,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         cursor = null;
     }
 
+
+    // Handle preferences changes
+    private class PreferenceChangeListener implements
+            SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs,
+                                              String key) {
+           //Set up the map again
+
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
 }

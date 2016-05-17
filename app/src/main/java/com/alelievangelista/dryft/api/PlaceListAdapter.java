@@ -1,7 +1,9 @@
 package com.alelievangelista.dryft.api;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,27 +27,34 @@ public class PlaceListAdapter extends CursorAdapter {
     private static final String LOG_TAG = "PlaceListAdapter";
     private static final String PLACE_ID_TAG = "PlaceIdTag";
 
+    private Context context;
     private Cursor cursor;
     private MainActivity fragmentActivity;
+
+    private String mSelectionClause =  PlacesContract.Places.PLACE_ID + " = ?";
+    private String[] mArgs = new String[1];
+
 
     public static class ViewHolder {
         public final TextView name;
         //public final TextView address;
         public final TextView category;
         public final ImageView mainPhoto;
-
+        public final ImageView addButton;
 
         public ViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.placeName);
             //address = (TextView) view.findViewById(R.id.placeAddress);
             category = (TextView) view.findViewById(R.id.placeCategory);
             mainPhoto = (ImageView) view.findViewById(R.id.placePic);
+            addButton = (ImageView) view.findViewById(R.id.addToTour);
 
         }
     }
 
     public PlaceListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        this.context = context;
         this.cursor = c;
         this.fragmentActivity = (MainActivity) context;
         Log.d("PlaceListAdapter", "Creating the adapter");
@@ -72,7 +81,7 @@ public class PlaceListAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
@@ -96,6 +105,29 @@ public class PlaceListAdapter extends CursorAdapter {
         if(!imgUrl.isEmpty()){
             Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
         }
+
+        //Set up button
+        viewHolder.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(fragmentActivity != null && cursor != null){
+                    String addToTourFormat = fragmentActivity.getResources().getString(R.string.add_to_tour);
+                    String addToTourMessage = String.format(addToTourFormat, placeName);
+
+                    Snackbar snackbar = Snackbar
+                            .make(v, addToTourMessage, Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+
+                    mArgs[0] = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
+
+                    ContentValues values = new ContentValues();
+                    values.put(PlacesContract.Places.IS_SAVED, "1");
+                    fragmentActivity.getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClause, mArgs);
+
+                }
+            }
+        });
 
         //Set up onclick listener
         view.setOnClickListener(new View.OnClickListener() {
