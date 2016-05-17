@@ -44,7 +44,6 @@ public class PlaceListAdapter extends CursorAdapter {
 
         public ViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.placeName);
-            //address = (TextView) view.findViewById(R.id.placeAddress);
             category = (TextView) view.findViewById(R.id.placeCategory);
             mainPhoto = (ImageView) view.findViewById(R.id.placePic);
             addButton = (ImageView) view.findViewById(R.id.addToTour);
@@ -148,6 +147,11 @@ public class PlaceListAdapter extends CursorAdapter {
             }
         });
 
+        //Add content descriptors
+        viewHolder.addButton.setContentDescription(fragmentActivity.getResources().getString(R.string.msg_add_to_tour));
+        String placePicFormat = fragmentActivity.getResources().getString(R.string.msg_image2);
+        String placePicMessage = String.format(placePicFormat, placeName);
+        viewHolder.mainPhoto.setContentDescription(placePicMessage);
     }
 
 

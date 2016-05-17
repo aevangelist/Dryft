@@ -152,22 +152,43 @@ public class MainFragment extends Fragment implements
         SharedPreferences sharedPref;
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         String cityPreference = sharedPref.getString(PREF_CITY, "1");
+        String addToTourFormat, city, addToTourMessage;
 
         //City
         switch (cityPreference) {
             case "1":
                 placeBackground.setImageResource(R.drawable.bg_london);
+                addToTourFormat = getResources().getString(R.string.msg_image);
+                city = getResources().getString(R.string.london);
+                addToTourMessage = String.format(addToTourFormat, city);
+                placeBackground.setContentDescription(addToTourMessage);
                 break;
             case "2":
                 placeBackground.setImageResource(R.drawable.bg_nyc);
+                addToTourFormat = getResources().getString(R.string.msg_image);
+                city = getResources().getString(R.string.new_york);
+                addToTourMessage = String.format(addToTourFormat, city);
+                placeBackground.setContentDescription(addToTourMessage);
                 break;
             case "3":
                 placeBackground.setImageResource(R.drawable.bg_sf);
+                addToTourFormat = getResources().getString(R.string.msg_image);
+                city = getResources().getString(R.string.san_fran);
+                addToTourMessage = String.format(addToTourFormat, city);
+                placeBackground.setContentDescription(addToTourMessage);
                 break;
             case "4":
+                addToTourFormat = getResources().getString(R.string.msg_image);
+                city = getResources().getString(R.string.toronto);
+                addToTourMessage = String.format(addToTourFormat, city);
+                placeBackground.setContentDescription(addToTourMessage);
                 placeBackground.setImageResource(R.drawable.bg_toronto);
                 break;
             default:
+                addToTourFormat = getResources().getString(R.string.msg_image);
+                city = getResources().getString(R.string.new_york);
+                addToTourMessage = String.format(addToTourFormat, city);
+                placeBackground.setContentDescription(addToTourMessage);
                 placeBackground.setImageResource(R.drawable.bg_nyc);
                 break;
         }
@@ -175,8 +196,8 @@ public class MainFragment extends Fragment implements
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFrag(new TourFragment(), "TOUR");
-        adapter.addFrag(new MapFragment(), "MAP");
+        adapter.addFrag(new TourFragment(), getResources().getString(R.string.tour));
+        adapter.addFrag(new MapFragment(), getResources().getString(R.string.map));
         viewPager.setAdapter(adapter);
     }
 

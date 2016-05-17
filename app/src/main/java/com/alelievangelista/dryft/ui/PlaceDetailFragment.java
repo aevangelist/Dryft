@@ -166,6 +166,7 @@ public class PlaceDetailFragment extends Fragment
 
         //Floating Action Button
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab_add);
+        myFab.setContentDescription(getResources().getString(R.string.msg_add_to_tour));
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!placeId.isEmpty()){
@@ -399,6 +400,9 @@ public class PlaceDetailFragment extends Fragment
 
             if(!imageUrl.isEmpty()){
                 Picasso.with(getActivity()).load(imageUrl).into(mMainImage);
+                String placePicFormat = getResources().getString(R.string.msg_image2);
+                String placePicMessage = String.format(placePicFormat, placeName);
+                mMainImage.setContentDescription(placePicMessage);
             }
 
         }
