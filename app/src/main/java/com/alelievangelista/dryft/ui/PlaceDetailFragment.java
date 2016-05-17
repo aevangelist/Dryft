@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,7 +119,6 @@ public class PlaceDetailFragment extends Fragment
             placeId = getArguments().getString(PLACE_ID_TAG, "");
             //Set up SQL arguments
             mArgs[0] = placeId;
-            Log.d(LOG_TAG, "PlaceDetailsFragment Got: " + placeId);
         }
 
         setHasOptionsMenu(true);
@@ -137,7 +135,6 @@ public class PlaceDetailFragment extends Fragment
                 getActivity().onBackPressed();
                 return true;
             default:
-                Log.d(LOG_TAG, "This is what you clicked: " + item.getItemId());
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -175,8 +172,6 @@ public class PlaceDetailFragment extends Fragment
                     ContentValues values = new ContentValues();
                     values.put(PlacesContract.Places.IS_SAVED, "1");
                     getActivity().getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClause, mArgs);
-                    Log.d(LOG_TAG, "Setting IS SAVED as 1 for " + placeId);
-
 
                     String addToTourFormat = getResources().getString(R.string.add_to_tour);
                     String addToTourMessage = String.format(addToTourFormat, placeName);
@@ -293,7 +288,7 @@ public class PlaceDetailFragment extends Fragment
                 TextView addressValue = (TextView)
                         addressView.findViewById(R.id.contact_value);
 
-                addressLabel.setText("Address");
+                addressLabel.setText(getResources().getString(R.string.address));
                 addressValue.setText(address);
                 mContactSection.addView(addressView);
             }
@@ -310,7 +305,7 @@ public class PlaceDetailFragment extends Fragment
                 TextView phoneValue = (TextView)
                         phoneView.findViewById(R.id.contact_value);
 
-                phoneLabel.setText("Phone");
+                phoneLabel.setText(getResources().getString(R.string.phone));
                 phoneValue.setText(phone);
                 mContactSection.addView(phoneView);
             }
@@ -326,7 +321,7 @@ public class PlaceDetailFragment extends Fragment
                 TextView twitterValue = (TextView)
                         twitterView.findViewById(R.id.contact_value);
 
-                twitterLabel.setText("Twitter");
+                twitterLabel.setText(getResources().getString(R.string.twitter));
                 twitterValue.setText(twitter);
                 mContactSection.addView(twitterView);
             }
@@ -387,7 +382,6 @@ public class PlaceDetailFragment extends Fragment
             //Setting up menu
             String menuUrl = cursorDetail.getString(cursorDetail.getColumnIndex(PlacesContract.PlaceDetail.MENU_URL));
             if(!menuUrl.isEmpty()){
-                Log.d(LOG_TAG, "Cursor Menu URL: " + menuUrl);
                 View menuView = inflater.inflate(R.layout.item_menu, container, false);
 
                 TextView menuLink = (TextView)
@@ -415,7 +409,6 @@ public class PlaceDetailFragment extends Fragment
             while(cursorHours.moveToNext()){
                 String day = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.DAY));
                 String time = cursorHours.getString(cursorHours.getColumnIndex(PlacesContract.Hours.TIME));
-                Log.d(LOG_TAG, "Cursor Hours: " + day + " Time: " + time);
                 hourArrayList.add(new Hour(placeId, day, time));
             }
 
@@ -472,7 +465,6 @@ public class PlaceDetailFragment extends Fragment
         if (listAdapter != null) {
 
             int numberOfItems = listAdapter.getCount();
-            //Log.d(LOG_TAG, "Number of items: " + numberOfItems);
 
             // Get total height of all items.
             int totalItemsHeight = 0;
@@ -482,7 +474,6 @@ public class PlaceDetailFragment extends Fragment
                 item.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
                 totalItemsHeight += item.getMeasuredHeight() + 10;
-                //Log.d(LOG_TAG, "Item height: " + totalItemsHeight);
             }
 
             // Get total height of all item dividers.
@@ -492,11 +483,6 @@ public class PlaceDetailFragment extends Fragment
             // Set list height.
             ViewGroup.LayoutParams params = listView.getLayoutParams();
             params.height = totalItemsHeight + totalDividersHeight;
-            //params.height = 500;
-            //  Log.d(LOG_TAG, "Params: " + params.height);
-
-            //int total = totalItemsHeight + totalDividersHeight;
-            //listView.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, total));
             listView.setLayoutParams(params);
             listView.requestLayout();
 

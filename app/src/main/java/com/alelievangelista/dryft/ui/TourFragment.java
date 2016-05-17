@@ -66,10 +66,7 @@ public class TourFragment extends Fragment implements
         settingsPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         listener = new PreferenceChangeListener();
         settingsPref.registerOnSharedPreferenceChangeListener(listener);
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,7 +129,6 @@ public class TourFragment extends Fragment implements
 
         //Next, connect out to via API to generate a new tour
         if(isNetworkAvailable()){
-            Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
             PlacesAsyncTask task = new PlacesAsyncTask(activity);
             task.delegate = this; //this to set delegate/listener back to this class
 
@@ -157,7 +153,6 @@ public class TourFragment extends Fragment implements
 
             //Next, connect out to via API to generate a new tour
             if(isNetworkAvailable()){
-                Log.d(LOG_TAG, "Network is available - now launching PlacesAsyncTask");
                 PlacesAsyncTask task = new PlacesAsyncTask(activity);
                 task.execute();
             }
@@ -166,7 +161,7 @@ public class TourFragment extends Fragment implements
 
     @Override
     public void processFinish(ArrayList<Place> output) {
-        Log.e(LOG_TAG, "Asynctask has finished!!!");
+        Log.e(LOG_TAG, "Asynctask has finished!");
     }
 
     private void restartLoader(){

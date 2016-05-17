@@ -4,6 +4,23 @@
     <string name="server_api_key">AIzaSyDU-yQUH2fC7Q7KEROEys-oDiCKRBRYuLA</string>
     <string name="android_api_key">AIzaSyDNaMHj_XpC5z5MfeKp5SeFoeKa2nbEl1E</string>
 
+    <!--General Items-->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="location_permission">Allow access to location</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="got_it">Got It</string>
+    <string name="about_title">About Dryft</string>
+    <string name="about_text">Dryft is a mobile app for avid travellers, inspired by the idea
+            that managing your time in a new city should be simple and enjoyable.
+            Destinations selected are curated from fellow travellers who are passionate about history,
+            culture, art, and most importantly, food!
+            \n\n
+
+            Got an idea for the app?\n
+            Email hello@alelievangelista.com
+    </string>
+
     <!--Menu Items-->
     <string name="about">About</string>
     <string name="my_tour">My Tour</string>
@@ -20,29 +37,19 @@
     <string name="price">Price</string>
     <string name="tips">Tips</string>
 
+    <string name="twitter">Twitter</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+
+
     <!--Widget Items-->
     <string name="widget_empty_text">No Tour Available</string>
 
-
     <!--Messages-->
-
-    <!--Text-->
     <string name="add_to_tour">Adding %1$s to your tour</string>
     <string name="meatShootingMessage">You shot %1$d pounds of meat!</string>
     <string name="new_tour">Sit tight. We\'re preparing a new tour...</string>
     <string name="change_tour">Hold on. We\'ve detected a change in your trip...</string>
-
-    <string name="about_title">About Dryft</string>
-
-        <string name="about_text">Dryft is a mobile app for avid travellers, inspired by the idea
-            that managing your time in a new city should be simple and enjoyable.
-            Destinations selected are curated from fellow travellers who are passionate about history,
-            culture, art, and most importantly, food!
-            \n\n
-
-            Got an idea for the app?\n
-            Email hello@alelievangelista.com
-    </string>
 
     <!--Foursquare API-->
     <string name="foursquare_url_base">https://api.foursquare.com/v2/venues/</string>
@@ -57,7 +64,6 @@
     <string name="foursquare_dinner">&amp;query=dinner</string>
     <string name="foursquare_radius_2000">&amp;radius=5000</string>
     <string name="foursquare_venue_photos">&amp;venuePhotos=1</string>
-
 
     <string name="foursquare_client_id">client_id=</string>
     <string name="foursquare_client_secret">&amp;client_secret=</string>
@@ -82,10 +88,5 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_pref">PrefActivity</string>
 
-
-    <!-- test.xml value:
-    https://api.foursquare.com/v2/venues/search?client_id= F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2
-    &client_secret= RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY
-    &v=20130815&ll=43,-79&query=breakfast&radius=1000-->
 
 </resources>

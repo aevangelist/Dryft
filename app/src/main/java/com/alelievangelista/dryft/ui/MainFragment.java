@@ -88,16 +88,6 @@ public class MainFragment extends Fragment implements
 
     }
 
-    // A method to find height of the status bar
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -222,7 +212,7 @@ public class MainFragment extends Fragment implements
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    showMessageOKCancel("You need to allow access to Contacts",
+                    showMessageOKCancel(getResources().getString(R.string.location_permission),
                             new DialogInterface.OnClickListener() {
                                 @TargetApi(Build.VERSION_CODES.M)
                                 @Override
@@ -235,7 +225,6 @@ public class MainFragment extends Fragment implements
                 }
             }
 
-            Log.d(LOG_TAG, "Permission not granted");
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION_FINE);
@@ -249,8 +238,8 @@ public class MainFragment extends Fragment implements
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(getActivity())
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(getResources().getString(R.string.ok), okListener)
+                .setNegativeButton(getResources().getString(R.string.cancel), null)
                 .create()
                 .show();
     }
@@ -277,7 +266,7 @@ public class MainFragment extends Fragment implements
         }
 
         if(mLastLocation == null){
-            Log.d(LOG_TAG, "Couldnt grab location");
+            Log.d(LOG_TAG, "Could not grab location");
         }
     }
 
@@ -295,7 +284,7 @@ public class MainFragment extends Fragment implements
                 } else {
                     //TODO - Disable the permission in question
                     // Permission Denied
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT)
                             .show();
                 }
                 return;
@@ -405,7 +394,7 @@ public class MainFragment extends Fragment implements
                 alertDialog.setTitle(title);
 
                 alertDialog.setMessage(message);
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "GOT IT",
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getResources().getString(R.string.got_it),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
