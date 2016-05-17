@@ -53,7 +53,7 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:paddingTop="20dp"
                         android:layout_alignParentEnd="false"
                         android:gravity="bottom"
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-32dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:src="@drawable/add_bookmark_white"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|right|end" />
@@ -119,8 +119,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
                         android:layout_marginTop="30dp"
                         android:gravity="center">
 
@@ -141,8 +141,8 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
                         android:gravity="center"/>
 
                     <View style="@style/ListDivider"/>
@@ -151,7 +151,7 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
                         android:layout_marginBottom="20dp">
 
                         <LinearLayout
@@ -166,8 +166,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:layout_marginRight="25dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginEnd="25dp"
+                            android:layout_marginStart="10dp"
                             android:id="@+id/restaurant_section"/>
 
                     </LinearLayout>
@@ -180,7 +180,7 @@
 
                     <TextView
                         android:layout_marginTop="25dp"
-                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
                         android:layout_marginBottom="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -194,8 +194,8 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
                         android:layout_marginBottom="25dp"
                         android:gravity="center">
 

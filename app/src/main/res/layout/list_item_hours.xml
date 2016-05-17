@@ -21,6 +21,6 @@
         style="@style/PlaceDetailSubtitle2Style"
         android:singleLine="false"
         android:text="10:00am - 11:00pm"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginStart="10dp" />
 
 </LinearLayout>

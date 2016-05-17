@@ -15,6 +15,6 @@
         android:singleLine="false"
         android:text="@string/menu"
         android:textAllCaps="true"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginStart="10dp" />
 
 </LinearLayout>
