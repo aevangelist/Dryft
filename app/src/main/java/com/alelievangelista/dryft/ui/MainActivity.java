@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         activity = MainActivity.this;
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
         Configuration config = getResources().getConfiguration();
         int i = config.smallestScreenWidthDp;
         Log.d(LOG_TAG, "SMALLEST WIDTHL " + i);
@@ -44,15 +46,10 @@ public class MainActivity extends AppCompatActivity {
         if (findViewById(R.id.details_container) != null) {
             Log.d(LOG_TAG, "DETERMINED TO BE TWO-PANE");
             isTwoPane = true;
+            fragmentManager.beginTransaction().add(R.id.details_container, new MapFragment()).commit();
+        }else{
+            fragmentManager.beginTransaction().add(R.id.container, new MainFragment()).commit();
         }
-
-        if (findViewById(R.id.details_container) == null){
-            Log.d(LOG_TAG, "I DONT KNOOOOW");
-        }
-
-        //Put in the main fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, new MainFragment()).commit();
 
     }
 

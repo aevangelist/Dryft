@@ -19,7 +19,29 @@
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:id="@+id/list_view" />
+            android:id="@+id/list_view"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newTourButton"
+                android:src="@drawable/new_tour" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/PlaceTitleStyle"
+                android:textAllCaps="true"
+                android:text="@string/generate_tour"
+                android:id="@+id/textView" />
+        </LinearLayout>
 
     </LinearLayout>
 
