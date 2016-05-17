@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -69,6 +70,7 @@ public class PlaceDetailFragment extends Fragment
     private LinearLayout mContactSection;
     private LinearLayout mHoursSection;
     private LinearLayout mRestaurantSection;
+    private LinearLayout layout;
 
     //ListViews
     private ListView mHoursListView;
@@ -146,6 +148,8 @@ public class PlaceDetailFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_place_detail, container, false);
 
+        layout = (LinearLayout) view.findViewById(R.id.frag_place_detail);
+
         //Set up the map
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.place_map);
@@ -172,6 +176,15 @@ public class PlaceDetailFragment extends Fragment
                     values.put(PlacesContract.Places.IS_SAVED, "1");
                     getActivity().getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClause, mArgs);
                     Log.d(LOG_TAG, "Setting IS SAVED as 1 for " + placeId);
+
+
+                    String addToTourFormat = getResources().getString(R.string.add_to_tour);
+                    String addToTourMessage = String.format(addToTourFormat, placeName);
+
+
+                    Snackbar snackbar = Snackbar
+                            .make(layout, addToTourMessage, Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });

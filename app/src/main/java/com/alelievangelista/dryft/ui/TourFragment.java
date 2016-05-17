@@ -124,7 +124,6 @@ public class TourFragment extends Fragment implements
         Snackbar snackbar = Snackbar
                 .make(mListView, getResources().getString(R.string.new_tour)
                         , Snackbar.LENGTH_LONG);
-
         snackbar.show();
 
         //First, delete items in content provider that have not been saved

@@ -27,6 +27,8 @@
     <!--Messages-->
 
     <!--Text-->
+    <string name="add_to_tour">Adding %1$s to your tour</string>
+    <string name="meatShootingMessage">You shot %1$d pounds of meat!</string>
     <string name="new_tour">Sit tight. We\'re preparing a new tour...</string>
     <string name="change_tour">Hold on. We\'ve detected a change in your trip...</string>
 
