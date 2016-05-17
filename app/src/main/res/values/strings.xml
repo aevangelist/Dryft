@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Dryft</string>
-    <string name="action_settings">Settings</string>
-    
+    <string name="action_settings">Settingss</string>
+
     <!--Content Descriptors-->
     <string name="london">London</string>
     <string name="toronto">Toronto</string>
