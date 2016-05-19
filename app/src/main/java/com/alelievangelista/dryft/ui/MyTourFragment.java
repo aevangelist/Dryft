@@ -23,8 +23,8 @@ public class MyTourFragment extends Fragment {
 
     private PlaceListAdapter placeListAdapter;
     private Toolbar toolbar;
-
     private ListView mListView;
+
     private String mSelectionClauseSaved =  PlacesContract.Places.IS_SAVED + " = ?";
     private String[] mArgsYes = new String[]{"1"};
 

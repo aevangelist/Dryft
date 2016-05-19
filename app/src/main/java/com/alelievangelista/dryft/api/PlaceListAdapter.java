@@ -64,6 +64,7 @@ public class PlaceListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_place_2, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
@@ -131,8 +132,6 @@ public class PlaceListAdapter extends CursorAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.d(LOG_TAG, "Choosing item: " + placeName + ", " + placeId);
 
                 PlaceDetailFragment fragment = PlaceDetailFragment.newInstance(placeId);
 

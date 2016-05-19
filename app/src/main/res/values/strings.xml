@@ -8,7 +8,6 @@
     <string name="foursquare_id">F40XDLFHBJKMLOXKX2PMBRG53FQG3Z2OMEMJDVBXDYOCEVG2</string>
     <string name="foursquare_secret">RZ5Y24G2U5CJ3A4E5AOGTXELRX10MYZLLGT13HTO4H1YSBNY</string>
 
-
     <!--Content Descriptors-->
     <string name="london">London</string>
     <string name="toronto">Toronto</string>
@@ -17,6 +16,7 @@
     <string name="msg_image">A picture from %1$s</string>
     <string name="msg_image2">A picture taken at %1$s</string>
     <string name="msg_add_to_tour">Add to tour button</string>
+    <string name="msg_generate_tour">Click this to generate a tour</string>
 
     <!--General Items-->
     <string name="tour">TOUR</string>

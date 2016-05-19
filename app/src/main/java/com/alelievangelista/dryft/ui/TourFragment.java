@@ -2,6 +2,7 @@ package com.alelievangelista.dryft.ui;
 
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -82,7 +83,6 @@ public class TourFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_tour, container, false);
 
         activity = getActivity();
-
         mListView = (ListView) view.findViewById(R.id.list_view);
 
         generateTourLayout = (LinearLayout) view.findViewById(R.id.generate_tour_layout);
@@ -126,8 +126,6 @@ public class TourFragment extends Fragment implements
         //Check if adapter is empty
         if(placeListAdapter.getCount() < 1){
             myFab.setVisibility(View.INVISIBLE);
-            //mListView.setVisibility(View.INVISIBLE);
-
             generateTourLayout.setVisibility(View.VISIBLE);
         }
 
@@ -149,8 +147,13 @@ public class TourFragment extends Fragment implements
      * This is the handler for when the FAB is clicked
      */
     private void createNewTour(){
+
+        getLoaderManager().restartLoader(0, null, this);
+
         //First, delete items in content provider that have not been saved
-        activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseDisplay, mArgsYes);
+        ContentValues values = new ContentValues();
+        values.put(PlacesContract.Places.IS_DISPLAY, "0");
+        activity.getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClauseDisplay, mArgsYes);
         activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseSaved, mArgsNo);
 
         //Next, connect out to via API to generate a new tour
@@ -173,12 +176,11 @@ public class TourFragment extends Fragment implements
         @Override
         public void onSharedPreferenceChanged(SharedPreferences prefs,
                                               String key) {
-            Snackbar snackbar = Snackbar
-                    .make(mListView, getResources().getString(R.string.change_tour), Snackbar.LENGTH_LONG);
-            snackbar.show();
 
             //First, delete items in content provider that have not been saved
-            activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseDisplay, mArgsYes);
+            ContentValues values = new ContentValues();
+            values.put(PlacesContract.Places.IS_DISPLAY, "0");
+            activity.getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClauseDisplay, mArgsYes);
             activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseSaved, mArgsNo);
 
             //Next, connect out to via API to generate a new tour
@@ -186,6 +188,10 @@ public class TourFragment extends Fragment implements
                 PlacesAsyncTask task = new PlacesAsyncTask(activity);
                 task.execute();
             }
+
+            Snackbar snackbar = Snackbar
+                    .make(mListView, getResources().getString(R.string.change_tour), Snackbar.LENGTH_LONG);
+            snackbar.show();
         }
     }
 
@@ -201,13 +207,12 @@ public class TourFragment extends Fragment implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        return new CursorLoader(
-                getActivity(),
+        return new CursorLoader(getActivity(),
                 PlacesContract.Places.CONTENT_URI,
-                null,
-                null, // cols for "where" clause
-                null, // values for "where" clause
-                null
+                null, // leaving "columns" null just returns all the columns.
+                mSelectionClauseDisplay, // cols for "where" clause
+                mArgsYes, // values for "where" clause
+                null  // sort order
         );
     }
 
@@ -231,4 +236,5 @@ public class TourFragment extends Fragment implements
         mContainer.removeAllViews();
         super.onDestroyView();
     }
+
 }
