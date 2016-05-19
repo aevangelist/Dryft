@@ -1,6 +1,5 @@
 package com.alelievangelista.dryft.ui;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        Configuration config = getResources().getConfiguration();
+        /*Configuration config = getResources().getConfiguration();
         int i = config.smallestScreenWidthDp;
         Log.d(LOG_TAG, "SMALLEST WIDTHL " + i);
 
@@ -39,16 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (a == Configuration.ORIENTATION_PORTRAIT) {
             Log.d(LOG_TAG, "PORTRAIT");
-        }
+        }*/
 
         setContentView(R.layout.activity_main);
+
+        fragmentManager.beginTransaction().add(R.id.container, new MainFragment()).commit();
 
         if (findViewById(R.id.details_container) != null) {
             Log.d(LOG_TAG, "DETERMINED TO BE TWO-PANE");
             isTwoPane = true;
             fragmentManager.beginTransaction().add(R.id.details_container, new MapFragment()).commit();
-        }else{
-            fragmentManager.beginTransaction().add(R.id.container, new MainFragment()).commit();
         }
 
     }

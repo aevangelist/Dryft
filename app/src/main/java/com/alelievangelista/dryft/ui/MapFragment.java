@@ -111,7 +111,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         googleMap = map;
 
         //Determine locations
-        getPlaces(cursor);
+        if(googleMap != null){
+            //getPlaces(cursor);
+        }
 
     }
 

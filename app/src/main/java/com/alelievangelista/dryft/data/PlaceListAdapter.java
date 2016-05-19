@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,9 +71,6 @@ public class PlaceListAdapter extends CursorAdapter {
         final String placeId = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
         final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
 
-        Log.d(LOG_TAG, "New view: " + placeName + ", " + placeId);
-
-
         return view;
     }
 
@@ -117,7 +113,7 @@ public class PlaceListAdapter extends CursorAdapter {
                             .make(v, addToTourMessage, Snackbar.LENGTH_SHORT);
                     snackbar.show();
 
-                    mArgs[0] = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
+                    mArgs[0] = placeId;
 
                     ContentValues values = new ContentValues();
                     values.put(PlacesContract.Places.IS_SAVED, "1");
