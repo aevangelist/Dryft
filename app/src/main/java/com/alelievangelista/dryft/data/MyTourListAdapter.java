@@ -121,7 +121,10 @@ public class MyTourListAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put(PlacesContract.Places.IS_SAVED, "0");
                     fragmentActivity.getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClause, mArgs);
+
+
                 }
+
             }
         });
 
