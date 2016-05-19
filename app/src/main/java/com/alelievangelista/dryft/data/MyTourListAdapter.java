@@ -1,11 +1,10 @@
-package com.alelievangelista.dryft.api;
+package com.alelievangelista.dryft.data;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
-import com.alelievangelista.dryft.data.PlacesContract;
 import com.alelievangelista.dryft.ui.MainActivity;
 import com.alelievangelista.dryft.ui.PlaceDetailFragment;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by aevangelista on 16-04-19.
+ * Created by aevangelista on 16-05-19.
  */
-public class PlaceListAdapter extends CursorAdapter {
+public class MyTourListAdapter extends CursorAdapter {
 
-    private static final String LOG_TAG = "PlaceListAdapter";
+    private static final String LOG_TAG = "MyTourListAdapter";
     private static final String PLACE_ID_TAG = "PlaceIdTag";
 
     private Context context;
@@ -40,18 +38,18 @@ public class PlaceListAdapter extends CursorAdapter {
         //public final TextView address;
         public final TextView category;
         public final ImageView mainPhoto;
-        public final ImageView addButton;
+        public final ImageView deleteButton;
 
         public ViewHolder(View view) {
             name = (TextView) view.findViewById(R.id.placeName);
             category = (TextView) view.findViewById(R.id.placeCategory);
             mainPhoto = (ImageView) view.findViewById(R.id.placePic);
-            addButton = (ImageView) view.findViewById(R.id.addToTour);
+            deleteButton = (ImageView) view.findViewById(R.id.deleteFromTour);
 
         }
     }
 
-    public PlaceListAdapter(Context context, Cursor c, int flags) {
+    public MyTourListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.context = context;
         this.cursor = c;
@@ -65,15 +63,13 @@ public class PlaceListAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_place_2, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_mytour, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
 
         final String placeId = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
         final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
-
-        Log.d(LOG_TAG, "New view: " + placeName + ", " + placeId);
 
 
         return view;
@@ -105,25 +101,26 @@ public class PlaceListAdapter extends CursorAdapter {
             Picasso.with(context).load(imgUrl).into(viewHolder.mainPhoto);
         }
 
+        final MyTourListAdapter adapter = this;
+
         //Set up button
-        viewHolder.addButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(fragmentActivity != null && cursor != null){
-                    String addToTourFormat = fragmentActivity.getResources().getString(R.string.add_to_tour);
-                    String addToTourMessage = String.format(addToTourFormat, placeName);
+                    String removeFromTourFormat = fragmentActivity.getResources().getString(R.string.remove_from_tour);
+                    String removeFromTourMessage = String.format(removeFromTourFormat, placeName);
 
                     Snackbar snackbar = Snackbar
-                            .make(v, addToTourMessage, Snackbar.LENGTH_SHORT);
+                            .make(v, removeFromTourMessage, Snackbar.LENGTH_SHORT);
                     snackbar.show();
 
                     mArgs[0] = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
 
                     ContentValues values = new ContentValues();
-                    values.put(PlacesContract.Places.IS_SAVED, "1");
+                    values.put(PlacesContract.Places.IS_SAVED, "0");
                     fragmentActivity.getContentResolver().update(PlacesContract.Places.CONTENT_URI, values, mSelectionClause, mArgs);
-
                 }
             }
         });
@@ -146,11 +143,9 @@ public class PlaceListAdapter extends CursorAdapter {
         });
 
         //Add content descriptors
-        viewHolder.addButton.setContentDescription(fragmentActivity.getResources().getString(R.string.msg_add_to_tour));
+        viewHolder.deleteButton.setContentDescription(fragmentActivity.getResources().getString(R.string.msg_remove_from_tour));
         String placePicFormat = fragmentActivity.getResources().getString(R.string.msg_image2);
         String placePicMessage = String.format(placePicFormat, placeName);
         viewHolder.mainPhoto.setContentDescription(placePicMessage);
     }
-
-
 }

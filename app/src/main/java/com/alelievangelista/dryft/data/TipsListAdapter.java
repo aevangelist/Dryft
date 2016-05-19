@@ -1,4 +1,4 @@
-package com.alelievangelista.dryft.ui;
+package com.alelievangelista.dryft.data;
 
 import android.content.Context;
 import android.view.LayoutInflater;

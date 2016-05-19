@@ -24,7 +24,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
+import com.alelievangelista.dryft.data.HoursListAdapter;
 import com.alelievangelista.dryft.data.PlacesContract;
+import com.alelievangelista.dryft.data.TipsListAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

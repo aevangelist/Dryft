@@ -1,4 +1,4 @@
-package com.alelievangelista.dryft.ui;
+package com.alelievangelista.dryft.data;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
+import com.alelievangelista.dryft.ui.Hour;
 
 import java.util.ArrayList;
 

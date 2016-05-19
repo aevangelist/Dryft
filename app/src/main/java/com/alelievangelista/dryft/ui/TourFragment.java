@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
-import com.alelievangelista.dryft.api.PlaceListAdapter;
+import com.alelievangelista.dryft.data.PlaceListAdapter;
 import com.alelievangelista.dryft.api.PlacesAsyncTask;
 import com.alelievangelista.dryft.data.PlacesContract;
 

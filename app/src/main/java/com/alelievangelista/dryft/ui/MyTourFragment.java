@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.alelievangelista.dryft.R;
-import com.alelievangelista.dryft.api.PlaceListAdapter;
+import com.alelievangelista.dryft.data.MyTourListAdapter;
 import com.alelievangelista.dryft.data.PlacesContract;
 
 public class MyTourFragment extends Fragment {
 
     private final String LOG_TAG = "MyTourFragment";
 
-    private PlaceListAdapter placeListAdapter;
+    private MyTourListAdapter myTourListAdapter;
     private Toolbar toolbar;
     private ListView mListView;
 
@@ -66,8 +66,8 @@ public class MyTourFragment extends Fragment {
         );
 
         //Set up custom adapter
-        placeListAdapter = new PlaceListAdapter(getActivity(), cursor, 0);
-        mListView.setAdapter(placeListAdapter);
+        myTourListAdapter = new MyTourListAdapter(getActivity(), cursor, 0);
+        mListView.setAdapter(myTourListAdapter);
 
         return view;
 
