@@ -116,7 +116,7 @@ public class MyTourListAdapter extends CursorAdapter {
                             .make(v, removeFromTourMessage, Snackbar.LENGTH_SHORT);
                     snackbar.show();
 
-                    mArgs[0] = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
+                    mArgs[0] = placeId;
 
                     ContentValues values = new ContentValues();
                     values.put(PlacesContract.Places.IS_SAVED, "0");
