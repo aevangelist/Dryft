@@ -19,7 +19,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.api.PlaceListAdapter;
@@ -46,8 +49,12 @@ public class TourFragment extends Fragment implements
 
 
     private Activity activity;
+    private FloatingActionButton myFab;
     private ListView mListView;
     private PlaceListAdapter placeListAdapter;
+    private LinearLayout generateTourLayout;
+    private ImageView newTourImage;
+    private TextView newTourText;
 
     private PreferenceChangeListener listener;
     private SharedPreferences settingsPref;
@@ -78,10 +85,26 @@ public class TourFragment extends Fragment implements
 
         mListView = (ListView) view.findViewById(R.id.list_view);
 
+        generateTourLayout = (LinearLayout) view.findViewById(R.id.generate_tour_layout);
+        newTourImage = (ImageView) view.findViewById(R.id.new_tour_button);
+        newTourText = (TextView) view.findViewById(R.id.new_tour_text);
+
+
         //Floating Action Button behaviour
-        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab_reload);
+        myFab = (FloatingActionButton) view.findViewById(R.id.fab_reload);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                createNewTour();
+            }
+        });
+
+        //Generate tour
+        newTourImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generateTourLayout.setVisibility(View.GONE);
+                myFab.setVisibility(View.VISIBLE);
+                mListView.setVisibility(View.VISIBLE);
                 createNewTour();
             }
         });
@@ -99,6 +122,14 @@ public class TourFragment extends Fragment implements
         placeListAdapter = new PlaceListAdapter(getActivity(), cursor, 0);
         mListView.setAdapter(placeListAdapter);
         mListView.setItemsCanFocus(false);
+
+        //Check if adapter is empty
+        if(placeListAdapter.getCount() < 1){
+            myFab.setVisibility(View.INVISIBLE);
+            //mListView.setVisibility(View.INVISIBLE);
+
+            generateTourLayout.setVisibility(View.VISIBLE);
+        }
 
         TourFragment.this.restartLoader();
 
@@ -118,11 +149,6 @@ public class TourFragment extends Fragment implements
      * This is the handler for when the FAB is clicked
      */
     private void createNewTour(){
-        Snackbar snackbar = Snackbar
-                .make(mListView, getResources().getString(R.string.new_tour)
-                        , Snackbar.LENGTH_LONG);
-        snackbar.show();
-
         //First, delete items in content provider that have not been saved
         activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseDisplay, mArgsYes);
         activity.getContentResolver().delete(PlacesContract.Places.CONTENT_URI, mSelectionClauseSaved, mArgsNo);
@@ -135,6 +161,10 @@ public class TourFragment extends Fragment implements
             task.execute();
         }
 
+        Snackbar snackbar = Snackbar
+                .make(mListView, getResources().getString(R.string.new_tour)
+                        , Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     // Handle preferences changes

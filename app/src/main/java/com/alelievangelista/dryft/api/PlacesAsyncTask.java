@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.alelievangelista.dryft.BuildConfig;
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
 import com.alelievangelista.dryft.ui.Place;
@@ -137,7 +136,9 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     @Override
     protected void onPostExecute(ArrayList<Place> result) {
         super.onPostExecute(tourList);
-        //delegate.processFinish(tourList);
+        if(delegate != null){
+            delegate.processFinish(tourList);
+        }
         Log.d("PlacesAsyncTask", "Post Execute");
     }
 
@@ -155,11 +156,11 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         URL_CLIENT_ID = activity.getResources().getString(R.string.foursquare_client_id);
         URL_CLIENT_SECRET = activity.getResources().getString(R.string.foursquare_client_secret);
 
-        /*ID = activity.getResources().getString(R.string.foursquare_id);
-        SECRET = activity.getResources().getString(R.string.foursquare_secret);*/
+        ID = activity.getResources().getString(R.string.foursquare_id);
+        SECRET = activity.getResources().getString(R.string.foursquare_secret);
 
-        ID = BuildConfig.foursquare_id;
-        URL_CLIENT_SECRET = BuildConfig.foursquare_secret;
+        /*ID = BuildConfig.foursquare_id;
+        URL_CLIENT_SECRET = BuildConfig.foursquare_secret;*/
 
         VERSION = activity.getResources().getString(R.string.foursquare_version);
         LIMIT = activity.getResources().getString(R.string.foursquare_results_limit);
@@ -434,6 +435,7 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
     private void detailAPICall(String placeId) throws ExecutionException, InterruptedException {
 
         DETAILS_URL = URL_BASE + placeId + "?" + URL_CLIENT_ID + ID + URL_CLIENT_SECRET + SECRET + VERSION;
+
         Log.d(LOG_TAG, "Details URL: " + DETAILS_URL);
 
         JSONParser jParser = new JSONParser();

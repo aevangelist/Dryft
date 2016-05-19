@@ -10,8 +10,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
-        android:descendantFocusability="blocksDescendants">
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="120dp"
+            android:id="@+id/generate_tour_layout"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_tour_button"
+                android:src="@drawable/new_tour"
+                android:layout_marginBottom="6dp"
+                android:visibility="visible"
+                android:clickable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/PlaceSubtitleStyle"
+                android:textAllCaps="true"
+                android:text="@string/generate_tour"
+                android:id="@+id/new_tour_text"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
         <ListView
             android:clickable="true"
@@ -19,29 +47,7 @@
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:id="@+id/list_view"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/newTourButton"
-                android:src="@drawable/new_tour" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/PlaceTitleStyle"
-                android:textAllCaps="true"
-                android:text="@string/generate_tour"
-                android:id="@+id/textView" />
-        </LinearLayout>
+            android:id="@+id/list_view" />
 
     </LinearLayout>
 

@@ -56,7 +56,6 @@ public class PlaceListAdapter extends CursorAdapter {
         this.context = context;
         this.cursor = c;
         this.fragmentActivity = (MainActivity) context;
-        Log.d("PlaceListAdapter", "Creating the adapter");
     }
 
     public Cursor getCursor() {
