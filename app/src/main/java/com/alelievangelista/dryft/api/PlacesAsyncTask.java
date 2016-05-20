@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.alelievangelista.dryft.BuildConfig;
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.PlacesContract;
 import com.alelievangelista.dryft.ui.Place;
@@ -156,11 +157,11 @@ public class PlacesAsyncTask extends AsyncTask<Void, Void, ArrayList<Place>> {
         URL_CLIENT_ID = activity.getResources().getString(R.string.foursquare_client_id);
         URL_CLIENT_SECRET = activity.getResources().getString(R.string.foursquare_client_secret);
 
-        ID = activity.getResources().getString(R.string.foursquare_id);
-        SECRET = activity.getResources().getString(R.string.foursquare_secret);
+        /*ID = activity.getResources().getString(R.string.foursquare_id);
+        SECRET = activity.getResources().getString(R.string.foursquare_secret);*/
 
-        /*ID = BuildConfig.foursquare_id;
-        URL_CLIENT_SECRET = BuildConfig.foursquare_secret;*/
+        ID = BuildConfig.foursquare_id;
+        SECRET= BuildConfig.foursquare_secret;
 
         VERSION = activity.getResources().getString(R.string.foursquare_version);
         LIMIT = activity.getResources().getString(R.string.foursquare_results_limit);
