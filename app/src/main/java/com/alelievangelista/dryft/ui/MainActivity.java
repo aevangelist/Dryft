@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*Configuration config = getResources().getConfiguration();
         int i = config.smallestScreenWidthDp;
-        Log.d(LOG_TAG, "SMALLEST WIDTHL " + i);
+        Log.d(LOG_TAG, "SMALLEST WIDTH " + i);
 
         int a = this.getResources().getConfiguration().orientation;
         if (a == Configuration.ORIENTATION_LANDSCAPE) {

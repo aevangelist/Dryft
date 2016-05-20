@@ -71,6 +71,14 @@ public class PlaceListAdapter extends CursorAdapter {
         final String placeId = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.PLACE_ID));
         final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
 
+        PlaceDetailFragment fragment = PlaceDetailFragment.newInstance(placeId);
+
+        //If tablet, show one of the options
+        if(fragmentActivity.isTwoPane){
+            fragmentActivity.getSupportFragmentManager().beginTransaction()
+                    .add(R.id.details_container, fragment).commit();
+        }
+
         return view;
     }
 
@@ -123,19 +131,23 @@ public class PlaceListAdapter extends CursorAdapter {
             }
         });
 
-        //Set up onclick listener
+        //Set up onclick listener for place
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 PlaceDetailFragment fragment = PlaceDetailFragment.newInstance(placeId);
-
                 FragmentManager fragManager = fragmentActivity.getSupportFragmentManager();
 
-                fragManager.beginTransaction()
-                        .add(R.id.container, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                if(fragmentActivity.isTwoPane){
+                    fragmentActivity.getSupportFragmentManager().beginTransaction()
+                            .add(R.id.details_container, fragment).commit();
+                }else{
+                    fragManager.beginTransaction()
+                            .add(R.id.container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
 
             }
         });

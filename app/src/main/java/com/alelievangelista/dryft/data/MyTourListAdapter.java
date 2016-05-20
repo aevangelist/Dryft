@@ -72,6 +72,13 @@ public class MyTourListAdapter extends CursorAdapter {
         final String placeName = cursor.getString(cursor.getColumnIndex(PlacesContract.Places.NAME));
 
 
+        PlaceDetailFragment fragment = PlaceDetailFragment.newInstance(placeId);
+
+        //If tablet, show one of the options
+        if(fragmentActivity.isTwoPane){
+            fragmentActivity.getSupportFragmentManager().beginTransaction()
+                    .add(R.id.details_container, fragment).commit();
+        }
         return view;
     }
 
@@ -137,11 +144,15 @@ public class MyTourListAdapter extends CursorAdapter {
 
                 FragmentManager fragManager = fragmentActivity.getSupportFragmentManager();
 
-                fragManager.beginTransaction()
-                        .add(R.id.container, fragment)
-                        .addToBackStack(null)
-                        .commit();
-
+                if(fragmentActivity.isTwoPane){
+                    fragmentActivity.getSupportFragmentManager().beginTransaction()
+                            .add(R.id.details_container, fragment).commit();
+                }else{
+                    fragManager.beginTransaction()
+                            .add(R.id.container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         });
 

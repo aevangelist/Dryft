@@ -218,7 +218,8 @@
                             style="@style/PlaceDetailLinkStyle"
                             android:textAllCaps="true"
                             android:singleLine="false"
-                            android:text="@string/go_to_tips" />
+                            android:text="@string/go_to_tips"
+                            android:visibility="invisible" />
 
                     </LinearLayout>
 

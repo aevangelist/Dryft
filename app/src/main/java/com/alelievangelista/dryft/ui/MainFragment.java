@@ -49,6 +49,7 @@ public class MainFragment extends Fragment implements
     private Toolbar toolbar;
     private ImageView placeBackground;
     private ActionBarDrawerToggle drawerToggle;
+    private MainActivity fragmentActivity;
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -88,6 +89,8 @@ public class MainFragment extends Fragment implements
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        fragmentActivity = (MainActivity) getActivity();
 
         //Set up ads
         AdView mAdView = (AdView) view.findViewById(R.id.adView);
@@ -200,6 +203,7 @@ public class MainFragment extends Fragment implements
         adapter.addFrag(new TourFragment(), getResources().getString(R.string.tour));
         adapter.addFrag(new MapFragment(), getResources().getString(R.string.map));
         viewPager.setAdapter(adapter);
+
     }
 
 

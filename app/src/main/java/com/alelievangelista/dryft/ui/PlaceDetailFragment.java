@@ -162,9 +162,12 @@ public class PlaceDetailFragment extends Fragment
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        MainActivity fragmentActivity = (MainActivity) getActivity();
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        if (fragmentActivity.isTwoPane != true){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
 
         //Floating Action Button
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fab_add);

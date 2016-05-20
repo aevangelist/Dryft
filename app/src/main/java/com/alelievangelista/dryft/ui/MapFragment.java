@@ -34,7 +34,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         LoaderManager.LoaderCallbacks<Cursor>{
 
     private final String LOG_TAG = "MapFragment";
-    private final int LOADER_ID = 10;
+    private final int LOADER_ID = 30;
 
     private String mSelectionClauseDisplay =  PlacesContract.Places.IS_DISPLAY + " = ?";
     private String[] mArgsYes = new String[]{"1"};
@@ -110,10 +110,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap map) {
         googleMap = map;
 
-        //Determine locations
-        if(googleMap != null){
-            //getPlaces(cursor);
-        }
+        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                getPlaces(cursor);
+            }
+        });
 
     }
 
@@ -174,14 +176,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 getActivity(),
                 PlacesContract.Places.CONTENT_URI,
                 null,
-                null, // cols for "where" clause
-                null, // values for "where" clause
+                mSelectionClauseDisplay, // cols for "where" clause
+                mArgsYes, // values for "where" clause
                 null
         );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
         cursor = data;
     }
 
