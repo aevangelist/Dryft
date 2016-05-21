@@ -16,8 +16,17 @@ android {
         buildConfigField("String", "foursquare_secret", "\"" + foursquare_secret + "\"")
 
     }
+    signingConfigs {
+        release {
+            storeFile file("dryft_keystore.jks")
+            storePassword "Dryft123"
+            keyAlias "dryft"
+            keyPassword "Dryft123"
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
