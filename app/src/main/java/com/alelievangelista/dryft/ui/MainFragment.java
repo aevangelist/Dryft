@@ -25,8 +25,6 @@ import android.widget.ImageView;
 
 import com.alelievangelista.dryft.R;
 import com.alelievangelista.dryft.data.ViewPagerAdapter;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -91,14 +89,6 @@ public class MainFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         fragmentActivity = (MainActivity) getActivity();
-
-        //Set up ads
-        AdView mAdView = (AdView) view.findViewById(R.id.adView);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        if (mAdView != null) {
-            mAdView.loadAd(adRequest);
-        }
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));

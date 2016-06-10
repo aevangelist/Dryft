@@ -9,12 +9,10 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-
         buildConfigField("String", "server_api_key", "\"" + server_api_key + "\"")
         buildConfigField("String", "android_api_key", "\"" + android_api_key + "\"")
         buildConfigField("String", "foursquare_id", "\"" + foursquare_id + "\"")
         buildConfigField("String", "foursquare_secret", "\"" + foursquare_secret + "\"")
-
     }
     signingConfigs {
         release {
@@ -32,7 +30,7 @@ android {
         }
     }
     productFlavors {
-        defaultConfig {
+        defaultConfig{
         }
     }
 }
